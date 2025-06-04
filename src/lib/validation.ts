@@ -11,7 +11,7 @@ export type GeneralInfoValues = z.infer<typeof generalInfoSchema>;
 
 export const personalInfoSchema = z.object({
   photo: z
-    .custom<File | undefined>()
+    .custom<File | null | undefined>() // Updated: Add `| null` here
     .refine(
       (file) =>
         !file || (file instanceof File && file.type.startsWith("image/")),
@@ -20,7 +20,10 @@ export const personalInfoSchema = z.object({
     .refine(
       (file) => !file || file.size <= 1024 * 1024 * 4,
       "File must be less than 4MB",
-    ),
+    )
+        // --- ADD THESE TWO LINES HERE ---
+     .nullable() // This makes Zod accept 'null' values at runtime
+     .optional(), // This makes Zod accept 'undefined' values at runtime (if the field is omitted)
   firstName: optionalString,
   lastName: optionalString,
   jobTitle: optionalString,
@@ -88,6 +91,7 @@ export const resumeSchema = z.object({
   ...summarySchema.shape,
   colorHex: optionalString,
   borderStyle: optionalString,
+  fontFamily: optionalString,
 });
 
 export type ResumeValues = Omit<z.infer<typeof resumeSchema>, "photo"> & {

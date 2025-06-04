@@ -24,7 +24,6 @@ import {
 } from "@dnd-kit/core";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
@@ -33,8 +32,8 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GripHorizontal } from "lucide-react";
-import { useEffect } from "react";
-import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
+import { useEffect, useRef } from "react";
+import { useFieldArray, useForm, UseFormReturn, useWatch } from "react-hook-form"; // Import useWatch
 import GenerateWorkExperienceButton from "./GenerateWorkExperienceButton";
 
 export default function WorkExperienceForm({
@@ -46,20 +45,70 @@ export default function WorkExperienceForm({
     defaultValues: {
       workExperiences: resumeData.workExperiences || [],
     },
+    // Crucial: This ensures validation runs automatically on every change,
+    // so you don't need to call form.trigger() manually inside the watch.
+    mode: "onChange",
   });
 
+  // 1. Use `useWatch` to subscribe to changes in the 'workExperiences' array.
+  // This is highly optimized for performance with useFieldArray.
+  const watchedWorkExperiences = useWatch({
+    control: form.control,
+    name: "workExperiences", // Specify the field array name
+  });
+
+  // 2. Get the current validity status of the form.
+  const { isValid } = form.formState;
+
+  // Use a ref to store the previous resume data to avoid infinite loops
+  const prevResumeDataRef = useRef(resumeData.workExperiences);
+
+  // 3. Effect to sync form array values to the parent's `resumeData`.
+  // This effect will run whenever `watchedWorkExperiences` or `isValid` changes.
   useEffect(() => {
-    const { unsubscribe } = form.watch(async (values) => {
-      const isValid = await form.trigger();
-      if (!isValid) return;
-      setResumeData({
-        ...resumeData,
-        workExperiences:
-          values.workExperiences?.filter((exp) => exp !== undefined) || [],
+    // Only proceed if the form is currently valid and `watchedWorkExperiences` exist.
+    if (isValid && watchedWorkExperiences) {
+      // Filter out any undefined elements, which might occur during some operations,
+      // though react-hook-form typically manages this well.
+      const filteredWorkExperiences = watchedWorkExperiences.filter(
+        (exp) => exp !== undefined && exp !== null // Ensure nulls are also filtered if they can occur
+      );
+
+      // Perform a deep comparison to avoid unnecessary state updates.
+      // For arrays of objects, a simple `!==` check on the array itself won't tell you if contents changed.
+      // `JSON.stringify` is a quick and dirty deep comparison for plain objects/arrays.
+      // For more complex objects or better performance, consider a dedicated deep comparison utility.
+      if (
+        JSON.stringify(filteredWorkExperiences) !==
+        JSON.stringify(prevResumeDataRef.current)
+      ) {
+        setResumeData((prevResumeData) => ({
+          ...prevResumeData,
+          workExperiences: filteredWorkExperiences, // Update with the new, valid array
+        }));
+        // Update the ref to the new value
+        prevResumeDataRef.current = filteredWorkExperiences;
+      }
+    }
+  }, [watchedWorkExperiences, isValid, setResumeData]);
+
+  // 4. Effect to reset form default values if the parent's `resumeData` prop changes.
+  // This is essential if `resumeData` can be updated from outside this component.
+  useEffect(() => {
+    // Compare current form values with the incoming `resumeData.workExperiences` to decide if a reset is needed.
+    // This is more complex for arrays. We'll compare the stringified version for simplicity.
+    const currentFormExperiences = form.getValues("workExperiences");
+    if (
+      JSON.stringify(currentFormExperiences) !==
+      JSON.stringify(resumeData.workExperiences)
+    ) {
+      form.reset({
+        workExperiences: resumeData.workExperiences || [],
       });
-    });
-    return unsubscribe;
-  }, [form, resumeData, setResumeData]);
+      // Update the ref when external data changes
+      prevResumeDataRef.current = resumeData.workExperiences || [];
+    }
+  }, [resumeData.workExperiences, form]); // Depend on the specific array prop and form instance
 
   const { fields, append, remove, move } = useFieldArray({
     control: form.control,
@@ -79,21 +128,23 @@ export default function WorkExperienceForm({
     if (over && active.id !== over.id) {
       const oldIndex = fields.findIndex((field) => field.id === active.id);
       const newIndex = fields.findIndex((field) => field.id === over.id);
+      // Directly call move from useFieldArray.
+      // arrayMove(fields, oldIndex, newIndex) returns a new array,
+      // but useFieldArray's `move` method handles the internal state update.
       move(oldIndex, newIndex);
-      return arrayMove(fields, oldIndex, newIndex);
     }
   }
 
   return (
-    <div className="mx-auto max-w-xl space-y-6">
+    <div className="mx-auto max-w-xl space-y-6" dir="rtl">
       <div className="space-y-1.5 text-center">
-        <h2 className="text-2xl font-semibold">Work experience</h2>
+        <h2 className="text-2xl font-semibold">الخبرات السابقة</h2>
         <p className="text-sm text-muted-foreground">
-          Add as many work experiences as you like.
+          قم باظافة كل الوظائف الي عملت بها في السابق
         </p>
       </div>
       <Form {...form}>
-        <form className="space-y-3">
+        <form className="space-y-3" dir="rtl">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -128,7 +179,7 @@ export default function WorkExperienceForm({
                 })
               }
             >
-              Add work experience
+               وظيفة اخرى
             </Button>
           </div>
         </form>
@@ -172,7 +223,7 @@ function WorkExperienceItem({
       }}
     >
       <div className="flex justify-between gap-2">
-        <span className="font-semibold">Work experience {index + 1}</span>
+        <span className="font-semibold">اخر وظيفة عملت بها</span>
         <GripHorizontal
           className="size-5 cursor-grab text-muted-foreground focus:outline-none"
           {...attributes}
@@ -191,7 +242,7 @@ function WorkExperienceItem({
         name={`workExperiences.${index}.position`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Job title</FormLabel>
+            <FormLabel>العنوان الوظيفي</FormLabel>
             <FormControl>
               <Input {...field} autoFocus />
             </FormControl>
@@ -204,7 +255,7 @@ function WorkExperienceItem({
         name={`workExperiences.${index}.company`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Company</FormLabel>
+            <FormLabel>اسم الشركة</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -218,7 +269,7 @@ function WorkExperienceItem({
           name={`workExperiences.${index}.startDate`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Start date</FormLabel>
+              <FormLabel>من تأريخ</FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -235,7 +286,7 @@ function WorkExperienceItem({
           name={`workExperiences.${index}.endDate`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>End date</FormLabel>
+              <FormLabel>الى تأريخ</FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -249,15 +300,14 @@ function WorkExperienceItem({
         />
       </div>
       <FormDescription>
-        Leave <span className="font-semibold">end date</span> empty if you are
-        currently working here.
+        قم بترك <span className="font-semibold">الى تأريخ</span> فارغ اذا مازلت تعمل هناك
       </FormDescription>
       <FormField
         control={form.control}
         name={`workExperiences.${index}.description`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Description</FormLabel>
+            <FormLabel>اذكر المهام التي قمت بها</FormLabel>
             <FormControl>
               <Textarea {...field} />
             </FormControl>
@@ -266,7 +316,7 @@ function WorkExperienceItem({
         )}
       />
       <Button variant="destructive" type="button" onClick={() => remove(index)}>
-        Remove
+        حذف
       </Button>
     </div>
   );

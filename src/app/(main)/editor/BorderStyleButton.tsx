@@ -48,6 +48,7 @@ export default function BorderStyleButton({
       variant="outline"
       size="icon"
       title="Change border style"
+      className="bg-white hover:bg-white/90 text-[#5409DA] border-[#5409DA] dark:border-border dark:bg-secondary dark:text-inherit"
       onClick={handleClick}
     >
       <Icon className="size-5" />

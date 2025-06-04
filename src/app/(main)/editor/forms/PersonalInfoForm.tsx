@@ -12,7 +12,7 @@ import { EditorFormProps } from "@/lib/types";
 import { personalInfoSchema, PersonalInfoValues } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form"; // Import useWatch
 
 export default function PersonalInfoForm({
   resumeData,
@@ -28,34 +28,112 @@ export default function PersonalInfoForm({
       country: resumeData.country || "",
       phone: resumeData.phone || "",
       email: resumeData.email || "",
+      // Initialize photo default value:
+      // If resumeData.photo is a File, use it. Otherwise, use null (as file inputs don't display URLs).
+      photo: resumeData.photo instanceof File ? resumeData.photo : null,
     },
+    mode: "onChange",
   });
 
+  const watchedValues = useWatch({ control: form.control });
+  const { isValid } = form.formState;
+
   useEffect(() => {
-    const { unsubscribe } = form.watch(async (values) => {
-      const isValid = await form.trigger();
-      if (!isValid) return;
-      setResumeData({ ...resumeData, ...values });
-    });
-    return unsubscribe;
-  }, [form, resumeData, setResumeData]);
+    if (isValid && watchedValues) {
+      const newPersonalInfoPart: PersonalInfoValues = {
+        firstName: watchedValues.firstName,
+        lastName: watchedValues.lastName,
+        jobTitle: watchedValues.jobTitle,
+        city: watchedValues.city,
+        country: watchedValues.country,
+        phone: watchedValues.phone,
+        email: watchedValues.email,
+        photo: watchedValues.photo, // watchedValues.photo will correctly be File | null | undefined
+      };
+
+      // Create a comparison object from the current `resumeData` for relevant fields.
+      // Explicitly handle `resumeData.photo` to match `PersonalInfoValues` type.
+      const currentPersonalInfoPart: PersonalInfoValues = {
+        firstName: resumeData.firstName,
+        lastName: resumeData.lastName,
+        jobTitle: resumeData.jobTitle,
+        city: resumeData.city,
+        country: resumeData.country,
+        phone: resumeData.phone,
+        email: resumeData.email,
+        // If resumeData.photo is a File, use it. If it's null, use null. If it's a string, treat as null for comparison.
+        photo: resumeData.photo instanceof File ? resumeData.photo : null,
+      };
+
+      let hasChanged = false;
+      for (const key of Object.keys(newPersonalInfoPart) as Array<keyof PersonalInfoValues>) {
+        if (newPersonalInfoPart[key] !== currentPersonalInfoPart[key]) {
+          hasChanged = true;
+          break;
+        }
+      }
+
+      if (hasChanged) {
+        setResumeData((prevResumeData) => ({
+          ...prevResumeData,
+          ...newPersonalInfoPart,
+        }));
+      }
+    }
+  }, [watchedValues, isValid, setResumeData, resumeData]);
+
+  useEffect(() => {
+    const currentFormValues = form.getValues();
+
+    // Prepare resumeData.photo for comparison to match currentFormValues.photo type
+    const resumePhotoForComparison = resumeData.photo instanceof File ? resumeData.photo : null;
+
+    const needsReset =
+      resumeData.firstName !== currentFormValues.firstName ||
+      resumeData.lastName !== currentFormValues.lastName ||
+      resumeData.jobTitle !== currentFormValues.jobTitle ||
+      resumeData.city !== currentFormValues.city ||
+      resumeData.country !== currentFormValues.country ||
+      resumeData.phone !== currentFormValues.phone ||
+      resumeData.email !== currentFormValues.email ||
+      // Compare the processed resumeData.photo with currentFormValues.photo
+      resumePhotoForComparison !== currentFormValues.photo;
+
+    if (needsReset) {
+      form.reset({
+        firstName: resumeData.firstName || "",
+        lastName: resumeData.lastName || "",
+        jobTitle: resumeData.jobTitle || "",
+        city: resumeData.city || "",
+        country: resumeData.country || "",
+        phone: resumeData.phone || "",
+        email: resumeData.email || "",
+        // When resetting, if resumeData.photo is a string, set form photo to null
+        photo: resumeData.photo instanceof File ? resumeData.photo : null,
+      });
+
+      if (resumeData.photo === null && photoInputRef.current) {
+        photoInputRef.current.value = "";
+      }
+    }
+  }, [resumeData, form]);
 
   const photoInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="mx-auto max-w-xl space-y-6">
+    <div className="mx-auto max-w-xl space-y-6" dir="rtl">
       <div className="space-y-1.5 text-center">
-        <h2 className="text-2xl font-semibold">Personal info</h2>
-        <p className="text-sm text-muted-foreground">Tell us about yourself.</p>
+        <h2 className="text-2xl font-semibold">المعلومات الشخصية</h2>
+        <p className="text-sm text-muted-foreground">يرجى إدخال معلوماتك الشخصية.</p>
       </div>
       <Form {...form}>
-        <form className="space-y-3">
+        <form className="space-y-3" dir="rtl">
           <FormField
             control={form.control}
             name="photo"
             render={({ field: { value, ...fieldValues } }) => (
               <FormItem>
-                <FormLabel>Your photo</FormLabel>
+                <FormLabel>صورتك الشخصية</FormLabel>
                 <div className="flex items-center gap-2">
                   <FormControl>
                     <Input
@@ -79,7 +157,7 @@ export default function PersonalInfoForm({
                       }
                     }}
                   >
-                    Remove
+                    حذف
                   </Button>
                 </div>
                 <FormMessage />
@@ -92,7 +170,7 @@ export default function PersonalInfoForm({
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First name</FormLabel>
+                  <FormLabel>الاسم الأول</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -105,7 +183,7 @@ export default function PersonalInfoForm({
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last name</FormLabel>
+                  <FormLabel>اسم العائلة</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -119,7 +197,7 @@ export default function PersonalInfoForm({
             name="jobTitle"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Job title</FormLabel>
+                <FormLabel>المسمى الوظيفي</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -133,7 +211,7 @@ export default function PersonalInfoForm({
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>المدينة</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -146,7 +224,7 @@ export default function PersonalInfoForm({
               name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Country</FormLabel>
+                  <FormLabel>الدولة</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -160,7 +238,7 @@ export default function PersonalInfoForm({
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone</FormLabel>
+                <FormLabel>رقم الهاتف</FormLabel>
                 <FormControl>
                   <Input {...field} type="tel" />
                 </FormControl>
@@ -173,7 +251,7 @@ export default function PersonalInfoForm({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>البريد الإلكتروني</FormLabel>
                 <FormControl>
                   <Input {...field} type="email" />
                 </FormControl>

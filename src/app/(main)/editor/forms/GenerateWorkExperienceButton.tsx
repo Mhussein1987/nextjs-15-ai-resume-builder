@@ -25,7 +25,7 @@ import {
   WorkExperience,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { WandSparklesIcon } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSubscriptionLevel } from "../../SubscriptionLevelProvider";
@@ -47,8 +47,9 @@ export default function GenerateWorkExperienceButton({
   return (
     <>
       <Button
-        variant="outline"
         type="button"
+        variant="outline"
+        size="sm"
         onClick={() => {
           if (!canUseAITools(subscriptionLevel)) {
             premiumModal.setOpen(true);
@@ -56,8 +57,10 @@ export default function GenerateWorkExperienceButton({
           }
           setShowInputDialog(true);
         }}
+        className="gap-2 text-[#5409DA] hover:text-[#5409DA] hover:bg-[#5409DA]/10 
+    dark:bg-white dark:text-black dark:hover:bg-gray-100 dark:hover:text-black"
       >
-        <WandSparklesIcon className="size-4" />
+        <Sparkles className="size-4 text-[#5409DA] dark:text-black" />
         Smart fill (AI)
       </Button>
       <InputDialog

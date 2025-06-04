@@ -31,6 +31,7 @@ export async function generateSummary(input: GenerateSummaryInput) {
   const systemMessage = `
     You are a job resume generator AI. Your task is to write a professional introduction summary for a resume given the user's provided data.
     Only return the summary and do not include any other information in the response. Keep it concise and professional.
+    ALWAYS respond in Arabic only. لا ترد إلا باللغة العربية.
     `;
 
   const userMessage = `
@@ -109,6 +110,10 @@ export async function generateWorkExperience(
   const systemMessage = `
   You are a job resume generator AI. Your task is to generate a single work experience entry based on the user input.
   Your response must adhere to the following structure. You can omit fields if they can't be inferred from the provided data, but don't add any new ones.
+
+  ALWAYS respond in Arabic only. لا ترد إلا باللغة العربية.
+  ALWAYS close sentances with a period. لا تترك أي جمل بدون نقطة في النهاية.
+  ALWAYS make the sentances fill the entier line. لا تترك أي فراغات في نهاية السطر.
 
   Job title: <job title>
   Company: <company name>

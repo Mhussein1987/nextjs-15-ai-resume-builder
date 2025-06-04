@@ -3,16 +3,19 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-generator client {
-  provider = "prisma-client-js"
-}
+// Define database connection via the `DATABASE_URL` env var
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
+
+// Define custom output path for generated Prisma Client
+generator client {
+  provider = "prisma-client-js"
+
+}
+
 
 model Resume {
   id     String @id @default(cuid())
@@ -24,6 +27,7 @@ model Resume {
   photoUrl    String?
   colorHex    String  @default("#000000")
   borderStyle String  @default("squircle")
+  fontFamily  String?
   summary     String?
   firstName   String?
   lastName    String?

@@ -30,6 +30,7 @@ export default function ColorPicker({ color, onChange }: ColorPickerProps) {
           variant="outline"
           size="icon"
           title="Change resume color"
+          className="bg-white hover:bg-white/90 text-[#5409DA] border-[#5409DA] dark:border-border dark:bg-secondary dark:text-inherit"
           onClick={() => {
             if (!canUseCustomizations(subscriptionLevel)) {
               premiumModal.setOpen(true);

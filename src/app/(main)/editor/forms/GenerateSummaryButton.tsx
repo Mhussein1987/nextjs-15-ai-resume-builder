@@ -52,8 +52,10 @@ export default function GenerateSummaryButton({
       type="button"
       onClick={handleClick}
       loading={loading}
+      className="gap-2 text-[#5409DA] hover:text-[#5409DA] hover:bg-[#5409DA]/10 
+    dark:bg-white dark:text-black dark:hover:bg-gray-100 dark:hover:text-black"
     >
-      <WandSparklesIcon className="size-4" />
+      <WandSparklesIcon className="size-4 text-[#5409DA] dark:text-black" />
       Generate (AI)
     </LoadingButton>
   );
