@@ -39,4 +39,15 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Test files (should not be committed)
+test-*.js
+test-*.md
+test-*.html
+*test*.js
+final-*.js
+quick-*.js
+comprehensive-*.js
+*TEST*.js
+PDF_EXPORT_ERROR_FINAL_FIX.js
+
 /src/generated/prisma
