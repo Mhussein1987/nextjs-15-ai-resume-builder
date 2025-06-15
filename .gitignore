@@ -49,5 +49,7 @@ quick-*.js
 comprehensive-*.js
 *TEST*.js
 PDF_EXPORT_ERROR_FINAL_FIX.js
+*_BACKUP.tsx
+*_backup.tsx
 
 /src/generated/prisma
