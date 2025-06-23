@@ -71,50 +71,68 @@ export async function saveResume(values: ResumeValues) {
     newPhotoUrl = null;
   }
 
+  // Prepare the data object for Prisma
+  const prismaData = {
+    title: resumeValues.title || "",
+    description: resumeValues.description || "",
+    summary: resumeValues.summary || "",
+    firstName: resumeValues.firstName || "",
+    lastName: resumeValues.lastName || "",
+    jobTitle: resumeValues.jobTitle || "",
+    city: resumeValues.city || "",
+    country: resumeValues.country || "",
+    phone: resumeValues.phone || "",
+    email: resumeValues.email || "",
+    language: resumeValues.language || "en",
+    photoUrl: newPhotoUrl,
+    colorHex: resumeValues.colorHex || "#000000",
+    sidebarColorHex: resumeValues.sidebarColorHex || "#0E7490",
+    borderStyle: resumeValues.borderStyle || "squircle",
+    skills: { set: resumeValues.skills || [] },
+    userLanguages: { set: resumeValues.userLanguages || [] },
+    templatePreference: resumeValues.templatePreference || "default",
+    workExperiences: {
+      deleteMany: {},
+      create: workExperiences?.filter(exp => Object.values(exp).some(Boolean)).map((exp) => ({
+        ...exp,
+        startDate: exp.startDate ? new Date(exp.startDate) : undefined,
+        endDate: exp.endDate ? new Date(exp.endDate) : undefined,
+      })) || [],
+    },
+    educations: {
+      deleteMany: {},
+      create: educations?.filter(edu => Object.values(edu).some(Boolean)).map((edu) => ({
+        ...edu,
+        startDate: edu.startDate ? new Date(edu.startDate) : undefined,
+        endDate: edu.endDate ? new Date(edu.endDate) : undefined,
+      })) || [],
+    },
+    updatedAt: new Date(),
+  };
+
   if (id) {
     return prisma.resume.update({
       where: { id },
-      data: {
-        ...resumeValues,
-        photoUrl: newPhotoUrl,
-        workExperiences: {
-          deleteMany: {},
-          create: workExperiences?.map((exp) => ({
-            ...exp,
-            startDate: exp.startDate ? new Date(exp.startDate) : undefined,
-            endDate: exp.endDate ? new Date(exp.endDate) : undefined,
-          })),
-        },
-        educations: {
-          deleteMany: {},
-          create: educations?.map((edu) => ({
-            ...edu,
-            startDate: edu.startDate ? new Date(edu.startDate) : undefined,
-            endDate: edu.endDate ? new Date(edu.endDate) : undefined,
-          })),
-        },
-        updatedAt: new Date(),
-      },
+      data: prismaData,
     });
   } else {
     return prisma.resume.create({
       data: {
-        ...resumeValues,
+        ...prismaData,
         userId,
-        photoUrl: newPhotoUrl,
         workExperiences: {
-          create: workExperiences?.map((exp) => ({
+          create: workExperiences?.filter(exp => Object.values(exp).some(Boolean)).map((exp) => ({
             ...exp,
             startDate: exp.startDate ? new Date(exp.startDate) : undefined,
             endDate: exp.endDate ? new Date(exp.endDate) : undefined,
-          })),
+          })) || [],
         },
         educations: {
-          create: educations?.map((edu) => ({
+          create: educations?.filter(edu => Object.values(edu).some(Boolean)).map((edu) => ({
             ...edu,
             startDate: edu.startDate ? new Date(edu.startDate) : undefined,
             endDate: edu.endDate ? new Date(edu.endDate) : undefined,
-          })),
+          })) || [],
         },
       },
     });

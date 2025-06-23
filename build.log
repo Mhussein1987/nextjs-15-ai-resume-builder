@@ -1,0 +1,49 @@
+
+> isera-resume-builder@0.1.0 build
+> next build
+
+   ▲ Next.js 15.3.3
+   - Environments: .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 6.0s
+   Linting and checking validity of types ...
+   Collecting page data ...
+prisma:warn In production, we recommend using `prisma generate --no-engine` (See: `prisma generate --help`)
+prisma:warn In production, we recommend using `prisma generate --no-engine` (See: `prisma generate --help`)
+prisma:warn In production, we recommend using `prisma generate --no-engine` (See: `prisma generate --help`)
+prisma:warn In production, we recommend using `prisma generate --no-engine` (See: `prisma generate --help`)
+prisma:warn In production, we recommend using `prisma generate --no-engine` (See: `prisma generate --help`)
+   Generating static pages (0/12) ...
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+prisma:warn In production, we recommend using `prisma generate --no-engine` (See: `prisma generate --help`)
+   Generating static pages (3/12) 
+   Generating static pages (6/12) 
+   Generating static pages (9/12) 
+ ✓ Generating static pages (12/12)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                      918 B         111 kB
+├ ○ /_not-found                            988 B         103 kB
+├ ƒ /api/stripe-webhook                    143 B         102 kB
+├ ƒ /billing                             2.67 kB         113 kB
+├ ƒ /billing/success                       174 B         105 kB
+├ ƒ /editor                              79.1 kB         269 kB
+├ ○ /opengraph-image.png                     0 B            0 B
+├ ƒ /resumes                             7.13 kB         183 kB
+├ ƒ /sign-in/[[...sign-in]]                493 B         134 kB
+├ ƒ /sign-up/[[...sign-up]]                493 B         134 kB
+└ ○ /tos                                   143 B         102 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/4bd1b696-01c14f386d270c11.js  53.2 kB
+  ├ chunks/684-0e780067a9027547.js       46.4 kB
+  └ other shared chunks (total)          2.04 kB
+
+
+ƒ Middleware                             75.7 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -1,4 +1,4 @@
-# Next.js 15 AI Resume Builder
+# ISera - Next.js 15 Resume Builder
 
 Build and deploy a professional **full-stack SaaS** (software-as-a-service) application with **Stripe Checkout** and the **ChatGPT API**. 
 

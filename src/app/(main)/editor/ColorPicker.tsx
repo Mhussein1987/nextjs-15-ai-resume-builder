@@ -14,14 +14,51 @@ import { useSubscriptionLevel } from "../SubscriptionLevelProvider";
 interface ColorPickerProps {
   color: Color | undefined;
   onChange: ColorChangeHandler;
+  colors?: string[];
+  language?: string;
 }
 
-export default function ColorPicker({ color, onChange }: ColorPickerProps) {
+// Enhanced color palette with more professional and Arabic-friendly colors
+const DEFAULT_COLORS = [
+  '#5409DA', // Primary purple
+  '#1f2937', // Dark gray (professional)
+  '#0F172A', // Slate 900
+  '#374151', // Gray 700
+  '#059669', // Emerald 600
+  '#DC2626', // Red 600
+  '#EA580C', // Orange 600
+  '#CA8A04', // Yellow 600
+  '#9333EA', // Violet 600
+  '#C2410C', // Orange 700
+  '#0891B2', // Cyan 600
+  '#7C3AED', // Violet 700
+  '#BE123C', // Rose 700
+  '#047857', // Emerald 700
+  '#1D4ED8', // Blue 700
+  '#7C2D12', // Orange 900
+  '#166534', // Green 800
+  '#92400E', // Amber 800
+  '#6B21A8', // Purple 800
+  '#1E3A8A', // Blue 800
+];
+
+export default function ColorPicker({ color, onChange, colors = DEFAULT_COLORS, language }: ColorPickerProps) {
   const subscriptionLevel = useSubscriptionLevel();
-
   const premiumModal = usePremiumModal();
-
   const [showPopover, setShowPopover] = useState(false);
+
+  // Arabic-friendly title
+  const title = language === 'ar' ? 'تغيير لون السيرة الذاتية' : 'Change resume color';
+
+  // Safe color extraction function
+  const getCurrentColor = (color: Color | undefined): string => {
+    if (!color) return '#5409DA';
+    if (typeof color === 'string') return color;
+    if (typeof color === 'object' && 'hex' in color) return color.hex as string;
+    if (typeof color === 'object' && 'r' in color) return `rgb(${color.r}, ${color.g}, ${color.b})`;
+    if (typeof color === 'object' && 'h' in color) return `hsl(${color.h}, ${color.s * 100}%, ${color.l * 100}%)`;
+    return '#5409DA';
+  };
 
   return (
     <Popover open={showPopover} onOpenChange={setShowPopover}>
@@ -29,8 +66,8 @@ export default function ColorPicker({ color, onChange }: ColorPickerProps) {
         <Button
           variant="outline"
           size="icon"
-          title="Change resume color"
-          className="bg-white hover:bg-white/90 text-[#5409DA] border-[#5409DA] dark:border-border dark:bg-secondary dark:text-inherit"
+          title={title}
+          className="bg-white hover:bg-white/90 text-[#5409DA] border-[#5409DA] dark:border-border dark:bg-secondary dark:text-inherit relative overflow-hidden"
           onClick={() => {
             if (!canUseCustomizations(subscriptionLevel)) {
               premiumModal.setOpen(true);
@@ -38,15 +75,57 @@ export default function ColorPicker({ color, onChange }: ColorPickerProps) {
             }
             setShowPopover(true);
           }}
+          data-color-picker
         >
-          <PaletteIcon className="size-5" />
+          {/* Color indicator showing current color */}
+          <div 
+            className="absolute inset-0 opacity-20" 
+            style={{ 
+              backgroundColor: getCurrentColor(color),
+            }}
+          />
+          <PaletteIcon className="size-5 relative z-10" />
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="border-none bg-transparent shadow-none"
+        className="border-none bg-transparent shadow-none p-0"
         align="end"
+        side="right"
+        sideOffset={8}
       >
-        <TwitterPicker color={color} onChange={onChange} triangle="top-right" />
+        <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-2">
+          {language === 'ar' && (
+            <div className="text-xs text-gray-600 mb-2 text-right" dir="rtl">
+              اختر لون السيرة الذاتية
+            </div>
+          )}
+          <TwitterPicker 
+            color={color} 
+            onChange={onChange} 
+            triangle="hide"
+            colors={colors}
+            styles={{
+              default: {
+                card: {
+                  boxShadow: 'none',
+                  border: 'none',
+                  borderRadius: '8px',
+                },
+                triangle: {
+                  display: 'none',
+                },
+                body: {
+                  padding: '8px',
+                },
+              },
+            }}
+          />
+          {language === 'ar' && (
+            <div className="text-xs text-gray-500 mt-2 text-right" dir="rtl">
+              💡 اللون المختار سيظهر في العناوين والتفاصيل
+            </div>
+          )}
+        </div>
       </PopoverContent>
     </Popover>
   );

@@ -11,13 +11,18 @@ import { Input } from "@/components/ui/input";
 import { EditorFormProps } from "@/lib/types";
 import { personalInfoSchema, PersonalInfoValues } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form"; // Import useWatch
+import useIsMobile from "@/hooks/useIsMobile";
+import { cn } from "@/lib/utils";
 
 export default function PersonalInfoForm({
   resumeData,
   setResumeData,
+  language = 'en',
 }: EditorFormProps) {
+  const isMobile = useIsMobile();
+  
   const form = useForm<PersonalInfoValues>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
@@ -38,6 +43,35 @@ export default function PersonalInfoForm({
   const watchedValues = useWatch({ control: form.control });
   const { isValid } = form.formState;
 
+  // Create a memoized version of the current resumeData personal info to avoid circular dependencies
+  const currentPersonalInfo = useMemo(() => ({
+    firstName: resumeData.firstName,
+    lastName: resumeData.lastName,
+    jobTitle: resumeData.jobTitle,
+    city: resumeData.city,
+    country: resumeData.country,
+    phone: resumeData.phone,
+    email: resumeData.email,
+    photo: resumeData.photo instanceof File ? resumeData.photo : null,
+  }), [
+    resumeData.firstName,
+    resumeData.lastName,
+    resumeData.jobTitle,
+    resumeData.city,
+    resumeData.country,
+    resumeData.phone,
+    resumeData.email,
+    resumeData.photo
+  ]);
+
+  // Stable update function to avoid recreating on every render
+  const updateResumeData = useCallback((newData: PersonalInfoValues) => {
+    setResumeData((prevResumeData) => ({
+      ...prevResumeData,
+      ...newData,
+    }));
+  }, [setResumeData]);
+
   useEffect(() => {
     if (isValid && watchedValues) {
       const newPersonalInfoPart: PersonalInfoValues = {
@@ -51,36 +85,20 @@ export default function PersonalInfoForm({
         photo: watchedValues.photo, // watchedValues.photo will correctly be File | null | undefined
       };
 
-      // Create a comparison object from the current `resumeData` for relevant fields.
-      // Explicitly handle `resumeData.photo` to match `PersonalInfoValues` type.
-      const currentPersonalInfoPart: PersonalInfoValues = {
-        firstName: resumeData.firstName,
-        lastName: resumeData.lastName,
-        jobTitle: resumeData.jobTitle,
-        city: resumeData.city,
-        country: resumeData.country,
-        phone: resumeData.phone,
-        email: resumeData.email,
-        // If resumeData.photo is a File, use it. If it's null, use null. If it's a string, treat as null for comparison.
-        photo: resumeData.photo instanceof File ? resumeData.photo : null,
-      };
-
+      // Check if the form data has actually changed compared to current resume data
       let hasChanged = false;
       for (const key of Object.keys(newPersonalInfoPart) as Array<keyof PersonalInfoValues>) {
-        if (newPersonalInfoPart[key] !== currentPersonalInfoPart[key]) {
+        if (newPersonalInfoPart[key] !== currentPersonalInfo[key]) {
           hasChanged = true;
           break;
         }
       }
 
       if (hasChanged) {
-        setResumeData((prevResumeData) => ({
-          ...prevResumeData,
-          ...newPersonalInfoPart,
-        }));
+        updateResumeData(newPersonalInfoPart);
       }
     }
-  }, [watchedValues, isValid, setResumeData, resumeData]);
+  }, [watchedValues, isValid, currentPersonalInfo, updateResumeData]);
 
   useEffect(() => {
     const currentFormValues = form.getValues();
@@ -121,20 +139,44 @@ export default function PersonalInfoForm({
   const photoInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="mx-auto max-w-xl space-y-6" dir="rtl">
-      <div className="space-y-1.5 text-center">
-        <h2 className="text-2xl font-semibold">المعلومات الشخصية</h2>
-        <p className="text-sm text-muted-foreground">يرجى إدخال معلوماتك الشخصية.</p>
+    <div className={cn(
+      "mx-auto space-y-6",
+      isMobile ? "max-w-full space-y-4" : "max-w-xl space-y-6"
+    )} dir={language === 'ar' ? 'rtl' : 'ltr'}>
+      <div className={cn(
+        "space-y-1.5 text-center",
+        isMobile && "space-y-1"
+      )}>
+        <h2 className={cn(
+          "text-2xl font-semibold",
+          isMobile && "text-xl"
+        )}>
+          {language === 'ar' ? 'المعلومات الشخصية' : 'Personal Information'}
+        </h2>
+        <p className={cn(
+          "text-sm text-muted-foreground",
+          isMobile && "text-xs px-2"
+        )}>
+          {language === 'ar' ? 'يرجى إدخال معلوماتك الشخصية.' : 'Please enter your personal information.'}
+        </p>
       </div>
       <Form {...form}>
-        <form className="space-y-3" dir="rtl">
+        <form className={cn(
+          "space-y-3",
+          isMobile && "space-y-4"
+        )} dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <FormField
             control={form.control}
             name="photo"
             render={({ field: { value, ...fieldValues } }) => (
               <FormItem>
-                <FormLabel>صورتك الشخصية</FormLabel>
-                <div className="flex items-center gap-2">
+                <FormLabel className={cn(
+                  isMobile && "text-sm"
+                )}>{language === 'ar' ? 'صورتك الشخصية' : 'Profile Photo'}</FormLabel>
+                <div className={cn(
+                  "flex items-center gap-2",
+                  isMobile && "flex-col items-stretch gap-3"
+                )}>
                   <FormControl>
                     <Input
                       {...fieldValues}
@@ -145,6 +187,10 @@ export default function PersonalInfoForm({
                         fieldValues.onChange(file);
                       }}
                       ref={photoInputRef}
+                      className={cn(
+                        isMobile && "text-sm"
+                      )}
+                      data-photo-input
                     />
                   </FormControl>
                   <Button
@@ -156,23 +202,33 @@ export default function PersonalInfoForm({
                         photoInputRef.current.value = "";
                       }
                     }}
+                    className={cn(
+                      isMobile && "text-sm"
+                    )}
                   >
-                    حذف
+                    {language === 'ar' ? 'حذف' : 'Remove'}
                   </Button>
                 </div>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-2 gap-3">
+          <div className={cn(
+            "grid grid-cols-2 gap-3",
+            isMobile && "grid-cols-1 gap-4"
+          )}>
             <FormField
               control={form.control}
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>الاسم الأول</FormLabel>
+                  <FormLabel className={cn(
+                    isMobile && "text-sm"
+                  )}>{language === 'ar' ? 'الاسم الأول' : 'First Name'}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className={cn(
+                      isMobile && "text-sm h-10"
+                    )} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -183,9 +239,13 @@ export default function PersonalInfoForm({
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم العائلة</FormLabel>
+                  <FormLabel className={cn(
+                    isMobile && "text-sm"
+                  )}>{language === 'ar' ? 'اسم العائلة' : 'Last Name'}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className={cn(
+                      isMobile && "text-sm h-10"
+                    )} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -197,23 +257,34 @@ export default function PersonalInfoForm({
             name="jobTitle"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>المسمى الوظيفي</FormLabel>
+                <FormLabel className={cn(
+                  isMobile && "text-sm"
+                )}>{language === 'ar' ? 'المسمى الوظيفي' : 'Job Title'}</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} className={cn(
+                    isMobile && "text-sm h-10"
+                  )} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-2 gap-3">
+          <div className={cn(
+            "grid grid-cols-2 gap-3",
+            isMobile && "grid-cols-1 gap-4"
+          )}>
             <FormField
               control={form.control}
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>المدينة</FormLabel>
+                  <FormLabel className={cn(
+                    isMobile && "text-sm"
+                  )}>{language === 'ar' ? 'المدينة' : 'City'}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className={cn(
+                      isMobile && "text-sm h-10"
+                    )} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -224,41 +295,58 @@ export default function PersonalInfoForm({
               name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>الدولة</FormLabel>
+                  <FormLabel className={cn(
+                    isMobile && "text-sm"
+                  )}>{language === 'ar' ? 'البلد' : 'Country'}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className={cn(
+                      isMobile && "text-sm h-10"
+                    )} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>رقم الهاتف</FormLabel>
-                <FormControl>
-                  <Input {...field} type="tel" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>البريد الإلكتروني</FormLabel>
-                <FormControl>
-                  <Input {...field} type="email" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className={cn(
+            "grid grid-cols-2 gap-3",
+            isMobile && "grid-cols-1 gap-4"
+          )}>
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className={cn(
+                    isMobile && "text-sm"
+                  )}>{language === 'ar' ? 'رقم الهاتف' : 'Phone'}</FormLabel>
+                  <FormControl>
+                    <Input {...field} className={cn(
+                      isMobile && "text-sm h-10"
+                    )} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className={cn(
+                    isMobile && "text-sm"
+                  )}>{language === 'ar' ? 'البريد الإلكتروني' : 'Email'}</FormLabel>
+                  <FormControl>
+                    <Input {...field} className={cn(
+                      isMobile && "text-sm h-10"
+                    )} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </form>
       </Form>
     </div>

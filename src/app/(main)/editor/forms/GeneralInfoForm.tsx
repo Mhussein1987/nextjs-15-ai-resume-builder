@@ -17,6 +17,7 @@ import { useForm, useWatch } from "react-hook-form"; // Import useWatch
 export default function GeneralInfoForm({
   resumeData,
   setResumeData,
+  language = 'en',
 }: EditorFormProps) {
   const form = useForm<GeneralInfoValues>({
     resolver: zodResolver(generalInfoSchema),
@@ -74,21 +75,38 @@ export default function GeneralInfoForm({
 
 
   return (
-    <div className="mx-auto max-w-xl space-y-6" dir="rtl">
+    <div className="mx-auto max-w-xl space-y-6" dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div className="space-y-1.5 text-center">
-        <h2 className="text-2xl font-semibold">معلومات عامة</h2>
-        <p className="text-sm text-muted-foreground">هذه المعلومات لن تظهر في السيرة الذاتية.</p>
+        <h2 className="text-2xl font-semibold">
+          {language === 'ar' ? 'معلومات عامة' : 'General Information'}
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          {language === 'ar' 
+            ? 'هذه المعلومات لن تظهر في السيرة الذاتية.'
+            : 'This information will not appear in the resume.'
+          }
+        </p>
       </div>
       <Form {...form}>
-        <form className="space-y-3" dir="rtl">
+        <form className="space-y-3" dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>اسم المشروع</FormLabel>
+                <FormLabel>
+                  {language === 'ar' ? 'اسم المشروع' : 'Project Name'}
+                </FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="مثال: سيرتي الذاتية" autoFocus />
+                  <Input 
+                    {...field} 
+                    placeholder={
+                      language === 'ar' 
+                        ? "مثال: سيرتي الذاتية"
+                        : "Example: My Resume"
+                    } 
+                    autoFocus 
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -99,12 +117,24 @@ export default function GeneralInfoForm({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>الوصف</FormLabel>
+                <FormLabel>
+                  {language === 'ar' ? 'الوصف' : 'Description'}
+                </FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="مثال: سيرة ذاتية لوظيفة جديدة" />
+                  <Input 
+                    {...field} 
+                    placeholder={
+                      language === 'ar' 
+                        ? "مثال: سيرة ذاتية لوظيفة جديدة"
+                        : "Example: Resume for a new job"
+                    } 
+                  />
                 </FormControl>
                 <FormDescription>
-                  اكتب وصفاً لهذا المشروع.
+                  {language === 'ar' 
+                    ? 'اكتب وصفاً لهذا المشروع.'
+                    : 'Write a description for this project.'
+                  }
                 </FormDescription>
                 <FormMessage />
               </FormItem>

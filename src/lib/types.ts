@@ -4,6 +4,11 @@ import { ResumeValues } from "./validation";
 export interface EditorFormProps {
   resumeData: ResumeValues;
   setResumeData: React.Dispatch<React.SetStateAction<ResumeValues>>;
+  language?: 'ar' | 'en';
+  onNext?: () => void;
+  onPrevious?: () => void;
+  hasNext?: boolean;
+  hasPrevious?: boolean;
 }
 
 export const resumeDataInclude = {

@@ -10,17 +10,17 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+          "bg-gradient-to-r from-[#8e2de2] to-[#4a00e0] text-white shadow hover:from-[#7b1fa2] hover:to-[#1976d2]",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+          "bg-gradient-to-r from-red-600 to-red-500 text-white shadow-sm hover:from-red-700 hover:to-red-600",
         outline:
-          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+          "border border-[#8e2de2] bg-transparent text-[#8e2de2] shadow-sm hover:bg-[#8e2de2] hover:text-white",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+          "bg-gradient-to-r from-gray-600 to-gray-500 text-white shadow-sm hover:from-gray-700 hover:to-gray-600",
+        ghost: "hover:bg-[#8e2de2]/10 hover:text-[#8e2de2]",
+        link: "text-[#8e2de2] underline-offset-4 hover:underline",
         premium:
-          "bg-gradient-to-r from-green-600 to-green-400 text-white shadow hover:from-green-600/90 hover:to-green-400/90",
+          "bg-gradient-to-r from-[#8e2de2] to-[#4a00e0] text-white shadow hover:from-[#7b1fa2] hover:to-[#1976d2]",
       },
       size: {
         default: "h-9 px-4 py-2",

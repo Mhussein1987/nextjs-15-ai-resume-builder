@@ -38,21 +38,21 @@ const reemKufi = Reem_Kufi({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s - AI Resume Builder",
-    absolute: "AI Resume Builder",
+    template: "%s - ISera",
+    absolute: "ISera",
   },
   description:
-    "AI Resume Builder is the easiest way to create a professional resume that will help you land your dream job.",
+    "ISera is the easiest way to create a professional resume that will help you land your dream job.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} ${amiri.variable} ${cairo.variable} ${tajawal.variable} ${changa.variable} ${almarai.variable} ${reemKufi.variable}`}>
+      <body className={`${inter.className} ${amiri.variable} ${cairo.variable} ${tajawal.variable} ${changa.variable} ${almarai.variable} ${reemKufi.variable}`} suppressHydrationWarning>
         <ClerkProvider>
           <ThemeProvider
             attribute="class"

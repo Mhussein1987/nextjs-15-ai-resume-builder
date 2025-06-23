@@ -1,112 +1,123 @@
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { EditorFormProps } from "@/lib/types";
-import { skillsSchema, SkillsValues } from "@/lib/validation";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form"; // Import useWatch
+import { useForm, useWatch } from "react-hook-form";
+import useIsMobile from "@/hooks/useIsMobile";
+import { cn } from "@/lib/utils";
 
 export default function SkillsForm({
   resumeData,
   setResumeData,
+  language = 'en',
 }: EditorFormProps) {
-  const form = useForm<SkillsValues>({
-    resolver: zodResolver(skillsSchema),
+  const isMobile = useIsMobile();
+  
+  // Convert skills array to string for display
+  const skillsString = Array.isArray(resumeData.skills) 
+    ? resumeData.skills.join(', ')
+    : (resumeData.skills || '');
+
+  const form = useForm<{ skills: string }>({
     defaultValues: {
-      skills: resumeData.skills || [],
+      skills: skillsString,
     },
-    // Crucial: This ensures validation runs automatically on every change,
-    // so you don't need to call form.trigger() manually inside the watch.
     mode: "onChange",
   });
 
-  // 1. Efficiently watch the 'skills' field using useWatch.
-  // This hook is optimized to re-render only this component when 'skills' change.
-  const watchedSkills = useWatch({
-    control: form.control,
-    name: "skills", // Specify the field array name
-  });
-
-  // 2. Get the current validity status of the form.
+  // Use useWatch to subscribe to form values
+  const watchedValues = useWatch({ control: form.control });
   const { isValid } = form.formState;
 
-  // 3. Effect to sync form array values to the parent's `resumeData`.
-  // This effect will run whenever `watchedSkills` (form inputs) or `isValid` changes.
   useEffect(() => {
-    // Only proceed if the form is currently valid and `watchedSkills` exists.
-    if (isValid && watchedSkills) {
-      // Process the skills: filter, trim, and filter again for empty strings.
-      const processedSkills =
-        watchedSkills
-          .filter((skill) => skill !== undefined && skill !== null) // Ensure no undefined/null entries
-          .map((skill) => skill.trim())
-          .filter((skill) => skill !== "") || [];
+    // Only update parent state if form is valid and values have actually changed
+    if (isValid && watchedValues && Object.keys(watchedValues).length > 0) {
+      const newSkillsString = watchedValues.skills || '';
+      const currentSkillsString = skillsString;
 
-      // Perform a deep comparison to avoid unnecessary state updates.
-      // `JSON.stringify` works well for arrays of strings.
-      if (
-        JSON.stringify(processedSkills) !== JSON.stringify(resumeData.skills)
-      ) {
+      if (newSkillsString !== currentSkillsString) {
+        // Convert string to array for storage
+        const skillsArray = newSkillsString.split(',').map(s => s.trim()).filter(s => s);
         setResumeData((prevResumeData) => ({
           ...prevResumeData,
-          skills: processedSkills, // Update with the new, valid, and processed skills
+          skills: skillsArray,
         }));
       }
     }
-  }, [watchedSkills, isValid, setResumeData, resumeData.skills]); // Dependencies: watched skills array, validity, state setter, and current resumeData.skills for comparison.
+  }, [watchedValues, isValid, setResumeData, skillsString]);
 
-  // 4. Effect to reset form default values if the parent's `resumeData` prop changes externally.
-  // This is important if `resumeData` can be updated from a source outside this component.
+  // Reset form when resumeData changes
   useEffect(() => {
-    // Compare current form skills with the incoming `resumeData.skills` to decide if a reset is needed.
-    const currentFormSkills = form.getValues("skills");
-    if (
-      JSON.stringify(currentFormSkills) !== JSON.stringify(resumeData.skills)
-    ) {
+    const currentFormSkills = form.getValues("skills") || '';
+    const newSkillsString = skillsString;
+
+    if (currentFormSkills !== newSkillsString) {
       form.reset({
-        skills: resumeData.skills || [],
+        skills: newSkillsString,
       });
     }
-  }, [resumeData.skills, form]); // Depend on the specific skills array prop and the form instance.
+  }, [resumeData, form, skillsString]);
 
   return (
-    <div className="mx-auto max-w-xl space-y-6" dir="rtl">
-      <div className="space-y-1.5 text-center">
-        <h2 className="text-2xl font-semibold">المهارات</h2>
-        <p className="text-sm text-muted-foreground">اذكر جميع المهارات</p>
+    <div className={cn(
+      "mx-auto space-y-6",
+      isMobile ? "max-w-full space-y-4" : "max-w-xl space-y-6"
+    )} dir={language === 'ar' ? 'rtl' : 'ltr'}>
+      <div className={cn(
+        "space-y-1.5 text-center",
+        isMobile && "space-y-1"
+      )}>
+        <h2 className={cn(
+          "text-2xl font-semibold",
+          isMobile && "text-xl"
+        )}>
+          {language === 'ar' ? 'المهارات' : 'Skills'}
+        </h2>
+        <p className={cn(
+          "text-sm text-muted-foreground",
+          isMobile && "text-xs px-2"
+        )}>
+          {language === 'ar' 
+            ? 'اكتب مهاراتك التقنية والشخصية مفصولة بفواصل'
+            : 'Write your technical and personal skills separated by commas'
+          }
+        </p>
       </div>
       <Form {...form}>
-        <form className="space-y-3" dir="rtl">
+        <form className={cn(
+          "space-y-3",
+          isMobile && "space-y-4"
+        )} dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <FormField
             control={form.control}
             name="skills"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="sr-only">المهارات</FormLabel>
+                <FormLabel className={cn(
+                  isMobile && "text-sm"
+                )}>
+                  {language === 'ar' ? 'المهارات' : 'Skills'}
+                </FormLabel>
                 <FormControl>
-                  <Textarea
+                  <Input
                     {...field}
-                    placeholder="مثال: مايكروسوفت اوفيس, محاسبة, برنامج البيان ....."
-                    className="min-h-[150px] resize-y"
-                    rows={6}
-                    value={Array.isArray(field.value) ? field.value.join(", ") : field.value}
-                    onChange={(e) => {
-                      const skills = e.target.value.split(",");
-                      field.onChange(skills);
-                    }}
+                    placeholder={
+                      language === 'ar' 
+                        ? "مثال: JavaScript, React, Node.js, إدارة المشاريع, العمل الجماعي"
+                        : "Example: JavaScript, React, Node.js, Project Management, Teamwork"
+                    }
+                    className={cn(
+                      isMobile && "text-sm h-10"
+                    )}
                   />
                 </FormControl>
-                <FormDescription>
-                  افصل كل مهارة بفاصلة ( , )
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -115,4 +126,4 @@ export default function SkillsForm({
       </Form>
     </div>
   );
-}
+} 

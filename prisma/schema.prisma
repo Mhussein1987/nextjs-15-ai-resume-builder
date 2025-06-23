@@ -1,83 +1,68 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-// Define database connection via the `DATABASE_URL` env var
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// Define custom output path for generated Prisma Client
-generator client {
-  provider = "prisma-client-js"
-
-}
-
-
 model Resume {
-  id     String @id @default(cuid())
-  userId String
-
-  title       String?
-  description String?
-
-  photoUrl    String?
-  colorHex    String  @default("#000000")
-  borderStyle String  @default("squircle")
-  fontFamily  String?
-  summary     String?
-  firstName   String?
-  lastName    String?
-  jobTitle    String?
-  city        String?
-  country     String?
-  phone       String?
-  email       String?
-
-  workExperiences WorkExperience[]
-  educations      Education[]
-  skills          String[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 String           @id @default(cuid())
+  userId             String
+  title              String?
+  description        String?
+  photoUrl           String?
+  colorHex           String           @default("#000000")
+  borderStyle        String           @default("squircle")
+  summary            String?
+  firstName          String?
+  lastName           String?
+  jobTitle           String?
+  city               String?
+  country            String?
+  phone              String?
+  email              String?
+  skills             String[]
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  fontFamily         String?
+  bulletStyle        String?
+  templatePreference String           @default("default")
+  language           String           @default("en")
+  sidebarColorHex    String           @default("#0E7490")
+  userLanguages      String[]
+  educations         Education[]
+  workExperiences    WorkExperience[]
 
   @@map("resumes")
 }
 
 model WorkExperience {
-  id String @id @default(cuid())
-
+  id          String    @id @default(cuid())
   position    String?
   company     String?
   startDate   DateTime?
   endDate     DateTime?
   description String?
-
-  resumeId String
-  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  resumeId    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  resume      Resume    @relation(fields: [resumeId], references: [id], onDelete: Cascade)
 
   @@map("work_experiences")
 }
 
 model Education {
-  id String @id @default(cuid())
-
+  id        String    @id @default(cuid())
   degree    String?
   school    String?
   startDate DateTime?
   endDate   DateTime?
-
-  resumeId String
-  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  resumeId  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  resume    Resume    @relation(fields: [resumeId], references: [id], onDelete: Cascade)
 
   @@map("educations")
 }
@@ -90,9 +75,8 @@ model UserSubscription {
   stripePriceId           String
   stripeCurrentPeriodEnd  DateTime
   stripeCancelAtPeriodEnd Boolean  @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
 
   @@map("user_subscriptions")
 }

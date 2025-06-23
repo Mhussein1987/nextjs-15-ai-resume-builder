@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import ResumeEditor from "./ResumeEditor";
 
 interface PageProps {
-  searchParams: Promise<{ resumeId?: string }>;
+  searchParams: Promise<{ resumeId?: string; lang?: string; template?: string }>;
 }
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page({ searchParams }: PageProps) {
-  const { resumeId } = await searchParams;
+  const { resumeId, lang, template } = await searchParams;
 
   const { userId } = await auth();
 
@@ -28,5 +28,9 @@ export default async function Page({ searchParams }: PageProps) {
       })
     : null;
 
-  return <ResumeEditor resumeToEdit={resumeToEdit} />;
+  return <ResumeEditor 
+    resumeToEdit={resumeToEdit} 
+    initialLanguage={lang as 'ar' | 'en' | undefined}
+    initialTemplate={template ? parseInt(template) : undefined}
+  />;
 }

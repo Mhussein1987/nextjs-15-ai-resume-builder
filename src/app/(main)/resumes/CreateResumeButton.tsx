@@ -16,24 +16,25 @@ export default function CreateResumeButton({
 
   if (canCreate) {
     return (
-      <Button
-        asChild
-        className="mx-auto flex w-fit gap-2 bg-[#4300FF] hover:bg-[#4300FF]/90 text-white"
-      >
-        <Link href="/editor">
-          <PlusSquare className="size-5" />
+      <Link href="/templates/select-language">
+        <Button
+          className="mx-auto flex w-fit gap-3 px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          type="button"
+          data-testid="create-resume-button"
+        >
+          <PlusSquare className="size-6" />
           سيرة ذاتية جديدة
-        </Link>
-      </Button>
+        </Button>
+      </Link>
     );
   }
 
   return (
     <Button
       onClick={() => premiumModal.setOpen(true)}
-      className="mx-auto flex w-fit gap-2 bg-[#4300FF] hover:bg-[#4300FF]/90 text-white"
+      className="mx-auto flex w-fit gap-3 px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
     >
-      <PlusSquare className="size-5" />
+      <PlusSquare className="size-6" />
       سيرة ذاتية جديدة
     </Button>
   );

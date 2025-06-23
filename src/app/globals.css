@@ -6,6 +6,29 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Arabic text rendering optimizations */
+.arabic-text-optimized {
+  font-kerning: auto;
+  text-rendering: optimizeLegibility;
+  -webkit-font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* RTL-specific Arabic text optimizations */
+[dir="rtl"] .arabic-text-optimized {
+  font-kerning: auto;
+  text-rendering: optimizeLegibility;
+  -webkit-font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.6;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -77,11 +100,475 @@ body {
   }
 }
 
+/* Print styles for PDF export */
 @media print {
-  #resumePreviewContent {
-    zoom: 1 !important;
-    padding: 0;
+  /* Hide all elements except the resume */
+  body * {
+    visibility: hidden !important;
   }
+  
+  /* Show only the resume container and its contents */
+  .resume-container, .resume-container * {
+    visibility: visible !important;
+  }
+  
+  /* Style the resume container for print */
+  .resume-container {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 48px 16px 0 !important;  /* Default: no top, 48px right, 16px bottom, no left */
+    box-sizing: border-box !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+  
+  /* Template4En specific padding - matches the p-4 (16px) used in the template */
+  .resume-container[data-template="template4en"] {
+    padding: 16px !important;  /* 16px padding on all sides to match p-4 */
+  }
+  
+  /* Template4Ar specific padding and text optimization */
+  .resume-container[data-template="template4ar"] {
+    padding: 16px !important;  /* 16px padding on all sides to match p-4 */
+  }
+  
+  /* Arabic Templates (2, 3, 4) name display optimization for PDF - Combined approach */
+  .resume-container[data-template="template2ar"] .text-center h1,
+  .resume-container[data-template="template3ar"] .text-center h1,
+  .resume-container[data-template="template4ar"] .text-center h1 {
+    font-kerning: auto !important;
+    text-rendering: optimizeLegibility !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    line-height: 1.1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-block !important;
+    max-width: 40% !important;
+    min-width: fit-content !important;
+    white-space: normal !important;
+    text-align: center !important;
+    font-size: clamp(1.5rem, 3vw, 2.25rem) !important;
+    letter-spacing: 0.02em !important;
+    word-spacing: 0.1em !important;
+    font-feature-settings: "liga" 1, "kern" 1 !important;
+    text-rendering: geometricPrecision !important;
+  }
+  
+  /* Arabic Templates flex layout optimization for names */
+  .resume-container[data-template="template2ar"] .flex.flex-wrap,
+  .resume-container[data-template="template3ar"] .flex.flex-wrap,
+  .resume-container[data-template="template4ar"] .flex.flex-wrap {
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 1rem 1.5rem !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+  }
+  
+  /* Arabic Templates job title optimization */
+  .resume-container[data-template="template2ar"] .text-center h2,
+  .resume-container[data-template="template3ar"] .text-center h2,
+  .resume-container[data-template="template4ar"] .text-center h2 {
+    font-kerning: auto !important;
+    text-rendering: optimizeLegibility !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: 0.01em !important;
+    word-spacing: 0.05em !important;
+    font-feature-settings: "liga" 1, "kern" 1 !important;
+  }
+  
+  /* Arabic Templates section headers optimization */
+  .resume-container[data-template="template2ar"] h3,
+  .resume-container[data-template="template3ar"] h3,
+  .resume-container[data-template="template4ar"] h3 {
+    font-kerning: auto !important;
+    text-rendering: optimizeLegibility !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    line-height: 1.3 !important;
+    letter-spacing: 0.01em !important;
+    word-spacing: 0.05em !important;
+    font-feature-settings: "liga" 1, "kern" 1 !important;
+  }
+  
+  /* Arabic Templates body text optimization */
+  .resume-container[data-template="template2ar"] p,
+  .resume-container[data-template="template2ar"] span,
+  .resume-container[data-template="template2ar"] div,
+  .resume-container[data-template="template3ar"] p,
+  .resume-container[data-template="template3ar"] span,
+  .resume-container[data-template="template3ar"] div,
+  .resume-container[data-template="template4ar"] p,
+  .resume-container[data-template="template4ar"] span,
+  .resume-container[data-template="template4ar"] div {
+    font-kerning: auto !important;
+    text-rendering: optimizeLegibility !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    line-height: 1.4 !important;
+    letter-spacing: 0.005em !important;
+    word-spacing: 0.02em !important;
+    font-feature-settings: "liga" 1, "kern" 1 !important;
+  }
+  
+  /* Arabic Templates work experience and education optimization */
+  .resume-container[data-template="template2ar"] .work-experience,
+  .resume-container[data-template="template2ar"] .education,
+  .resume-container[data-template="template3ar"] .work-experience,
+  .resume-container[data-template="template3ar"] .education,
+  .resume-container[data-template="template4ar"] .work-experience,
+  .resume-container[data-template="template4ar"] .education {
+    font-kerning: auto !important;
+    text-rendering: optimizeLegibility !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    line-height: 1.4 !important;
+    letter-spacing: 0.005em !important;
+    word-spacing: 0.02em !important;
+    font-feature-settings: "liga" 1, "kern" 1 !important;
+  }
+  
+  /* Arabic Templates print-specific optimizations */
+  @media print {
+    .resume-container[data-template="template2ar"] .text-center h1,
+    .resume-container[data-template="template3ar"] .text-center h1,
+    .resume-container[data-template="template4ar"] .text-center h1 {
+      font-size: 2rem !important;
+      line-height: 1.1 !important;
+      letter-spacing: 0.03em !important;
+      word-spacing: 0.15em !important;
+      max-width: 35% !important;
+      margin: 0 0.5rem !important;
+    }
+    
+    .resume-container[data-template="template2ar"] .flex.flex-wrap,
+    .resume-container[data-template="template3ar"] .flex.flex-wrap,
+    .resume-container[data-template="template4ar"] .flex.flex-wrap {
+      gap: 0.5rem 1rem !important;
+    }
+    
+    .resume-container[data-template="template2ar"] .text-center h2,
+    .resume-container[data-template="template3ar"] .text-center h2,
+    .resume-container[data-template="template4ar"] .text-center h2 {
+      font-size: 1.1rem !important;
+      line-height: 1.2 !important;
+      letter-spacing: 0.02em !important;
+      word-spacing: 0.08em !important;
+    }
+    
+    .resume-container[data-template="template2ar"] h3,
+    .resume-container[data-template="template3ar"] h3,
+    .resume-container[data-template="template4ar"] h3 {
+      font-size: 1rem !important;
+      line-height: 1.3 !important;
+      letter-spacing: 0.015em !important;
+      word-spacing: 0.06em !important;
+    }
+    
+    .resume-container[data-template="template2ar"] p,
+    .resume-container[data-template="template2ar"] span,
+    .resume-container[data-template="template2ar"] div,
+    .resume-container[data-template="template3ar"] p,
+    .resume-container[data-template="template3ar"] span,
+    .resume-container[data-template="template3ar"] div,
+    .resume-container[data-template="template4ar"] p,
+    .resume-container[data-template="template4ar"] span,
+    .resume-container[data-template="template4ar"] div {
+      font-size: 0.9rem !important;
+      line-height: 1.4 !important;
+      letter-spacing: 0.008em !important;
+      word-spacing: 0.03em !important;
+    }
+  }
+  
+  /* Template4Ar name container optimization */
+  .resume-container[data-template="template4ar"] .mb-3 {
+    margin-bottom: 1rem !important;
+    width: 100% !important;
+  }
+  
+  /* Template4Ar Arabic text letter spacing for all text elements */
+  .resume-container[data-template="template4ar"] {
+    letter-spacing: 0.02em !important;
+  }
+  
+  /* Template4Ar Arabic text letter spacing for specific elements */
+  .resume-container[data-template="template4ar"] p,
+  .resume-container[data-template="template4ar"] span,
+  .resume-container[data-template="template4ar"] div {
+    letter-spacing: 0.02em !important;
+  }
+  
+  /* Template4Ar Arabic text letter spacing for section headers */
+  .resume-container[data-template="template4ar"] h3 {
+    letter-spacing: 0.03em !important;
+  }
+  
+  /* Template4Ar Arabic text letter spacing for work experience and education */
+  .resume-container[data-template="template4ar"] .work-experience-item,
+  .resume-container[data-template="template4ar"] .education-item {
+    letter-spacing: 0.02em !important;
+  }
+  
+  /* Template1Ar specific padding - matches the p-4 (16px) used in the template */
+  .resume-container[data-template="template1ar"] {
+    padding: 16px !important;  /* 16px padding on all sides to match p-4 */
+  }
+  
+  /* Ensure Template4En padding overrides print:p-0 with higher specificity */
+  .resume-container[data-template="template4en"] .space-y-3 {
+    padding: 16px !important;  /* Override print:p-0 */
+  }
+  
+  /* Additional specificity to ensure padding is applied */
+  .resume-container[data-template="template4en"] .space-y-3.print\:p-0 {
+    padding: 16px !important;  /* Override print:p-0 */
+  }
+  
+  /* Force padding on the content div */
+  .resume-container[data-template="template4en"] #resumePreviewContent {
+    padding: 16px !important;  /* Force padding on content */
+  }
+  
+  /* Ensure proper page setup */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  
+  /* Hide any UI elements that might interfere */
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Mobile-responsive styles for resume templates */
+@media (max-width: 768px) {
+  /* Mobile-optimized resume container */
+  .resume-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    padding: 8px !important;
+  }
+  
+  /* Mobile-optimized template content */
+  .resume-container > div {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    zoom: 1 !important; /* Reset zoom for mobile */
+    transform: none !important;
+    font-size: 12px !important; /* Smaller font for mobile */
+    line-height: 1.4 !important;
+  }
+  
+  /* Mobile-specific scaling for A4 templates */
+  .resume-container #resumePreviewContent {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    zoom: 1 !important;
+    transform: none !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    padding: 12px !important;
+  }
+  
+  /* Mobile-optimized A4 page containers */
+  .resume-container .a4-page {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    margin: 0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Mobile-optimized flex layouts */
+  .resume-container .flex {
+    flex-direction: column !important;
+  }
+  
+  .resume-container .flex-row {
+    flex-direction: column !important;
+  }
+  
+  .resume-container .flex-row-reverse {
+    flex-direction: column !important;
+  }
+  
+  /* Mobile-optimized sidebar and main content */
+  .resume-container .sidebar,
+  .resume-container .main-content {
+    width: 100% !important;
+    min-height: auto !important;
+    height: auto !important;
+  }
+  
+  /* Mobile-optimized grid layouts */
+  .resume-container .grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Mobile-optimized spacing */
+  .resume-container .space-y-3 {
+    gap: 8px !important;
+  }
+  
+  .resume-container .space-y-6 {
+    gap: 16px !important;
+  }
+  
+  /* Mobile-optimized text sizes */
+  .resume-container .text-3xl {
+    font-size: 1.5rem !important;
+  }
+  
+  .resume-container .text-2xl {
+    font-size: 1.25rem !important;
+  }
+  
+  .resume-container .text-xl {
+    font-size: 1.125rem !important;
+  }
+  
+  .resume-container .text-lg {
+    font-size: 1rem !important;
+  }
+  
+  .resume-container .text-base {
+    font-size: 0.875rem !important;
+  }
+  
+  .resume-container .text-sm {
+    font-size: 0.75rem !important;
+  }
+  
+  .resume-container .text-xs {
+    font-size: 0.625rem !important;
+  }
+  
+  /* Mobile-optimized padding and margins */
+  .resume-container .p-6 {
+    padding: 12px !important;
+  }
+  
+  .resume-container .p-4 {
+    padding: 8px !important;
+  }
+  
+  .resume-container .p-3 {
+    padding: 6px !important;
+  }
+  
+  .resume-container .mb-6 {
+    margin-bottom: 12px !important;
+  }
+  
+  .resume-container .mb-4 {
+    margin-bottom: 8px !important;
+  }
+  
+  .resume-container .mb-3 {
+    margin-bottom: 6px !important;
+  }
+  
+  /* Mobile-optimized images */
+  .resume-container img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  /* Mobile-optimized profile images */
+  .resume-container img[alt*="Profile"],
+  .resume-container img[alt*="photo"] {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  
+  /* Mobile-optimized contact information */
+  .resume-container .text-gray-500 {
+    font-size: 0.625rem !important;
+    line-height: 1.3 !important;
+  }
+  
+  /* Mobile-optimized skills and languages */
+  .resume-container .flex.flex-wrap {
+    gap: 4px !important;
+  }
+  
+  .resume-container .px-3 {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+  
+  .resume-container .py-1 {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+  }
+  
+  /* Mobile-optimized work experience */
+  .resume-container .work-experience-item {
+    margin-bottom: 8px !important;
+  }
+  
+  /* Mobile-optimized education */
+  .resume-container .education-item {
+    margin-bottom: 8px !important;
+  }
+  
+  /* Mobile-optimized horizontal rules */
+  .resume-container hr {
+    margin: 8px 0 !important;
+  }
+  
+  /* Mobile-optimized gaps */
+  .resume-container .gap-6 {
+    gap: 12px !important;
+  }
+  
+  .resume-container .gap-3 {
+    gap: 6px !important;
+  }
+  
+  .resume-container .gap-2 {
+    gap: 4px !important;
+  }
+}
+
+/* Desktop styles remain unchanged - only apply mobile optimizations on small screens */
+@media (min-width: 769px) {
+  .resume-container {
+    /* Desktop styles remain exactly as they are */
+  }
+}
+
+/* Make separators thinner in ResumeTemplate1En */
+#resumePreviewContent hr {
+  border-width: 1px !important;
+  border-style: solid !important;
 }
 
 #resumePreviewContent {
@@ -91,4 +578,36 @@ body {
 @page {
   size: A4;
   margin: 0.6cm;
+}
+
+/* AI Generate Button Styles */
+.ai-generate-btn {
+  background: linear-gradient(to right, #8e2de2, #4a00e0); /* purple to blue */
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 999px; /* fully rounded */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.ai-generate-btn:hover {
+  background: linear-gradient(to right, #7b1fa2, #1976d2); /* darker on hover */
+}
+
+.ai-generate-btn svg {
+  width: 16px;
+  height: 16px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
 }
