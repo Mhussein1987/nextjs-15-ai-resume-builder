@@ -1,7 +1,7 @@
 import { ResumeValues } from "@/lib/validation";
 import { cn } from "@/lib/utils";
 import React, { useRef, forwardRef } from "react";
-import ResumeTemplate1En from "@/components/resumeTemplate1En";
+import ResumeTemplate1En from "@/components/ResumeTemplate1En";
 import ResumeTemplate1Ar from "@/components/ResumeTemplate1Ar";
 import ResumeTemplate2En from "@/components/ResumeTemplate2En";
 import ResumeTemplate2Ar from "@/components/ResumeTemplate2Ar";

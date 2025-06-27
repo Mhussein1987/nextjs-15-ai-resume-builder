@@ -61,21 +61,21 @@ const ResumeTemplate2En = React.memo(function ResumeTemplate2En({
     minHeight: '297mm',
     width: '210mm',
     // Text rendering optimizations
-    fontKerning: 'auto',
-    textRendering: 'optimizeLegibility',
+    fontKerning: 'auto' as const,
+    textRendering: 'optimizeLegibility' as const,
     WebkitFontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
     fontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
     // Enhanced PDF export optimizations
     lineHeight: '1.6',
     letterSpacing: '0.01em',
     // Ensure visibility for PDF export
-    visibility: 'visible',
+    visibility: 'visible' as const,
     opacity: 1,
-    display: 'flex',
+    display: 'flex' as const,
     // Enhanced LTR support
-    direction: 'ltr',
-    textAlign: 'left',
-  }), [isClient, width]);
+    direction: 'ltr' as const,
+    textAlign: 'left' as const,
+  } as React.CSSProperties), [isClient, width]);
 
   const sidebarStyle = useMemo(() => ({
     minHeight: '297mm',
@@ -84,34 +84,34 @@ const ResumeTemplate2En = React.memo(function ResumeTemplate2En({
     fontSize: '14px',
     fontFamily: DEFAULT_FONT,
     // Text rendering optimizations
-    fontKerning: 'auto',
-    textRendering: 'optimizeLegibility',
+    fontKerning: 'auto' as const,
+    textRendering: 'optimizeLegibility' as const,
     WebkitFontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
     fontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
     // Enhanced PDF export optimizations
-    wordWrap: 'break-word',
-    overflowWrap: 'break-word',
-    hyphens: 'auto',
+    wordWrap: 'break-word' as const,
+    overflowWrap: 'break-word' as const,
+    hyphens: 'auto' as const,
     lineHeight: '1.6',
     letterSpacing: '0.01em',
-  }), [resumeData.sidebarColorHex]);
+  } as React.CSSProperties), [resumeData.sidebarColorHex]);
 
   const mainContentStyle = useMemo(() => ({
     minHeight: '297mm',
     fontSize: '14px',
     fontFamily: DEFAULT_FONT,
     // Text rendering optimizations
-    fontKerning: 'auto',
-    textRendering: 'optimizeLegibility',
+    fontKerning: 'auto' as const,
+    textRendering: 'optimizeLegibility' as const,
     WebkitFontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
     fontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
     // Enhanced PDF export optimizations
-    wordWrap: 'break-word',
-    overflowWrap: 'break-word',
-    hyphens: 'auto',
+    wordWrap: 'break-word' as const,
+    overflowWrap: 'break-word' as const,
+    hyphens: 'auto' as const,
     lineHeight: '1.6',
     letterSpacing: '0.01em',
-  }), []);
+  } as React.CSSProperties), []);
 
   return (
     <div className="relative">

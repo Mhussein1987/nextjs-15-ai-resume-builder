@@ -8,11 +8,13 @@ export function canCreateResume(
   return currentResumeCount < 5;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function canUseAITools(subscriptionLevel: SubscriptionLevel) {
   // Soft launch: All users get AI tools
   return true;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function canUseCustomizations(subscriptionLevel: SubscriptionLevel) {
   // Soft launch: All users get customizations
   return true;

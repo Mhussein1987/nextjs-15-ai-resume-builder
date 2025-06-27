@@ -17,7 +17,7 @@ import {
 } from "@/lib/templateReferenceSystem";
 import LoadingButton from "@/components/LoadingButton";
 import ResumeTemplate1Ar from "@/components/ResumeTemplate1Ar";
-import ResumeTemplate1En from "@/components/resumeTemplate1En";
+import ResumeTemplate1En from "@/components/ResumeTemplate1En";
 import ResumeTemplate2Ar from "@/components/ResumeTemplate2Ar";
 import ResumeTemplate2En from "@/components/ResumeTemplate2En";
 import ResumeTemplate4Ar from "@/components/ResumeTemplate4Ar";

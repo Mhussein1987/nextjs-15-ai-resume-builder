@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import ResumeTemplate1En from '@/components/resumeTemplate1En';
+import ResumeTemplate1En from '@/components/ResumeTemplate1En';
 import ResumeTemplate2En from '@/components/ResumeTemplate2En';
 import ResumeTemplate4En from '@/components/ResumeTemplate4En';
 import ResumeTemplate1Ar from '@/components/ResumeTemplate1Ar';

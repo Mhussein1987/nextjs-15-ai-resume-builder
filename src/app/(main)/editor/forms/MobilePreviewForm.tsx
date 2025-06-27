@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { EditorFormProps } from "@/lib/types";
 import { X } from "lucide-react";
-import ResumeTemplate1En from "@/components/resumeTemplate1En";
+import ResumeTemplate1En from "@/components/ResumeTemplate1En";
 import ResumeTemplate1Ar from "@/components/ResumeTemplate1Ar";
 import ResumeTemplate2En from "@/components/ResumeTemplate2En";
 import ResumeTemplate2Ar from "@/components/ResumeTemplate2Ar";

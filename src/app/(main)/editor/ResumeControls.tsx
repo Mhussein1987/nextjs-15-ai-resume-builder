@@ -1,5 +1,5 @@
 import { ResumeValues } from "@/lib/validation";
-import React, { useRef } from "react";
+import React from "react";
 import ColorPicker from "./ColorPicker";
 import BorderStyleButton from "./BorderStyleButton";
 import SidebarColorPicker from "./SidebarColorPicker";
@@ -23,7 +23,7 @@ export default function ResumeControls({
 }: ResumeControlsProps) {
   // Get template number to determine if sidebar color picker should be shown
   const getSelectedTemplate = () => {
-    let templateCode = resumeData.templateCode;
+    const templateCode = resumeData.templateCode;
     
     if (!templateCode) {
       return 1; // Default to template 1
