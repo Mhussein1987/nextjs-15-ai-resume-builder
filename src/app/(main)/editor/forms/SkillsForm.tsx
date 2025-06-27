@@ -69,38 +69,38 @@ export default function SkillsForm({
 
   return (
     <div className={cn(
-      "mx-auto space-y-6 flex flex-col items-center",
-      isMobile ? "max-w-full space-y-4 justify-center min-h-[60vh] px-6" : "max-w-xl space-y-6"
+      "mx-auto space-y-8 flex flex-col items-center",
+      isMobile ? "max-w-full space-y-6 justify-center min-h-[60vh] px-6" : "max-w-2xl space-y-10 py-8"
     )} dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div className={cn(
-        "space-y-1.5 text-center",
-        isMobile && "space-y-1"
+        "space-y-3 text-center",
+        isMobile && "space-y-2"
       )}>
         <h2 className={cn(
-          "text-2xl font-semibold",
-          isMobile && "text-xl"
+          "text-3xl font-semibold",
+          isMobile && "text-2xl"
         )}>
           المهارات
         </h2>
         <p className={cn(
-          "text-sm text-muted-foreground",
-          isMobile && "text-xs px-2"
+          "text-base text-muted-foreground max-w-lg mx-auto",
+          isMobile && "text-sm px-2"
         )}>
           أضف مهاراتك مفصولة بفواصل (مثال: JavaScript, React, Node.js)
         </p>
       </div>
       <Form {...form}>
         <form className={cn(
-          "space-y-3",
-          isMobile && "space-y-4 w-full max-w-sm"
+          "space-y-6 w-full",
+          isMobile && "space-y-4 max-w-sm"
         )} dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <FormField
             control={form.control}
             name="skills"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-3">
                 {!isMobile && (
-                  <FormLabel className="font-bold">
+                  <FormLabel className="text-lg font-bold">
                     المهارات
                   </FormLabel>
                 )}
@@ -109,7 +109,8 @@ export default function SkillsForm({
                     {...field} 
                     placeholder={isMobile ? "المهارات - مثال: JavaScript, React, تصميم المواقع" : "مثال: JavaScript, React, تصميم المواقع"}
                     className={cn(
-                      isMobile && "text-sm h-10"
+                      "text-base h-12 px-4",
+                      isMobile && "text-sm h-11 px-3"
                     )}
                   />
                 </FormControl>

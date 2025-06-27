@@ -9,7 +9,7 @@ Features:
 - AI auto-fill
 - Different subscription tiers
 - Mobile responsive design with Tailwind CSS and Shadcn UI components
-- Print or save as PDF using react-to-print
+- Print or save as PDF using browser's native print functionality
 - URL state management
 - Postgres DB and file uploads to Vercel Blob
 - Auto-save hook
