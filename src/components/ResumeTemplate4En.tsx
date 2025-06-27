@@ -171,9 +171,9 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
           <div>
             {/* Header with Name and Job Title */}
             <div className="relative">
-              {/* Profile Image - positioned on the left */}
+              {/* Profile Image - positioned on the right */}
               {isClient && photoSrc && (
-                <div className="absolute left-6 top-8 z-20">
+                <div className="absolute right-6 top-8 z-20">
                   <Image
                     src={photoSrc}
                     width={120}
@@ -196,8 +196,8 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
                 className="w-full py-8 text-white"
                 style={{ backgroundColor: resumeData.sidebarColorHex || "#0E7490" }}
               >
-                <div className="text-center px-8">
-                  <div className="flex justify-center items-baseline gap-3 mb-3">
+                <div className="text-left px-8">
+                  <div className="flex justify-start items-baseline gap-3 mb-3">
                     <h1 className="text-4xl font-bold tracking-tight">{resumeData.firstName}</h1>
                     <h1 className="text-4xl font-bold tracking-tight">{resumeData.lastName}</h1>
                   </div>
@@ -315,8 +315,8 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
                 className="w-full py-8 text-white"
                 style={{ backgroundColor: resumeData.sidebarColorHex || "#0E7490" }}
               >
-                <div className="text-center px-8">
-                  <div className="flex justify-center items-baseline gap-3 mb-3">
+                <div className="text-left px-8">
+                  <div className="flex justify-start items-baseline gap-3 mb-3">
                     <h1 className="text-4xl font-bold tracking-tight">{resumeData.firstName}</h1>
                     <h1 className="text-4xl font-bold tracking-tight">{resumeData.lastName}</h1>
                   </div>

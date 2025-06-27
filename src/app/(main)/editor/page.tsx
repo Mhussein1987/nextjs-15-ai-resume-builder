@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page({ searchParams }: PageProps) {
-  const { resumeId, lang, template } = await searchParams;
+  const { resumeId, lang } = await searchParams;
 
   const { userId } = await auth();
 
@@ -31,6 +31,5 @@ export default async function Page({ searchParams }: PageProps) {
   return <ResumeEditor 
     resumeToEdit={resumeToEdit} 
     initialLanguage={lang as 'ar' | 'en' | undefined}
-    initialTemplate={template ? parseInt(template) : undefined}
   />;
 }

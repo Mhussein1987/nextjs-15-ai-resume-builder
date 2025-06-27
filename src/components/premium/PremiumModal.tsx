@@ -46,7 +46,7 @@ export default function PremiumModal() {
     >
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>ISera Premium</DialogTitle>
+          <DialogTitle>SeeraAi Premium</DialogTitle>
         </DialogHeader>
         <div className="space-y-6">
           <p>Get a premium subscription to unlock more features.</p>

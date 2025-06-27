@@ -53,6 +53,7 @@ export function mapToResumeValues(data: ResumeServerData): ResumeValues {
     fontFamily: data.fontFamily || undefined,
     bulletStyle: data.bulletStyle || undefined,
     templatePreference: data.templatePreference || undefined,
+    templateCode: data.templateCode || undefined,
     language: data.language || undefined,
     summary: data.summary || undefined,
     workExperiences: data.workExperiences?.map((exp) => ({

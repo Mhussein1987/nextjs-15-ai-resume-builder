@@ -160,13 +160,13 @@ export default function WorkExperienceForm({
           "text-2xl font-semibold",
           isMobile && "text-xl"
         )}>
-          {language === 'ar' ? 'الخبرات السابقة' : 'Work Experience'}
+          الخبرات السابقة
         </h2>
         <p className={cn(
           "text-sm text-muted-foreground",
           isMobile && "text-xs px-2"
         )}>
-          {language === 'ar' ? 'قم باظافة كل الوظائف الي عملت بها في السابق' : 'Add all the jobs you have worked in previously'}
+          قم باظافة كل الوظائف الي عملت بها في السابق
         </p>
       </div>
       <Form {...form}>
@@ -227,7 +227,7 @@ export default function WorkExperienceForm({
                 isMobile && "text-sm h-10"
               )}
             >
-              {language === 'ar' ? 'إضافة خبرة عمل' : 'Add Work Experience'}
+              إضافة خبرة عمل
             </Button>
           </div>
           <div className="flex justify-center">
@@ -296,7 +296,7 @@ function WorkExperienceItem({
           "font-semibold",
           isMobile && "text-sm"
         )}>
-          {language === 'ar' ? 'اخر وظيفة عملت بها' : 'Work Experience'}
+          اخر وظيفة عملت بها
         </span>
         <GripHorizontal
           className={cn(
@@ -321,13 +321,25 @@ function WorkExperienceItem({
         name={`workExperiences.${index}.position`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel className={cn(
-              isMobile && "text-sm"
-            )}>{language === 'ar' ? 'العنوان الوظيفي' : 'Job Title'}</FormLabel>
+            {!isMobile && (
+              <FormLabel className="text-sm">
+                العنوان الوظيفي
+              </FormLabel>
+            )}
             <FormControl>
-              <Input {...field} value={field.value ?? ""} autoFocus className={cn(
-                isMobile && "text-sm h-10"
-              )} />
+              <Input 
+                {...field} 
+                value={field.value ?? ""} 
+                autoFocus 
+                placeholder={
+                  isMobile 
+                    ? "العنوان الوظيفي"
+                    : undefined
+                }
+                className={cn(
+                  isMobile && "text-sm h-10"
+                )} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -338,13 +350,24 @@ function WorkExperienceItem({
         name={`workExperiences.${index}.company`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel className={cn(
-              isMobile && "text-sm"
-            )}>{language === 'ar' ? 'اسم الشركة' : 'Company Name'}</FormLabel>
+            {!isMobile && (
+              <FormLabel className="text-sm">
+                اسم الشركة
+              </FormLabel>
+            )}
             <FormControl>
-              <Input {...field} value={field.value ?? ""} className={cn(
-                isMobile && "text-sm h-10"
-              )} />
+              <Input 
+                {...field} 
+                value={field.value ?? ""} 
+                placeholder={
+                  isMobile 
+                    ? "اسم الشركة"
+                    : undefined
+                }
+                className={cn(
+                  isMobile && "text-sm h-10"
+                )} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -359,14 +382,21 @@ function WorkExperienceItem({
           name={`workExperiences.${index}.startDate`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className={cn(
-                isMobile && "text-sm"
-              )}>{language === 'ar' ? 'من تأريخ' : 'Start Date'}</FormLabel>
+              {!isMobile && (
+                <FormLabel className="text-sm">
+                  من تأريخ
+                </FormLabel>
+              )}
               <FormControl>
                 <Input
                   {...field}
                   type="date"
                   value={field.value?.slice(0, 10) ?? ""}
+                  placeholder={
+                    isMobile 
+                      ? "من تأريخ"
+                      : undefined
+                  }
                   className={cn(
                     isMobile && "text-sm h-10"
                   )}
@@ -381,14 +411,21 @@ function WorkExperienceItem({
           name={`workExperiences.${index}.endDate`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className={cn(
-                isMobile && "text-sm"
-              )}>{language === 'ar' ? 'الى تأريخ' : 'End Date'}</FormLabel>
+              {!isMobile && (
+                <FormLabel className="text-sm">
+                  الى تأريخ
+                </FormLabel>
+              )}
               <FormControl>
                 <Input
                   {...field}
                   type="date"
                   value={field.value?.slice(0, 10) ?? ""}
+                  placeholder={
+                    isMobile 
+                      ? "الى تأريخ"
+                      : undefined
+                  }
                   className={cn(
                     isMobile && "text-sm h-10"
                   )}
@@ -399,27 +436,34 @@ function WorkExperienceItem({
           )}
         />
       </div>
-      <FormDescription className={cn(
-        isMobile && "text-xs"
-      )}>
-        {language === 'ar' ? (
-          <>قم بترك <span className="font-semibold">الى تأريخ</span> فارغ اذا مازلت تعمل هناك</>
-        ) : (
-          <>Leave <span className="font-semibold">End Date</span> empty if you are still working there</>
-        )}
-      </FormDescription>
+      {!isMobile && (
+        <FormDescription className="text-xs">
+          قم بترك <span className="font-semibold">الى تأريخ</span> فارغ اذا مازلت تعمل هناك
+        </FormDescription>
+      )}
       <FormField
         control={form.control}
         name={`workExperiences.${index}.description`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel className={cn(
-              isMobile && "text-sm"
-            )}>{language === 'ar' ? 'اذكر المهام التي قمت بها' : 'Describe your responsibilities'}</FormLabel>
+            {!isMobile && (
+              <FormLabel className="text-sm">
+                اذكر المهام التي قمت بها
+              </FormLabel>
+            )}
             <FormControl>
-              <Textarea {...field} value={field.value ?? ""} className={cn(
-                isMobile && "text-sm min-h-[80px]"
-              )} />
+              <Textarea 
+                {...field} 
+                value={field.value ?? ""} 
+                placeholder={
+                  isMobile 
+                    ? "اذكر المهام التي قمت بها"
+                    : undefined
+                }
+                className={cn(
+                  isMobile && "text-sm min-h-[120px]"
+                )} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -428,7 +472,7 @@ function WorkExperienceItem({
       <Button variant="destructive" type="button" onClick={() => remove(index)} className={cn(
         isMobile && "text-sm h-10"
       )}>
-        {language === 'ar' ? 'حذف' : 'Remove'}
+        حذف
       </Button>
     </div>
   );
@@ -453,7 +497,7 @@ function WorkExperienceItemStatic({
           "font-semibold",
           isMobile && "text-sm"
         )}>
-          {language === 'ar' ? 'اخر وظيفة عملت بها' : 'Work Experience'}
+          اخر وظيفة عملت بها
         </span>
         {/* No drag handle in static version */}
       </div>
@@ -471,13 +515,25 @@ function WorkExperienceItemStatic({
         name={`workExperiences.${index}.position`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel className={cn(
-              isMobile && "text-sm"
-            )}>{language === 'ar' ? 'العنوان الوظيفي' : 'Job Title'}</FormLabel>
+            {!isMobile && (
+              <FormLabel className="text-sm">
+                العنوان الوظيفي
+              </FormLabel>
+            )}
             <FormControl>
-              <Input {...field} value={field.value ?? ""} autoFocus className={cn(
-                isMobile && "text-sm h-10"
-              )} />
+              <Input 
+                {...field} 
+                value={field.value ?? ""} 
+                autoFocus 
+                placeholder={
+                  isMobile 
+                    ? "العنوان الوظيفي"
+                    : undefined
+                }
+                className={cn(
+                  isMobile && "text-sm h-10"
+                )} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -488,13 +544,24 @@ function WorkExperienceItemStatic({
         name={`workExperiences.${index}.company`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel className={cn(
-              isMobile && "text-sm"
-            )}>{language === 'ar' ? 'اسم الشركة' : 'Company Name'}</FormLabel>
+            {!isMobile && (
+              <FormLabel className="text-sm">
+                اسم الشركة
+              </FormLabel>
+            )}
             <FormControl>
-              <Input {...field} value={field.value ?? ""} className={cn(
-                isMobile && "text-sm h-10"
-              )} />
+              <Input 
+                {...field} 
+                value={field.value ?? ""} 
+                placeholder={
+                  isMobile 
+                    ? "اسم الشركة"
+                    : undefined
+                }
+                className={cn(
+                  isMobile && "text-sm h-10"
+                )} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -509,14 +576,21 @@ function WorkExperienceItemStatic({
           name={`workExperiences.${index}.startDate`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className={cn(
-                isMobile && "text-sm"
-              )}>{language === 'ar' ? 'من تأريخ' : 'Start Date'}</FormLabel>
+              {!isMobile && (
+                <FormLabel className="text-sm">
+                  من تأريخ
+                </FormLabel>
+              )}
               <FormControl>
                 <Input
                   {...field}
                   type="date"
                   value={field.value?.slice(0, 10) ?? ""}
+                  placeholder={
+                    isMobile 
+                      ? "من تأريخ"
+                      : undefined
+                  }
                   className={cn(
                     isMobile && "text-sm h-10"
                   )}
@@ -531,14 +605,21 @@ function WorkExperienceItemStatic({
           name={`workExperiences.${index}.endDate`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className={cn(
-                isMobile && "text-sm"
-              )}>{language === 'ar' ? 'الى تأريخ' : 'End Date'}</FormLabel>
+              {!isMobile && (
+                <FormLabel className="text-sm">
+                  الى تأريخ
+                </FormLabel>
+              )}
               <FormControl>
                 <Input
                   {...field}
                   type="date"
                   value={field.value?.slice(0, 10) ?? ""}
+                  placeholder={
+                    isMobile 
+                      ? "الى تأريخ"
+                      : undefined
+                  }
                   className={cn(
                     isMobile && "text-sm h-10"
                   )}
@@ -549,27 +630,34 @@ function WorkExperienceItemStatic({
           )}
         />
       </div>
-      <FormDescription className={cn(
-        isMobile && "text-xs"
-      )}>
-        {language === 'ar' ? (
-          <>قم بترك <span className="font-semibold">الى تأريخ</span> فارغ اذا مازلت تعمل هناك</>
-        ) : (
-          <>Leave <span className="font-semibold">End Date</span> empty if you are still working there</>
-        )}
-      </FormDescription>
+      {!isMobile && (
+        <FormDescription className="text-xs">
+          قم بترك <span className="font-semibold">الى تأريخ</span> فارغ اذا مازلت تعمل هناك
+        </FormDescription>
+      )}
       <FormField
         control={form.control}
         name={`workExperiences.${index}.description`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel className={cn(
-              isMobile && "text-sm"
-            )}>{language === 'ar' ? 'اذكر المهام التي قمت بها' : 'Describe your responsibilities'}</FormLabel>
+            {!isMobile && (
+              <FormLabel className="text-sm">
+                اذكر المهام التي قمت بها
+              </FormLabel>
+            )}
             <FormControl>
-              <Textarea {...field} value={field.value ?? ""} className={cn(
-                isMobile && "text-sm min-h-[80px]"
-              )} />
+              <Textarea 
+                {...field} 
+                value={field.value ?? ""} 
+                placeholder={
+                  isMobile 
+                    ? "اذكر المهام التي قمت بها"
+                    : undefined
+                }
+                className={cn(
+                  isMobile && "text-sm min-h-[120px]"
+                )} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -578,7 +666,7 @@ function WorkExperienceItemStatic({
       <Button variant="destructive" type="button" onClick={() => remove(index)} className={cn(
         isMobile && "text-sm h-10"
       )}>
-        {language === 'ar' ? 'حذف' : 'Remove'}
+        حذف
       </Button>
     </div>
   );

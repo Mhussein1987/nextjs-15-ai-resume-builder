@@ -138,6 +138,8 @@ export default function PersonalInfoForm({
 
   const photoInputRef = useRef<HTMLInputElement>(null);
 
+
+
   return (
     <div className={cn(
       "mx-auto space-y-6",
@@ -151,13 +153,13 @@ export default function PersonalInfoForm({
           "text-2xl font-semibold",
           isMobile && "text-xl"
         )}>
-          {language === 'ar' ? 'المعلومات الشخصية' : 'Personal Information'}
+          المعلومات الشخصية
         </h2>
         <p className={cn(
           "text-sm text-muted-foreground",
           isMobile && "text-xs px-2"
         )}>
-          {language === 'ar' ? 'يرجى إدخال معلوماتك الشخصية.' : 'Please enter your personal information.'}
+          يرجى إدخال معلوماتك الشخصية.
         </p>
       </div>
       <Form {...form}>
@@ -170,9 +172,11 @@ export default function PersonalInfoForm({
             name="photo"
             render={({ field: { value, ...fieldValues } }) => (
               <FormItem>
-                <FormLabel className={cn(
-                  isMobile && "text-sm"
-                )}>{language === 'ar' ? 'صورتك الشخصية' : 'Profile Photo'}</FormLabel>
+                {!isMobile && (
+                  <FormLabel className="font-bold">
+                    صورتك الشخصية
+                  </FormLabel>
+                )}
                 <div className={cn(
                   "flex items-center gap-2",
                   isMobile && "flex-col items-stretch gap-3"
@@ -190,6 +194,7 @@ export default function PersonalInfoForm({
                       className={cn(
                         isMobile && "text-sm"
                       )}
+                      placeholder={isMobile ? "صورتك الشخصية" : undefined}
                       data-photo-input
                     />
                   </FormControl>
@@ -206,7 +211,7 @@ export default function PersonalInfoForm({
                       isMobile && "text-sm"
                     )}
                   >
-                    {language === 'ar' ? 'حذف' : 'Remove'}
+                    حذف
                   </Button>
                 </div>
                 <FormMessage />
@@ -222,13 +227,19 @@ export default function PersonalInfoForm({
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn(
-                    isMobile && "text-sm"
-                  )}>{language === 'ar' ? 'الاسم الأول' : 'First Name'}</FormLabel>
+                  {!isMobile && (
+                    <FormLabel className="font-bold">
+                      الاسم الأول
+                    </FormLabel>
+                  )}
                   <FormControl>
-                    <Input {...field} className={cn(
-                      isMobile && "text-sm h-10"
-                    )} />
+                    <Input 
+                      {...field} 
+                      placeholder={isMobile ? "الاسم الأول" : undefined}
+                      className={cn(
+                        isMobile && "text-sm h-10"
+                      )} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -239,13 +250,19 @@ export default function PersonalInfoForm({
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn(
-                    isMobile && "text-sm"
-                  )}>{language === 'ar' ? 'اسم العائلة' : 'Last Name'}</FormLabel>
+                  {!isMobile && (
+                    <FormLabel className="font-bold">
+                      اسم العائلة
+                    </FormLabel>
+                  )}
                   <FormControl>
-                    <Input {...field} className={cn(
-                      isMobile && "text-sm h-10"
-                    )} />
+                    <Input 
+                      {...field} 
+                      placeholder={isMobile ? "اسم العائلة" : undefined}
+                      className={cn(
+                        isMobile && "text-sm h-10"
+                      )} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -257,13 +274,19 @@ export default function PersonalInfoForm({
             name="jobTitle"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn(
-                  isMobile && "text-sm"
-                )}>{language === 'ar' ? 'المسمى الوظيفي' : 'Job Title'}</FormLabel>
+                {!isMobile && (
+                  <FormLabel className="font-bold">
+                    المسمى الوظيفي
+                  </FormLabel>
+                )}
                 <FormControl>
-                  <Input {...field} className={cn(
-                    isMobile && "text-sm h-10"
-                  )} />
+                  <Input 
+                    {...field} 
+                    placeholder={isMobile ? "المسمى الوظيفي" : undefined}
+                    className={cn(
+                      isMobile && "text-sm h-10"
+                    )} 
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -278,13 +301,19 @@ export default function PersonalInfoForm({
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn(
-                    isMobile && "text-sm"
-                  )}>{language === 'ar' ? 'المدينة' : 'City'}</FormLabel>
+                  {!isMobile && (
+                    <FormLabel className="font-bold">
+                      المدينة
+                    </FormLabel>
+                  )}
                   <FormControl>
-                    <Input {...field} className={cn(
-                      isMobile && "text-sm h-10"
-                    )} />
+                    <Input 
+                      {...field} 
+                      placeholder={isMobile ? "المدينة" : undefined}
+                      className={cn(
+                        isMobile && "text-sm h-10"
+                      )} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -295,13 +324,19 @@ export default function PersonalInfoForm({
               name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn(
-                    isMobile && "text-sm"
-                  )}>{language === 'ar' ? 'البلد' : 'Country'}</FormLabel>
+                  {!isMobile && (
+                    <FormLabel className="font-bold">
+                      البلد
+                    </FormLabel>
+                  )}
                   <FormControl>
-                    <Input {...field} className={cn(
-                      isMobile && "text-sm h-10"
-                    )} />
+                    <Input 
+                      {...field} 
+                      placeholder={isMobile ? "البلد" : undefined}
+                      className={cn(
+                        isMobile && "text-sm h-10"
+                      )} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -317,13 +352,19 @@ export default function PersonalInfoForm({
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn(
-                    isMobile && "text-sm"
-                  )}>{language === 'ar' ? 'رقم الهاتف' : 'Phone'}</FormLabel>
+                  {!isMobile && (
+                    <FormLabel className="font-bold">
+                      رقم الهاتف
+                    </FormLabel>
+                  )}
                   <FormControl>
-                    <Input {...field} className={cn(
-                      isMobile && "text-sm h-10"
-                    )} />
+                    <Input 
+                      {...field} 
+                      placeholder={isMobile ? "رقم الهاتف" : undefined}
+                      className={cn(
+                        isMobile && "text-sm h-10"
+                      )} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -334,13 +375,19 @@ export default function PersonalInfoForm({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn(
-                    isMobile && "text-sm"
-                  )}>{language === 'ar' ? 'البريد الإلكتروني' : 'Email'}</FormLabel>
+                  {!isMobile && (
+                    <FormLabel className="font-bold">
+                      البريد الإلكتروني
+                    </FormLabel>
+                  )}
                   <FormControl>
-                    <Input {...field} className={cn(
-                      isMobile && "text-sm h-10"
-                    )} />
+                    <Input 
+                      {...field} 
+                      placeholder={isMobile ? "البريد الإلكتروني" : undefined}
+                      className={cn(
+                        isMobile && "text-sm h-10"
+                      )} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

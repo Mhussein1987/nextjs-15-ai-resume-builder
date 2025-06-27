@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import usePremiumModal from "@/hooks/usePremiumModal";
 import { canUseCustomizations } from "@/lib/permissions";
-import { Circle, Square, Squircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSubscriptionLevel } from "../SubscriptionLevelProvider";
 
@@ -47,33 +46,26 @@ export default function BorderStyleButton({
   if (!mounted) {
     return (
       <Button
-        variant="outline"
-        size="icon"
+        variant="default"
+        size="sm"
         title="Change border style"
-        className="bg-white hover:bg-white/90 text-[#5409DA] border-[#5409DA] dark:border-border dark:bg-secondary dark:text-inherit"
+        className="bg-gradient-to-r from-[#5409DA] to-[#2563EB] hover:from-[#4A08C4] hover:to-[#1D4ED8] text-white border-0 w-16 px-1"
         disabled
       >
-        <Squircle className="size-5" />
+        شكل الصورة
       </Button>
     );
   }
 
-  const Icon =
-    borderStyle === BorderStyles.SQUARE
-      ? Square
-      : borderStyle === BorderStyles.CIRCLE
-        ? Circle
-        : Squircle; // Default to Squircle for undefined or squircle
-
   return (
     <Button
-      variant="outline"
-      size="icon"
+      variant="default"
+      size="sm"
       title="Change border style"
-      className="bg-white hover:bg-white/90 text-[#5409DA] border-[#5409DA] dark:border-border dark:bg-secondary dark:text-inherit"
+      className="bg-gradient-to-r from-[#5409DA] to-[#2563EB] hover:from-[#4A08C4] hover:to-[#1D4ED8] text-white border-0 w-16 px-1"
       onClick={handleClick}
     >
-      <Icon className="size-5" />
+      شكل الصورة
     </Button>
   );
 }

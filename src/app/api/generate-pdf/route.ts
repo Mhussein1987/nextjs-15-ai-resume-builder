@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     console.log('PDF Generation Debug:', {
       hasResumeData: !!resumeData,
       hasPhoto: !!resumeData?.photo,
-      photoType: resumeData?.photo ? typeof resumeData.photo : 'none',
+      photoDataType: resumeData?.photo ? typeof resumeData.photo : 'none',
       photoKeys: resumeData?.photo ? Object.keys(resumeData.photo) : 'none',
       photoName: resumeData?.photo?.name,
       photoSize: resumeData?.photo?.size,
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
         
         // Also replace any Next.js Image component src attributes that contain blob URLs
         const nextImageRegex = /src="[^"]*"/g;
-        processedHTML = processedHTML.replace(nextImageRegex, (match) => {
+        processedHTML = processedHTML.replace(nextImageRegex, (match: string) => {
           if (match.includes('blob:')) {
             return `src="${photoDataUrl}"`;
           }
@@ -113,16 +113,19 @@ export async function POST(request: NextRequest) {
         '--print-to-pdf-no-footer',
         '--disable-web-security',
         '--allow-running-insecure-content',
-        '--disable-features=VizDisplayCompositor'
+        '--disable-features=VizDisplayCompositor',
+        '--font-render-hinting=none',
+        '--disable-lcd-text',
+        '--disable-gpu-rasterization'
       ]
     });
 
     const context = await browser.newContext({
       viewport: {
-        width: 794, // A4 width in pixels at 96 DPI
-        height: 1123, // A4 height in pixels at 96 DPI
+        width: 1240, // Wider viewport to capture content properly before scaling to A4
+        height: 1754, // A4 height in pixels at 150 DPI for better quality
       },
-      deviceScaleFactor: 2, // High resolution for crisp output
+      deviceScaleFactor: 1.5, // Higher scale factor for better quality, will be scaled back in PDF
       colorScheme: 'light',
       locale: language === 'ar' ? 'ar-SA' : 'en-US',
       timezoneId: 'UTC',
@@ -216,46 +219,85 @@ export async function POST(request: NextRequest) {
             display: block !important;
           }
           
-          /* A4 page optimization */
-          .resume-container {
+          /* A4 page optimization - ensure exact A4 dimensions */
+          body {
             width: 210mm !important;
-            height: 297mm !important;
+            height: auto !important;
             margin: 0 !important;
             padding: 0 !important;
-            background: white !important;
-            box-shadow: none !important;
-            transform: none !important;
-            zoom: 1 !important;
+            overflow-x: hidden !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
+            justify-content: flex-start !important;
+            background: white !important;
           }
           
-          /* Ensure proper page breaks */
+          /* Target the main resume container */
+          body > div {
+            width: 210mm !important;
+            max-width: 210mm !important;
+            min-height: 297mm !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+            transform: none !important;
+            zoom: 1 !important;
+            scale: 1 !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            overflow: visible !important;
+          }
+          
+          /* A4 pages within resume container */
           .a4-page {
             width: 210mm !important;
-            height: 297mm !important;
+            min-height: 297mm !important;
+            height: auto !important;
             margin: 0 !important;
+            padding: 0 !important;
             page-break-after: always !important;
             break-after: page !important;
             background: white !important;
-            box-shadow: 0 0 8px 2px rgba(0,0,0,0.08) !important;
-            border-radius: 8px !important;
-            overflow: hidden !important;
-            display: flex !important;
-            flex-direction: column !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            overflow: visible !important;
+            display: block !important;
             position: relative !important;
+            transform: none !important;
+            zoom: 1 !important;
+            scale: 1 !important;
           }
           
           .a4-page:last-child {
             page-break-after: auto !important;
             break-after: auto !important;
-            margin-top: 20px !important;
           }
           
-          /* Hide any UI elements that shouldn't be in PDF */
-          .no-print, .print-button, .pdf-button, .floating-pdf-button {
+          /* Ensure proper content padding within A4 pages */
+          .a4-page > div {
+            width: 100% !important;
+            height: auto !important;
+            padding: 15mm !important;
+            box-sizing: border-box !important;
+            margin: 0 !important;
+          }
+          
+          /* Hide any background containers or UI elements that shouldn't be in PDF */
+          .no-print, .print-button, .pdf-button, .floating-pdf-button, 
+          .bg-\\[\\#f3f4f6\\], .bg-gray-200, .dark\\:bg-gray-800 {
             display: none !important;
+          }
+          
+          /* Force specific resume template containers to be exactly A4 */
+          [class*="bg-[#f3f4f6]"], [style*="background.*#f3f4f6"],
+          [class*="bg-gray-200"], [style*="background.*gray"] {
+            background: white !important;
+            width: 210mm !important;
+            min-height: 297mm !important;
+            padding: 0 !important;
+            margin: 0 !important;
           }
           
           /* Force exact font weights */
@@ -408,6 +450,56 @@ export async function POST(request: NextRequest) {
     // Wait for fonts and images to load completely
     await page.waitForTimeout(5000);
 
+    // Ensure all content is properly sized for A4
+    await page.evaluate(() => {
+      // Remove any scaling or transforms that might interfere with A4 sizing
+      const elementsWithTransform = document.querySelectorAll('[style*="transform"], [style*="scale"], [style*="zoom"]');
+      elementsWithTransform.forEach(el => {
+        const htmlEl = el as HTMLElement;
+        htmlEl.style.transform = 'none';
+        htmlEl.style.zoom = '1';
+        if (htmlEl.style.scale) htmlEl.style.scale = '1';
+      });
+
+      // Force main container to be exactly A4
+      const body = document.body;
+      body.style.width = '210mm';
+      body.style.height = 'auto';
+      body.style.minHeight = '297mm';
+      body.style.margin = '0';
+      body.style.padding = '0';
+      body.style.backgroundColor = 'white';
+      body.style.overflow = 'visible';
+
+      // Force all child elements of body to fit within A4
+      Array.from(body.children).forEach(child => {
+        const htmlChild = child as HTMLElement;
+        htmlChild.style.width = '210mm';
+        htmlChild.style.maxWidth = '210mm';
+        htmlChild.style.margin = '0';
+        htmlChild.style.backgroundColor = 'white';
+        htmlChild.style.transform = 'none';
+        htmlChild.style.zoom = '1';
+        if (htmlChild.style.scale) htmlChild.style.scale = '1';
+      });
+
+      console.log('A4 sizing enforced on page elements');
+    });
+
+    // Debug: Check final page dimensions
+    const pageDimensions = await page.evaluate(() => {
+      return {
+        bodyWidth: document.body.offsetWidth,
+        bodyHeight: document.body.offsetHeight,
+        firstChildWidth: document.body.firstElementChild?.clientWidth,
+        firstChildHeight: document.body.firstElementChild?.clientHeight,
+        scrollWidth: document.body.scrollWidth,
+        scrollHeight: document.body.scrollHeight
+      };
+    });
+
+    console.log('Page dimensions after A4 enforcement:', pageDimensions);
+
     // Debug: Check if images are loaded
     const imageCount = await page.evaluate(() => {
       const images = document.querySelectorAll('img');
@@ -427,19 +519,21 @@ export async function POST(request: NextRequest) {
 
     console.log('Total images found:', imageCount);
 
-    // Generate PDF with perfect fidelity settings
+    // Generate PDF with perfect A4 fidelity settings
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
       margin: {
         top: '0mm',
-        right: '0mm',
+        right: '0mm', 
         bottom: '0mm',
         left: '0mm'
       },
-      preferCSSPageSize: true,
+      preferCSSPageSize: true, // Use CSS page dimensions
       displayHeaderFooter: false,
       scale: 1.0, // Exact scale for perfect fidelity
+      width: '210mm', // Force exact A4 width
+      height: '297mm', // Force exact A4 height
     });
 
     await browser.close();

@@ -1,5 +1,4 @@
 import LoadingButton from "@/components/LoadingButton";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -25,7 +24,6 @@ import {
   WorkExperience,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSubscriptionLevel } from "../../SubscriptionLevelProvider";
@@ -122,19 +120,13 @@ function InputDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent dir={language === 'ar' ? 'rtl' : 'ltr'}>
+      <DialogContent dir="rtl">
         <DialogHeader>
           <DialogTitle>
-            {language === 'ar' 
-              ? 'إنشاء خبرة عمل' 
-              : 'Generate Work Experience'
-            }
+            إنشاء خبرة العمل
           </DialogTitle>
           <DialogDescription>
-            {language === 'ar' 
-              ? 'صف هذه الخبرة العملية وسيقوم الذكاء الاصطناعي بإنشاء مدخل محسن لك.'
-              : 'Describe this work experience and AI will generate an optimized entry for you.'
-            }
+            اكتب وصفاً لخبرتك العملية وسيقوم الذكاء الاصطناعي بإنشاء نص محسن لسيرتك الذاتية.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -144,15 +136,18 @@ function InputDialog({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{language === 'ar' ? 'الوصف' : 'Description'}</FormLabel>
+                  <FormLabel>
+                    {language === 'en' && (
+                      <span className="text-sm text-muted-foreground mb-1 block">
+                        اكتب بالعربي اذا اردت
+                      </span>
+                    )}
+                    الوصف
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
-                      placeholder={
-                        language === 'ar' 
-                          ? "1- اذكر وظيفتك، من تاريخ إلى تاريخ، المهارات، أي أدوات عملت عليها"
-                          : "1- Mention your job, from date to date, skills, any tools you worked with"
-                      }
+                      placeholder="1- اذكر وظيفتك، من تاريخ إلى تاريخ، المهارات، أي أدوات عملت عليها"
                       autoFocus
                     />
                   </FormControl>
@@ -161,7 +156,7 @@ function InputDialog({
               )}
             />
             <LoadingButton type="submit" loading={isPending || form.formState.isSubmitting}>
-              {language === 'ar' ? 'إنشاء' : 'Generate'}
+              إنشاء
             </LoadingButton>
           </form>
         </Form>

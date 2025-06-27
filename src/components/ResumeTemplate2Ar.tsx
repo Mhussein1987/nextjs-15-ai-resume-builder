@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { ResumeValues } from "@/lib/validation";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import { Phone, Mail, MapPin } from "lucide-react";
 
 interface ResumePreviewProps {
   resumeData: ResumeValues;

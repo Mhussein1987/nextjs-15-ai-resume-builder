@@ -60,6 +60,21 @@ const ResumeTemplate2En = React.memo(function ResumeTemplate2En({
     zoom: isClient && width ? (1 / 794) * width : 1,
     minHeight: '297mm',
     width: '210mm',
+    // Text rendering optimizations
+    fontKerning: 'auto',
+    textRendering: 'optimizeLegibility',
+    WebkitFontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
+    fontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
+    // Enhanced PDF export optimizations
+    lineHeight: '1.6',
+    letterSpacing: '0.01em',
+    // Ensure visibility for PDF export
+    visibility: 'visible',
+    opacity: 1,
+    display: 'flex',
+    // Enhanced LTR support
+    direction: 'ltr',
+    textAlign: 'left',
   }), [isClient, width]);
 
   const sidebarStyle = useMemo(() => ({
@@ -68,12 +83,34 @@ const ResumeTemplate2En = React.memo(function ResumeTemplate2En({
     color: 'black',
     fontSize: '14px',
     fontFamily: DEFAULT_FONT,
+    // Text rendering optimizations
+    fontKerning: 'auto',
+    textRendering: 'optimizeLegibility',
+    WebkitFontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
+    fontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
+    // Enhanced PDF export optimizations
+    wordWrap: 'break-word',
+    overflowWrap: 'break-word',
+    hyphens: 'auto',
+    lineHeight: '1.6',
+    letterSpacing: '0.01em',
   }), [resumeData.sidebarColorHex]);
 
   const mainContentStyle = useMemo(() => ({
     minHeight: '297mm',
     fontSize: '14px',
     fontFamily: DEFAULT_FONT,
+    // Text rendering optimizations
+    fontKerning: 'auto',
+    textRendering: 'optimizeLegibility',
+    WebkitFontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
+    fontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
+    // Enhanced PDF export optimizations
+    wordWrap: 'break-word',
+    overflowWrap: 'break-word',
+    hyphens: 'auto',
+    lineHeight: '1.6',
+    letterSpacing: '0.01em',
   }), []);
 
   return (
@@ -81,9 +118,10 @@ const ResumeTemplate2En = React.memo(function ResumeTemplate2En({
       {/* Resume Content */}
       <div
         className={cn(
-          "aspect-[210/297] h-fit w-full bg-white text-black print:w-[210mm] print:h-[297mm]",
+          "aspect-[210/297] h-fit w-full bg-white text-black print:w-[210mm] print:h-[297mm] resume-container",
           className,
         )}
+        data-template="template2en"
         ref={containerRef}
         dir={dir} // Set direction based on resumeData.language
       >
@@ -162,7 +200,21 @@ const Sidebar = React.memo(function Sidebar({ resumeData, borderStyle, fontFamil
   );
 
   return (
-    <div className="w-full text-white space-y-6 print:space-y-4" style={{ fontFamily }}>
+    <div 
+      className="w-full text-white space-y-6 print:space-y-4" 
+      style={{ 
+        fontFamily,
+        // Text rendering optimizations
+        fontKerning: 'auto',
+        textRendering: 'optimizeLegibility',
+        WebkitFontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
+        fontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
+        // Prevent text overlapping
+        wordWrap: 'break-word',
+        overflowWrap: 'break-word',
+        hyphens: 'auto',
+      }}
+    >
       {/* Profile Image - with border style */}
       {isClient && photoSrc && (
         <div className="flex justify-center pt-6">
@@ -186,7 +238,7 @@ const Sidebar = React.memo(function Sidebar({ resumeData, borderStyle, fontFamil
       {/* Skills Section - Always show */}
       <SkillsSection skills={skills || []} />
 
-      {/* Languages Section - Always show */}
+                {/* Languages Section - Always show */}
       {resumeData.userLanguages && resumeData.userLanguages.length > 0 && (
         <div className="space-y-3 print:space-y-2 break-inside-avoid px-4 py-2">
           <div className="text-left">
@@ -195,7 +247,21 @@ const Sidebar = React.memo(function Sidebar({ resumeData, borderStyle, fontFamil
             </h2>
             <div className="w-32 h-0.5 bg-white mt-3 mr-auto"></div>
           </div>
-          <div className="text-sm text-white text-left print:text-sm">
+          <div 
+            className="text-sm text-white text-left print:text-sm"
+            style={{
+              // Text rendering optimizations
+              fontKerning: 'auto',
+              textRendering: 'optimizeLegibility',
+              WebkitFontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
+              fontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1',
+              // Prevent text overlapping
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              hyphens: 'auto',
+              lineHeight: '1.6',
+            }}
+          >
             {resumeData.userLanguages.join(', ')}
           </div>
         </div>

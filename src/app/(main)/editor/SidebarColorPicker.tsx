@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/popover";
 import usePremiumModal from "@/hooks/usePremiumModal";
 import { canUseCustomizations } from "@/lib/permissions";
-import { Paintbrush2 } from "lucide-react";
 import { useState } from "react";
 import { Color, ColorChangeHandler, TwitterPicker } from "react-color";
 import { useSubscriptionLevel } from "../SubscriptionLevelProvider";
@@ -66,24 +65,24 @@ export default function SidebarColorPicker({ color, onChange, colors = LIGHT_SID
   // Arabic-friendly title
   const title = language === 'ar' ? 'تغيير لون خلفية الشريط الجانبي' : 'Change sidebar background color';
 
-  // Safe color extraction function
-  const getCurrentColor = (color: Color | undefined): string => {
-    if (!color) return '#0E7490'; // Default sidebar color for templates 2, 3, 4
-    if (typeof color === 'string') return color;
-    if (typeof color === 'object' && 'hex' in color) return color.hex as string;
-    if (typeof color === 'object' && 'r' in color) return `rgb(${color.r}, ${color.g}, ${color.b})`;
-    if (typeof color === 'object' && 'h' in color) return `hsl(${color.h}, ${color.s * 100}%, ${color.l * 100}%)`;
-    return '#0E7490';
-  };
+  // Safe color extraction function (currently unused but kept for future use)
+  // const getCurrentColor = (color: Color | undefined): string => {
+  //   if (!color) return '#0E7490'; // Default sidebar color for templates 2, 3, 4
+  //   if (typeof color === 'string') return color;
+  //   if (typeof color === 'object' && 'hex' in color) return color.hex as string;
+  //   if (typeof color === 'object' && 'r' in color) return `rgb(${color.r}, ${color.g}, ${color.b})`;
+  //   if (typeof color === 'object' && 'h' in color) return `hsl(${color.h}, ${color.s * 100}%, ${color.l * 100}%)`;
+  //   return '#0E7490';
+  // };
 
   return (
     <Popover open={showPopover} onOpenChange={setShowPopover}>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
-          size="icon"
+          variant="default"
+          size="sm"
           title={title}
-          className="bg-white hover:bg-white/90 text-[#5409DA] border-[#5409DA] dark:border-border dark:bg-secondary dark:text-inherit relative overflow-hidden"
+          className="bg-gradient-to-r from-[#5409DA] to-[#2563EB] hover:from-[#4A08C4] hover:to-[#1D4ED8] text-white border-0 w-16 px-1"
           onClick={() => {
             if (!canUseCustomizations(subscriptionLevel)) {
               premiumModal.setOpen(true);
@@ -93,14 +92,7 @@ export default function SidebarColorPicker({ color, onChange, colors = LIGHT_SID
           }}
           data-sidebar-color-picker
         >
-          {/* Color indicator showing current sidebar background color */}
-          <div 
-            className="absolute inset-0 opacity-30" 
-            style={{ 
-              backgroundColor: getCurrentColor(color),
-            }}
-          />
-          <Paintbrush2 className="size-5 relative z-10" />
+          لون الخلفية
         </Button>
       </PopoverTrigger>
       <PopoverContent

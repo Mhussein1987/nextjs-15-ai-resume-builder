@@ -147,12 +147,12 @@ const ResumeTemplate4Ar = React.memo(function ResumeTemplate4Ar({
       {/* Resume Content */}
       <div
         className={cn(
-          "aspect-[210/297] h-fit w-full bg-white text-black print:w-[210mm] print:h-[297mm]",
+          "aspect-[210/297] h-fit w-full bg-white text-black print:w-[210mm] print:h-[297mm] resume-container",
           className,
         )}
         ref={containerRef}
         dir={dir} // Set direction based on resumeData.language
-        data-template="template4ar" // Add data attribute for print CSS targeting
+        data-template="template4ar"
       >
         <div
           className={cn("space-y-3 p-4 print:space-y-2", !width && !isClient && "invisible")}
@@ -171,9 +171,9 @@ const ResumeTemplate4Ar = React.memo(function ResumeTemplate4Ar({
           <div>
             {/* Header with Name and Job Title */}
             <div className="relative">
-              {/* Profile Image - positioned on the right */}
+              {/* Profile Image - positioned on the left */}
               {isClient && photoSrc && (
-                <div className="absolute right-6 top-8 z-20">
+                <div className="absolute left-6 top-8 z-20">
                   <Image
                     src={photoSrc}
                     width={120}
@@ -196,58 +196,14 @@ const ResumeTemplate4Ar = React.memo(function ResumeTemplate4Ar({
                 className="w-full py-8 text-white"
                 style={{ backgroundColor: resumeData.sidebarColorHex || "#0E7490" }}
               >
-                <div className="text-center px-8">
-                  {/* Name display with improved layout for Arabic PDF */}
+                <div className="text-right px-8">
                   <div className="mb-3">
-                    <div className="inline-block text-center">
-                      <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1">
-                        <h1 
-                          className="text-3xl sm:text-4xl font-bold tracking-tight arabic-text-optimized"
-                          style={{
-                            wordBreak: 'break-word',
-                            overflowWrap: 'break-word',
-                            hyphens: 'auto',
-                            lineHeight: '1.1',
-                            margin: '0',
-                            padding: '0',
-                            display: 'inline-block',
-                            maxWidth: '45%',
-                            minWidth: 'fit-content'
-                          }}
-                        >
-                          {resumeData.firstName}
-                        </h1>
-                        <h1 
-                          className="text-3xl sm:text-4xl font-bold tracking-tight arabic-text-optimized"
-                          style={{
-                            wordBreak: 'break-word',
-                            overflowWrap: 'break-word',
-                            hyphens: 'auto',
-                            lineHeight: '1.1',
-                            margin: '0',
-                            padding: '0',
-                            display: 'inline-block',
-                            maxWidth: '45%',
-                            minWidth: 'fit-content'
-                          }}
-                        >
-                          {resumeData.lastName}
-                        </h1>
-                      </div>
-                    </div>
+                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                      {resumeData.firstName} {resumeData.lastName}
+                    </h1>
                   </div>
                   {resumeData.jobTitle && (
-                    <h2 
-                      className="text-lg sm:text-xl font-medium opacity-95 arabic-text-optimized"
-                      style={{
-                        wordBreak: 'break-word',
-                        overflowWrap: 'break-word',
-                        hyphens: 'auto',
-                        lineHeight: '1.2',
-                        margin: '0',
-                        padding: '0'
-                      }}
-                    >
+                    <h2 className="text-lg sm:text-xl font-medium opacity-95">
                       {resumeData.jobTitle}
                     </h2>
                   )}
@@ -362,58 +318,14 @@ const ResumeTemplate4Ar = React.memo(function ResumeTemplate4Ar({
                 className="w-full py-8 text-white"
                 style={{ backgroundColor: resumeData.sidebarColorHex || "#0E7490" }}
               >
-                <div className="text-center px-8">
-                  {/* Name display with improved layout for Arabic PDF */}
+                <div className="text-right px-8">
                   <div className="mb-3">
-                    <div className="inline-block text-center">
-                      <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1">
-                        <h1 
-                          className="text-3xl sm:text-4xl font-bold tracking-tight arabic-text-optimized"
-                          style={{
-                            wordBreak: 'break-word',
-                            overflowWrap: 'break-word',
-                            hyphens: 'auto',
-                            lineHeight: '1.1',
-                            margin: '0',
-                            padding: '0',
-                            display: 'inline-block',
-                            maxWidth: '45%',
-                            minWidth: 'fit-content'
-                          }}
-                        >
-                          {resumeData.firstName}
-                        </h1>
-                        <h1 
-                          className="text-3xl sm:text-4xl font-bold tracking-tight arabic-text-optimized"
-                          style={{
-                            wordBreak: 'break-word',
-                            overflowWrap: 'break-word',
-                            hyphens: 'auto',
-                            lineHeight: '1.1',
-                            margin: '0',
-                            padding: '0',
-                            display: 'inline-block',
-                            maxWidth: '45%',
-                            minWidth: 'fit-content'
-                          }}
-                        >
-                          {resumeData.lastName}
-                        </h1>
-                      </div>
-                    </div>
+                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                      {resumeData.firstName} {resumeData.lastName}
+                    </h1>
                   </div>
                   {resumeData.jobTitle && (
-                    <h2 
-                      className="text-lg sm:text-xl font-medium opacity-95 arabic-text-optimized"
-                      style={{
-                        wordBreak: 'break-word',
-                        overflowWrap: 'break-word',
-                        hyphens: 'auto',
-                        lineHeight: '1.2',
-                        margin: '0',
-                        padding: '0'
-                      }}
-                    >
+                    <h2 className="text-lg sm:text-xl font-medium opacity-95">
                       {resumeData.jobTitle}
                     </h2>
                   )}

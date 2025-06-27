@@ -91,6 +91,7 @@ export async function saveResume(values: ResumeValues) {
     skills: { set: resumeValues.skills || [] },
     userLanguages: { set: resumeValues.userLanguages || [] },
     templatePreference: resumeValues.templatePreference || "default",
+    templateCode: resumeValues.templateCode || undefined,
     workExperiences: {
       deleteMany: {},
       create: workExperiences?.filter(exp => Object.values(exp).some(Boolean)).map((exp) => ({

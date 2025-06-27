@@ -67,16 +67,13 @@ const SummaryForm = memo(function SummaryForm({
           "text-2xl font-semibold",
           isMobile && "text-xl"
         )}>
-          {language === 'ar' ? 'الملف المهني' : 'Professional Summary'}
+          الملف المهني
         </h2>
         <p className={cn(
           "text-sm text-muted-foreground",
           isMobile && "text-xs px-2"
         )}>
-          {language === 'ar' 
-            ? 'اكتب ملخص عن نفسك وخبراتك العملية.'
-            : 'Write a summary about yourself and your work experience.'
-          }
+          اكتب ملخص عن نفسك وخبراتك العملية.
         </p>
       </div>
       <Form {...form}>
@@ -89,11 +86,13 @@ const SummaryForm = memo(function SummaryForm({
             name="summary"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn(
-                  isMobile && "text-sm"
-                )}>
-                  {language === 'ar' ? 'الملف المهني' : 'Professional Summary'}
-                </FormLabel>
+                {!(isMobile && language === 'en') && (
+                  <FormLabel className={cn(
+                    isMobile && "text-sm"
+                  )}>
+                    الملف المهني
+                  </FormLabel>
+                )}
                 <FormControl>
                   <Textarea
                     className={cn(
@@ -102,9 +101,9 @@ const SummaryForm = memo(function SummaryForm({
                     )}
                     rows={isMobile ? 4 : 6}
                     placeholder={
-                      language === 'ar' 
-                        ? "اكتب ملخص عن خبراتك ومهاراتك..."
-                        : "Write a summary about your experience and skills..."
+                      isMobile && language === 'en' 
+                        ? "الملف المهني - اكتب ملخص عن خبراتك ومهاراتك..."
+                        : "اكتب ملخص عن خبراتك ومهاراتك..."
                     }
                     {...field}
                     onChange={(e) => {
@@ -117,11 +116,13 @@ const SummaryForm = memo(function SummaryForm({
               </FormItem>
             )}
           />
-          <GenerateSummaryButton
-            resumeData={resumeData}
-            onSummaryGenerated={onSummaryGenerated}
-            language={language}
-          />
+          <div className="flex justify-center">
+            <GenerateSummaryButton
+              resumeData={resumeData}
+              onSummaryGenerated={onSummaryGenerated}
+              language={language}
+            />
+          </div>
         </form>
       </Form>
     </div>

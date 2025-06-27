@@ -5,15 +5,14 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import ResumeTemplate1En from '@/components/ResumeTemplate1En';
+import ResumeTemplate1En from '@/components/resumeTemplate1En';
 import ResumeTemplate2En from '@/components/ResumeTemplate2En';
-import ResumeTemplate3En from '@/components/ResumeTemplate3En';
 import ResumeTemplate4En from '@/components/ResumeTemplate4En';
 import ResumeTemplate1Ar from '@/components/ResumeTemplate1Ar';
 import ResumeTemplate2Ar from '@/components/ResumeTemplate2Ar';
-import ResumeTemplate3Ar from '@/components/ResumeTemplate3Ar';
 import ResumeTemplate4Ar from '@/components/ResumeTemplate4Ar';
 import { ResumeValues } from '@/lib/validation';
+import { generateTemplateCode } from '@/lib/templateReferenceSystem';
 
 interface TemplateSelectionPageProps {
   language: 'ar' | 'en';
@@ -85,13 +84,6 @@ export default function TemplateSelectionPage({ language }: TemplateSelectionPag
       features: ["شريط جانبي ملون", "تصميم عصري", "عرض بصري جذاب"]
     },
     {
-      id: 3,
-      name: "القالب الاحترافي",
-      description: "تصميم احترافي مع تخطيط متقدم",
-      component: ResumeTemplate3Ar,
-      features: ["تخطيط متقدم", "تصميم احترافي", "مناسب للمناصب العليا"]
-    },
-    {
       id: 4,
       name: "القالب الشامل",
       description: "تصميم شامل يدعم صفحات متعددة",
@@ -114,13 +106,6 @@ export default function TemplateSelectionPage({ language }: TemplateSelectionPag
       features: ["Colored sidebar", "Modern design", "Visually appealing"]
     },
     {
-      id: 3,
-      name: "Professional Template",
-      description: "Professional design with advanced layout",
-      component: ResumeTemplate3En,
-      features: ["Advanced layout", "Professional design", "Suitable for senior positions"]
-    },
-    {
       id: 4,
       name: "Comprehensive Template",
       description: "Comprehensive design supporting multiple pages",
@@ -140,15 +125,15 @@ export default function TemplateSelectionPage({ language }: TemplateSelectionPag
         <Link href="/resumes" className="self-start md:self-auto">
           <Button variant="ghost" className="flex items-center gap-2">
             <ArrowLeft className="h-4 w-4" />
-            {getText("العودة إلى السير الذاتية", "Back to Resumes")}
+            {getText("العودة إلى السير الذاتية", "العودة إلى السير الذاتية")}
           </Button>
         </Link>
         <div className="text-center">
           <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#5409DA] to-[#6b29ee] bg-clip-text text-transparent">
-            {getText("اختر قالب السيرة الذاتية", "Choose Resume Template")}
+            {getText("اختر قالب السيرة الذاتية", "اختر قالب السيرة الذاتية")}
           </h1>
           <p className="text-muted-foreground mt-2 text-xs md:text-sm">
-            {getText("اختر القالب الذي يناسبك", "Choose the template that suits you")}
+            {getText("اختر القالب الذي يناسبك", "اختر القالب الذي يناسبك")}
           </p>
         </div>
         <div className="hidden md:block w-24" /> {/* Spacer for centering - hidden on mobile */}
@@ -159,10 +144,15 @@ export default function TemplateSelectionPage({ language }: TemplateSelectionPag
         {templates.map((template) => {
           const TemplateComponent = template.component;
           
+          // Generate template code for URL parameter
+          const templateLegacyPreference = template.id === 1 ? 'default' : 
+                                         template.id === 2 ? 'alternative' : 'template4';
+          const templateCode = generateTemplateCode(templateLegacyPreference, language);
+          
           return (
             <Link 
               key={template.id} 
-              href={`/editor?lang=${language}&template=${template.id}`}
+              href={`/editor?lang=${language}&templateCode=${templateCode}`}
             >
               <Card 
                 className="cursor-pointer transition-all duration-300 hover:shadow-xl hover:border-[#4300FF]/50 hover:scale-[1.02]"

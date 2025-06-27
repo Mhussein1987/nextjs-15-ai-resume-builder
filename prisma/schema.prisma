@@ -29,6 +29,7 @@ model Resume {
   fontFamily         String?
   bulletStyle        String?
   templatePreference String           @default("default")
+  templateCode       String?
   language           String           @default("en")
   sidebarColorHex    String           @default("#0E7490")
   userLanguages      String[]

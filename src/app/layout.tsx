@@ -38,11 +38,11 @@ const reemKufi = Reem_Kufi({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s - ISera",
-    absolute: "ISera",
+    template: "%s - SeeraAi",
+    absolute: "SeeraAi - AI Resume Builder",
   },
   description:
-    "ISera is the easiest way to create a professional resume that will help you land your dream job.",
+    "SeeraAi is the easiest way to create a professional resume that will help you land your dream job. Support for English and Arabic.",
 };
 
 export default function RootLayout({

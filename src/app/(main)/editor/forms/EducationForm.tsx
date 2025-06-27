@@ -138,13 +138,13 @@ export default function EducationForm({
           "text-2xl font-semibold",
           isMobile && "text-xl"
         )}>
-          {language === 'ar' ? 'التحصيل الدراسي والشهادات الجامعية' : 'Education & Certificates'}
+          التحصيل الدراسي والشهادات الجامعية
         </h2>
         <p className={cn(
           "text-sm text-muted-foreground",
           isMobile && "text-xs px-2"
         )}>
-          {language === 'ar' ? 'قم بأظافة جميع الشهادات الجامعية' : 'Add all your educational certificates'}
+          قم بأظافة جميع الشهادات الجامعية
         </p>
       </div>
       <Form {...form}>
@@ -187,9 +187,8 @@ export default function EducationForm({
               }
               className={cn(
                 isMobile && "text-sm h-10"
-              )}
-            >
-              {language === 'ar' ? 'قم بأظافة شهادة' : 'Add Certificate (قم بأظافة شهادة)'}
+              )}              >
+              قم بأظافة شهادة
             </Button>
           </div>
         </form>
@@ -237,7 +236,7 @@ function EducationItem({ id, form, index, remove, language = 'en' }: EducationIt
           "font-semibold",
           isMobile && "text-sm"
         )}>
-          {language === 'ar' ? 'شهادة تعليمية' : 'Education Certificate (شهادة تعليمية)'}
+          شهادة تعليمية
         </span>
         <GripHorizontal
           className={cn(
@@ -253,13 +252,27 @@ function EducationItem({ id, form, index, remove, language = 'en' }: EducationIt
         name={`educations.${index}.degree`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel className={cn(
-              isMobile && "text-sm"
-            )}>{language === 'ar' ? 'الدرجة العلمية' : 'Degree'}</FormLabel>
+            {!(isMobile && language === 'en') && (
+              <FormLabel className={cn(
+                isMobile && "text-sm"
+              )}>
+                الدرجة العلمية
+              </FormLabel>
+            )}
             <FormControl>
-              <Input {...field} value={field.value ?? ""} autoFocus className={cn(
-                isMobile && "text-sm h-10"
-              )} />
+              <Input 
+                {...field} 
+                value={field.value ?? ""} 
+                autoFocus 
+                placeholder={
+                  isMobile && language === 'en' 
+                    ? "الدرجة العلمية"
+                    : undefined
+                }
+                className={cn(
+                  isMobile && "text-sm h-10"
+                )} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -270,13 +283,26 @@ function EducationItem({ id, form, index, remove, language = 'en' }: EducationIt
         name={`educations.${index}.school`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel className={cn(
-              isMobile && "text-sm"
-            )}>{language === 'ar' ? 'اسم المدرسة/الجامعة' : 'School/University Name'}</FormLabel>
+            {!(isMobile && language === 'en') && (
+              <FormLabel className={cn(
+                isMobile && "text-sm"
+              )}>
+                اسم المدرسة/الجامعة
+              </FormLabel>
+            )}
             <FormControl>
-              <Input {...field} value={field.value ?? ""} className={cn(
-                isMobile && "text-sm h-10"
-              )} />
+              <Input 
+                {...field} 
+                value={field.value ?? ""} 
+                placeholder={
+                  isMobile && language === 'en' 
+                    ? "اسم المدرسة/الجامعة"
+                    : undefined
+                }
+                className={cn(
+                  isMobile && "text-sm h-10"
+                )} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -291,14 +317,23 @@ function EducationItem({ id, form, index, remove, language = 'en' }: EducationIt
           name={`educations.${index}.startDate`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className={cn(
-                isMobile && "text-sm"
-              )}>{language === 'ar' ? 'من تأريخ' : 'Start Date'}</FormLabel>
+              {!(isMobile && language === 'en') && (
+                <FormLabel className={cn(
+                  isMobile && "text-sm"
+                )}>
+                  من تأريخ
+                </FormLabel>
+              )}
               <FormControl>
                 <Input
                   {...field}
                   type="date"
                   value={field.value?.slice(0, 10) ?? ""}
+                  placeholder={
+                    isMobile && language === 'en' 
+                      ? "من تأريخ"
+                      : undefined
+                  }
                   className={cn(
                     isMobile && "text-sm h-10"
                   )}
@@ -313,26 +348,33 @@ function EducationItem({ id, form, index, remove, language = 'en' }: EducationIt
           name={`educations.${index}.endDate`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className={cn(
-                isMobile && "text-sm"
-              )}>{language === 'ar' ? 'الى تأريخ' : 'End Date'}</FormLabel>
+              {!(isMobile && language === 'en') && (
+                <FormLabel className={cn(
+                  isMobile && "text-sm"
+                )}>
+                  الى تأريخ
+                </FormLabel>
+              )}
               <FormControl>
                 <Input
                   {...field}
                   type="date"
                   value={field.value?.slice(0, 10) ?? ""}
+                  placeholder={
+                    isMobile && language === 'en' 
+                      ? "الى تأريخ"
+                      : undefined
+                  }
                   className={cn(
                     isMobile && "text-sm h-10"
                   )}
                 />
               </FormControl>
-              <FormDescription>
-                {language === 'ar' ? (
-                  <>قم بترك <span className="font-semibold">الى تأريخ</span> فارغ اذا مازلت تدرس هناك</>
-                ) : (
-                  <>Leave <span className="font-semibold">End Date</span> empty if you are still studying there</>
-                )}
-              </FormDescription>
+              {!(isMobile && language === 'en') && (
+                <FormDescription>
+                  قم بترك <span className="font-semibold">الى تأريخ</span> فارغ اذا مازلت تدرس هناك
+                </FormDescription>
+              )}
               <FormMessage />
             </FormItem>
           )}
@@ -341,7 +383,7 @@ function EducationItem({ id, form, index, remove, language = 'en' }: EducationIt
       <Button variant="destructive" type="button" onClick={() => remove(index)} className={cn(
         isMobile && "text-sm h-10"
       )}>
-        {language === 'ar' ? 'حذف' : 'Remove (حذف)'}
+        حذف
       </Button>
     </div>
   );

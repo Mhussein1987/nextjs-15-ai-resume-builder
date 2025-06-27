@@ -5,24 +5,35 @@ import useIsMobile from "@/hooks/useIsMobile";
 import { ResumeServerData } from "@/lib/types";
 import { cn, mapToResumeValues } from "@/lib/utils";
 import { ResumeValues } from "@/lib/validation";
-import { useSearchParams } from "next/navigation";
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useCallback, useEffect, useMemo, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 import Breadcrumbs from "./Breadcrumbs";
 import Footer from "./Footer";
 import FloatingNavigation from "./FloatingNavigation";
 import { ResumePreviewSection } from "./ResumePreviewSection";
+import ResumeControls from "./ResumeControls";
 import { steps } from "./steps";
 import useAutoSaveResume from "./useAutoSaveResume";
+import { 
+  getTemplateFromUrl, 
+  generateTemplateCode, 
+  migrateLegacyTemplate,
+  isValidTemplateCode 
+} from "@/lib/templateReferenceSystem";
 
 interface ResumeEditorProps {
   resumeToEdit: ResumeServerData | null;
   initialLanguage?: 'ar' | 'en';
-  initialTemplate?: number;
 }
 
-export default function ResumeEditor({ resumeToEdit, initialLanguage, initialTemplate }: ResumeEditorProps) {
+export default function ResumeEditor({ resumeToEdit, initialLanguage }: ResumeEditorProps) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const isMobile = useIsMobile();
+  const resumePreviewRef = useRef<HTMLDivElement>(null);
+  const resumeContentRef = useRef<HTMLDivElement>(null);
 
   const [resumeData, setResumeData] = useState<ResumeValues>(() => 
     resumeToEdit ? mapToResumeValues(resumeToEdit) : {} as ResumeValues
@@ -131,54 +142,125 @@ export default function ResumeEditor({ resumeToEdit, initialLanguage, initialTem
     }
   }, [resumeToEdit, initialLanguage]);
 
+  // Handle template code from URL parameters
+  useEffect(() => {
+    const templateCodeParam = searchParams.get('templateCode');
+    const templateParam = searchParams.get('template');
+    
+    if (templateCodeParam || templateParam) {
+      setResumeData(prev => {
+        let newTemplateCode = prev.templateCode;
+        
+        // Handle new template code system
+        if (templateCodeParam && isValidTemplateCode(templateCodeParam)) {
+          newTemplateCode = templateCodeParam;
+        }
+        // Handle legacy template parameter
+        else if (templateParam) {
+          const currentLanguage = (prev.language as 'ar' | 'en') || initialLanguage || 'en';
+          newTemplateCode = getTemplateFromUrl(templateParam, currentLanguage);
+        }
+        
+        // Also migrate existing templatePreference if no templateCode
+        if (!newTemplateCode && prev.templatePreference) {
+          const currentLanguage = (prev.language as 'ar' | 'en') || initialLanguage || 'en';
+          newTemplateCode = migrateLegacyTemplate(prev.templatePreference, currentLanguage);
+        }
+        
+        // Set default if still no template code
+        if (!newTemplateCode) {
+          const currentLanguage = (prev.language as 'ar' | 'en') || initialLanguage || 'en';
+          newTemplateCode = generateTemplateCode('default', currentLanguage);
+        }
+        
+        return {
+          ...prev,
+          templateCode: newTemplateCode
+        };
+      });
+    }
+  }, [searchParams, initialLanguage]);
+
   // Get current language - prioritize resume's saved language, then initialLanguage, then default to English
   const currentLanguage: 'ar' | 'en' = (resumeData.language as 'ar' | 'en') || initialLanguage || 'en';
 
-  // Language-specific text
-  const getText = (language: 'ar' | 'en') => {
-    return language === 'ar' ? {
+  // Language-specific text - Always return Arabic labels while keeping LTR layout
+  const getText = () => {
+    // Always return Arabic labels while keeping LTR layout
+    return {
       title: 'صمم سيرتك الذاتية',
       description: 'لطفا اتبع الخطوات التالية لإكمال سيرتك الذاتية. سيتم حفظ التغييرات بصورة اوتماتيكية'
-    } : {
-      title: 'Design Your Resume',
-      description: 'Please follow the steps below to complete your resume. Changes will be saved automatically.'
     };
   };
 
-  const uiText = getText(currentLanguage);
+  const uiText = getText();
 
   // Check if we're on mobile preview step
   const isMobilePreviewStep = currentStep === 'mobile-preview';
 
   return (
     <div className="flex grow flex-col">
-      {/* Hide header on mobile preview step */}
-      {!isMobilePreviewStep && (
-        <header className={cn(
-          "space-y-1.5 border-b px-3 py-5 text-center bg-gray-50 dark:bg-secondary",
-          isMobile && "px-4 py-4 space-y-1"
-        )}>
-          <h1 className={cn(
-            "text-2xl font-bold bg-gradient-to-r from-[#5409DA] to-[#6b29ee] dark:from-white dark:to-white bg-clip-text text-transparent drop-shadow-sm",
-            isMobile && "text-xl"
-          )}>
-            {uiText.title}
-          </h1>
-          <p className={cn(
-            "text-sm text-muted-foreground",
-            isMobile && "text-xs px-2"
-          )}>
-            {uiText.description}
-          </p>
+      {/* Mobile Header with Close Button */}
+      {isMobile && !isMobilePreviewStep && (
+        <header className="flex items-center justify-between border-b px-4 py-3 bg-gray-50 dark:bg-secondary">
+          <div className="flex-1 text-center">
+            <h1 className="text-lg font-bold bg-gradient-to-r from-[#5409DA] to-[#6b29ee] dark:from-white dark:to-white bg-clip-text text-transparent">
+              {uiText.title}
+            </h1>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => router.push('/resumes')}
+            className="flex items-center gap-1 flex-shrink-0"
+            title={currentLanguage === 'ar' ? 'إغلاق' : 'Close'}
+          >
+            <X className="w-4 h-4" />
+            <span className="text-xs">
+              {currentLanguage === 'ar' ? 'إغلاق' : 'Close'}
+            </span>
+          </Button>
+        </header>
+      )}
+      
+      {/* Desktop Header - Hide on mobile preview step */}
+      {!isMobile && !isMobilePreviewStep && (
+        <header className="border-b px-3 py-5 bg-gray-50 dark:bg-secondary">
+          <div className="flex items-center justify-between">
+            {/* Resume Controls moved 20% to the right */}
+            <div className="flex-shrink-0 ml-[20%]">
+              <ResumeControls
+                resumeData={resumeData}
+                setResumeData={setResumeDataStable}
+                language={currentLanguage}
+                resumeContentRef={resumeContentRef}
+                className="bg-white dark:bg-gray-800 border rounded-lg px-4 py-2 shadow-sm"
+              />
+            </div>
+            
+            {/* Title and description in the center, moved 15% to the right */}
+            <div className="flex-1 text-center ml-[15%]">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-[#5409DA] to-[#6b29ee] dark:from-white dark:to-white bg-clip-text text-transparent drop-shadow-sm">
+                {uiText.title}
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                {uiText.description}
+              </p>
+            </div>
+            
+            {/* Empty space on the right for balance */}
+            <div className="flex-shrink-0 w-[200px]"></div>
+          </div>
         </header>
       )}
       <main className="relative grow">
         <div className="absolute bottom-0 top-0 flex w-full">
           <ResumePreviewSection
+            ref={resumePreviewRef}
             resumeData={resumeData}
             setResumeData={setResumeDataStable}
             language={currentLanguage}
-            initialTemplate={initialTemplate}
+            resumeContentRef={resumeContentRef}
             className={cn(
               "hidden md:flex",
             )}
@@ -199,21 +281,20 @@ export default function ResumeEditor({ resumeToEdit, initialLanguage, initialTem
                 steps={availableSteps}
               />
             )}
+            
             {FormComponent && (
-              <div className={cn(
-                "w-full",
-                isMobile && "max-w-full"
-              )}>
-                <FormComponent
-                  resumeData={resumeData}
-                  setResumeData={setResumeDataStable}
-                  language={currentLanguage}
-                  onNext={isMobilePreviewStep ? handleNext : undefined}
-                  onPrevious={isMobilePreviewStep ? handlePrevious : undefined}
-                  hasNext={isMobilePreviewStep ? hasNext : undefined}
-                  hasPrevious={isMobilePreviewStep ? hasPrevious : undefined}
-                />
-              </div>
+              <FormComponent
+                resumeData={resumeData}
+                setResumeData={setResumeDataStable}
+                language={currentLanguage}
+                {...(currentStep === 'summary' && { resumePreviewRef })}
+                {...(isMobile && {
+                  onNext: handleNext,
+                  onPrevious: handlePrevious,
+                  hasNext,
+                  hasPrevious,
+                })}
+              />
             )}
           </div>
         </div>
@@ -233,10 +314,10 @@ export default function ResumeEditor({ resumeToEdit, initialLanguage, initialTem
       <Footer
         currentStep={currentStep}
         setCurrentStep={setStep}
-        language={currentLanguage}
         steps={availableSteps}
         isSaving={isSaving}
         hasUnsavedChanges={hasUnsavedChanges}
+        language={currentLanguage}
       />
     </div>
   );

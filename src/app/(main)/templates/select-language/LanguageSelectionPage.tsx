@@ -28,7 +28,7 @@ export default function LanguageSelectionPage() {
         </div>
 
         {/* Language Cards */}
-        <div className="grid grid-cols-2 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {/* Arabic Card */}
           <Link href="/templates?lang=ar">
             <Card className="cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-105 border-2 hover:border-primary">

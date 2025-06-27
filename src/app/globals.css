@@ -32,24 +32,24 @@ body {
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -58,25 +58,25 @@ body {
     --radius: 0.5rem;
   }
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -131,16 +131,9 @@ body {
   .resume-container[data-template="template4en"] {
     padding: 16px !important;  /* 16px padding on all sides to match p-4 */
   }
-  
-  /* Template4Ar specific padding and text optimization */
-  .resume-container[data-template="template4ar"] {
-    padding: 16px !important;  /* 16px padding on all sides to match p-4 */
-  }
-  
-  /* Arabic Templates (2, 3, 4) name display optimization for PDF - Combined approach */
-  .resume-container[data-template="template2ar"] .text-center h1,
-  .resume-container[data-template="template3ar"] .text-center h1,
-  .resume-container[data-template="template4ar"] .text-center h1 {
+
+  /* Arabic Templates (2) name display optimization for PDF - Combined approach */
+  .resume-container[data-template="template2ar"] .text-center h1 {
     font-kerning: auto !important;
     text-rendering: optimizeLegibility !important;
     word-wrap: break-word !important;
@@ -162,9 +155,7 @@ body {
   }
   
   /* Arabic Templates flex layout optimization for names */
-  .resume-container[data-template="template2ar"] .flex.flex-wrap,
-  .resume-container[data-template="template3ar"] .flex.flex-wrap,
-  .resume-container[data-template="template4ar"] .flex.flex-wrap {
+  .resume-container[data-template="template2ar"] .flex.flex-wrap {
     justify-content: center !important;
     align-items: center !important;
     gap: 1rem 1.5rem !important;
@@ -173,9 +164,7 @@ body {
   }
   
   /* Arabic Templates job title optimization */
-  .resume-container[data-template="template2ar"] .text-center h2,
-  .resume-container[data-template="template3ar"] .text-center h2,
-  .resume-container[data-template="template4ar"] .text-center h2 {
+  .resume-container[data-template="template2ar"] .text-center h2 {
     font-kerning: auto !important;
     text-rendering: optimizeLegibility !important;
     word-wrap: break-word !important;
@@ -190,9 +179,7 @@ body {
   }
   
   /* Arabic Templates section headers optimization */
-  .resume-container[data-template="template2ar"] h3,
-  .resume-container[data-template="template3ar"] h3,
-  .resume-container[data-template="template4ar"] h3 {
+  .resume-container[data-template="template2ar"] h3 {
     font-kerning: auto !important;
     text-rendering: optimizeLegibility !important;
     word-wrap: break-word !important;
@@ -207,13 +194,7 @@ body {
   /* Arabic Templates body text optimization */
   .resume-container[data-template="template2ar"] p,
   .resume-container[data-template="template2ar"] span,
-  .resume-container[data-template="template2ar"] div,
-  .resume-container[data-template="template3ar"] p,
-  .resume-container[data-template="template3ar"] span,
-  .resume-container[data-template="template3ar"] div,
-  .resume-container[data-template="template4ar"] p,
-  .resume-container[data-template="template4ar"] span,
-  .resume-container[data-template="template4ar"] div {
+  .resume-container[data-template="template2ar"] div {
     font-kerning: auto !important;
     text-rendering: optimizeLegibility !important;
     word-wrap: break-word !important;
@@ -223,111 +204,141 @@ body {
     letter-spacing: 0.005em !important;
     word-spacing: 0.02em !important;
     font-feature-settings: "liga" 1, "kern" 1 !important;
-  }
-  
-  /* Arabic Templates work experience and education optimization */
-  .resume-container[data-template="template2ar"] .work-experience,
-  .resume-container[data-template="template2ar"] .education,
-  .resume-container[data-template="template3ar"] .work-experience,
-  .resume-container[data-template="template3ar"] .education,
-  .resume-container[data-template="template4ar"] .work-experience,
-  .resume-container[data-template="template4ar"] .education {
-    font-kerning: auto !important;
-    text-rendering: optimizeLegibility !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-    hyphens: auto !important;
-    line-height: 1.4 !important;
-    letter-spacing: 0.005em !important;
-    word-spacing: 0.02em !important;
-    font-feature-settings: "liga" 1, "kern" 1 !important;
-  }
-  
-  /* Arabic Templates print-specific optimizations */
-  @media print {
-    .resume-container[data-template="template2ar"] .text-center h1,
-    .resume-container[data-template="template3ar"] .text-center h1,
-    .resume-container[data-template="template4ar"] .text-center h1 {
-      font-size: 2rem !important;
-      line-height: 1.1 !important;
-      letter-spacing: 0.03em !important;
-      word-spacing: 0.15em !important;
-      max-width: 35% !important;
-      margin: 0 0.5rem !important;
-    }
-    
-    .resume-container[data-template="template2ar"] .flex.flex-wrap,
-    .resume-container[data-template="template3ar"] .flex.flex-wrap,
-    .resume-container[data-template="template4ar"] .flex.flex-wrap {
-      gap: 0.5rem 1rem !important;
-    }
-    
-    .resume-container[data-template="template2ar"] .text-center h2,
-    .resume-container[data-template="template3ar"] .text-center h2,
-    .resume-container[data-template="template4ar"] .text-center h2 {
-      font-size: 1.1rem !important;
-      line-height: 1.2 !important;
-      letter-spacing: 0.02em !important;
-      word-spacing: 0.08em !important;
-    }
-    
-    .resume-container[data-template="template2ar"] h3,
-    .resume-container[data-template="template3ar"] h3,
-    .resume-container[data-template="template4ar"] h3 {
-      font-size: 1rem !important;
-      line-height: 1.3 !important;
-      letter-spacing: 0.015em !important;
-      word-spacing: 0.06em !important;
-    }
-    
-    .resume-container[data-template="template2ar"] p,
-    .resume-container[data-template="template2ar"] span,
-    .resume-container[data-template="template2ar"] div,
-    .resume-container[data-template="template3ar"] p,
-    .resume-container[data-template="template3ar"] span,
-    .resume-container[data-template="template3ar"] div,
-    .resume-container[data-template="template4ar"] p,
-    .resume-container[data-template="template4ar"] span,
-    .resume-container[data-template="template4ar"] div {
-      font-size: 0.9rem !important;
-      line-height: 1.4 !important;
-      letter-spacing: 0.008em !important;
-      word-spacing: 0.03em !important;
-    }
-  }
-  
-  /* Template4Ar name container optimization */
-  .resume-container[data-template="template4ar"] .mb-3 {
-    margin-bottom: 1rem !important;
-    width: 100% !important;
-  }
-  
-  /* Template4Ar Arabic text letter spacing for all text elements */
-  .resume-container[data-template="template4ar"] {
-    letter-spacing: 0.02em !important;
-  }
-  
-  /* Template4Ar Arabic text letter spacing for specific elements */
-  .resume-container[data-template="template4ar"] p,
-  .resume-container[data-template="template4ar"] span,
-  .resume-container[data-template="template4ar"] div {
-    letter-spacing: 0.02em !important;
-  }
-  
-  /* Template4Ar Arabic text letter spacing for section headers */
-  .resume-container[data-template="template4ar"] h3 {
-    letter-spacing: 0.03em !important;
-  }
-  
-  /* Template4Ar Arabic text letter spacing for work experience and education */
-  .resume-container[data-template="template4ar"] .work-experience-item,
-  .resume-container[data-template="template4ar"] .education-item {
-    letter-spacing: 0.02em !important;
   }
   
   /* Template1Ar specific padding - matches the p-4 (16px) used in the template */
   .resume-container[data-template="template1ar"] {
     padding: 16px !important;  /* 16px padding on all sides to match p-4 */
+  }
+  
+  /* Template1En specific padding - matches the p-6 (24px) used in the template */
+  .resume-container[data-template="template1en"] {
+    padding: 24px !important;  /* 24px padding on all sides to match p-6 */
+  }
+  
+  /* Template2En specific padding - matches the sidebar layout */
+  .resume-container[data-template="template2en"] {
+    padding: 0 !important;  /* No padding for sidebar layout */
+  }
+  
+  /* Template2En print optimization for typography and layout */
+  .resume-container[data-template="template2en"] * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Template2En specific flex layout optimization */
+  .resume-container[data-template="template2en"] .flex {
+    display: flex !important;
+  }
+  
+  /* Template2En sidebar layout optimization */
+  .resume-container[data-template="template2en"] .w-1\/3 {
+    width: 33.333333% !important;
+    flex-shrink: 0 !important;
+  }
+  
+  .resume-container[data-template="template2en"] .w-2\/3 {
+    width: 66.666667% !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Template2En work experience layout */
+  .resume-container[data-template="template2en"] .break-inside-avoid {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  
+  /* Template2En typography optimization */
+  .resume-container[data-template="template2en"] .text-3xl {
+    font-size: 1.875rem !important;
+    line-height: 2.25rem !important;
+  }
+  
+  .resume-container[data-template="template2en"] .text-xl {
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
+  }
+  
+  .resume-container[data-template="template2en"] .text-lg {
+    font-size: 1.125rem !important;
+    line-height: 1.75rem !important;
+  }
+  
+  .resume-container[data-template="template2en"] .text-base {
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
+  }
+  
+  .resume-container[data-template="template2en"] .text-sm {
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+  }
+  
+  .resume-container[data-template="template2en"] .text-xs {
+    font-size: 0.75rem !important;
+    line-height: 1rem !important;
+  }
+  
+  /* Template2En spacing optimization */
+  .resume-container[data-template="template2en"] .space-y-6 > * + * {
+    margin-top: 1.5rem !important;
+  }
+  
+  .resume-container[data-template="template2en"] .space-y-3 > * + * {
+    margin-top: 0.75rem !important;
+  }
+  
+  .resume-container[data-template="template2en"] .p-6 {
+    padding: 1.5rem !important;
+  }
+  
+  /* Template1En print optimization for typography and layout */
+  .resume-container[data-template="template1en"] * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Template1En specific flex layout optimization */
+  .resume-container[data-template="template1en"] .flex.gap-6 {
+    gap: 1.5rem !important;
+  }
+  
+  .resume-container[data-template="template1en"] .flex.gap-2 {
+    gap: 0.5rem !important;
+  }
+  
+  /* Template1En badge and skill layout optimization */
+  .resume-container[data-template="template1en"] .flex.flex-wrap {
+    gap: 0.5rem !important;
+    flex-wrap: wrap !important;
+  }
+  
+  /* Template1En work experience layout */
+  .resume-container[data-template="template1en"] .break-inside-avoid {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  
+  /* Template1En typography optimization */
+  .resume-container[data-template="template1en"] .text-3xl {
+    font-size: 1.875rem !important;
+    line-height: 2.25rem !important;
+  }
+  
+  .resume-container[data-template="template1en"] .text-lg {
+    font-size: 1.125rem !important;
+    line-height: 1.75rem !important;
+  }
+  
+  .resume-container[data-template="template1en"] .text-sm {
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+  }
+  
+  .resume-container[data-template="template1en"] .text-xs {
+    font-size: 0.75rem !important;
+    line-height: 1rem !important;
   }
   
   /* Ensure Template4En padding overrides print:p-0 with higher specificity */
@@ -355,6 +366,33 @@ body {
   .no-print {
     display: none !important;
   }
+
+  /* Template4Ar print CSS for PDF export - Right aligned header */
+  .resume-container[data-template="template4ar"] .text-right {
+    text-align: right !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  .resume-container[data-template="template4ar"] .text-right > * {
+    text-align: right !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+  .resume-container[data-template="template4ar"] .text-right .mb-3 {
+    width: 100% !important;
+    text-align: right !important;
+    margin: 0 0 1rem 0 !important;
+    display: block !important;
+  }
+  .resume-container[data-template="template4ar"] .text-right h1,
+  .resume-container[data-template="template4ar"] .text-right h2 {
+    text-align: right !important;
+    margin: 0 !important;
+    display: inline-block !important;
+    width: auto !important;
+    float: none !important;
+  }
 }
 
 /* Mobile-responsive styles for resume templates */
@@ -363,68 +401,105 @@ body {
   .resume-container {
     max-width: 100% !important;
     width: 100% !important;
-    height: auto !important;
-    min-height: auto !important;
-    overflow-x: auto !important;
-    overflow-y: visible !important;
-    padding: 8px !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    padding: 4px !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
   
   /* Mobile-optimized template content */
   .resume-container > div {
     max-width: 100% !important;
     width: 100% !important;
-    height: auto !important;
-    min-height: auto !important;
+    height: 100% !important;
+    min-height: 100% !important;
     zoom: 1 !important; /* Reset zoom for mobile */
     transform: none !important;
-    font-size: 12px !important; /* Smaller font for mobile */
-    line-height: 1.4 !important;
+    font-size: 8px !important; /* Even smaller font for mobile */
+    line-height: 1.2 !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
   
   /* Mobile-specific scaling for A4 templates */
   .resume-container #resumePreviewContent {
     max-width: 100% !important;
     width: 100% !important;
-    height: auto !important;
-    min-height: auto !important;
+    height: 100% !important;
+    min-height: 100% !important;
     zoom: 1 !important;
     transform: none !important;
-    font-size: 12px !important;
-    line-height: 1.4 !important;
-    padding: 12px !important;
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+    padding: 6px !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
   }
   
   /* Mobile-optimized A4 page containers */
   .resume-container .a4-page {
     max-width: 100% !important;
     width: 100% !important;
-    height: auto !important;
-    min-height: auto !important;
+    height: 100% !important;
+    min-height: 100% !important;
     margin: 0 !important;
-    border-radius: 8px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
   }
   
-  /* Mobile-optimized flex layouts */
-  .resume-container .flex {
+  /* Mobile-optimized inner content */
+  .resume-container .a4-page > div {
+    height: 100% !important;
+    flex: 1 !important;
+    display: flex !important;
     flex-direction: column !important;
+    overflow: hidden !important;
+  }
+  
+  /* Mobile-optimized flex layouts - Keep two-column for readability */
+  .resume-container .flex {
+    flex-direction: row !important;
+    gap: 4px !important;
+    flex-shrink: 0 !important;
   }
   
   .resume-container .flex-row {
-    flex-direction: column !important;
+    flex-direction: row !important;
   }
   
   .resume-container .flex-row-reverse {
-    flex-direction: column !important;
+    flex-direction: row-reverse !important;
   }
   
   /* Mobile-optimized sidebar and main content */
   .resume-container .sidebar,
   .resume-container .main-content {
-    width: 100% !important;
     min-height: auto !important;
     height: auto !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Template4 specific mobile adjustments */
+  .resume-container .w-1\/3 {
+    width: 35% !important;
+    flex-shrink: 0 !important;
+    overflow: hidden !important;
+  }
+  
+  .resume-container .w-2\/3 {
+    width: 65% !important;
+    flex-shrink: 0 !important;
+    overflow: hidden !important;
   }
   
   /* Mobile-optimized grid layouts */
@@ -432,70 +507,124 @@ body {
     grid-template-columns: 1fr !important;
   }
   
-  /* Mobile-optimized spacing */
-  .resume-container .space-y-3 {
-    gap: 8px !important;
+  .resume-container .grid-cols-2 {
+    grid-template-columns: 1fr !important;
   }
   
-  .resume-container .space-y-6 {
-    gap: 16px !important;
+  /* Mobile-optimized spacing - use smaller values */
+  .resume-container .space-y-3 > * + * {
+    margin-top: 3px !important;
   }
   
-  /* Mobile-optimized text sizes */
+  .resume-container .space-y-6 > * + * {
+    margin-top: 6px !important;
+  }
+  
+  .resume-container .space-y-5 > * + * {
+    margin-top: 4px !important;
+  }
+  
+  /* Mobile-optimized text sizes - much smaller */
+  .resume-container .text-4xl {
+    font-size: 0.875rem !important;
+    line-height: 1.1 !important;
+  }
+  
   .resume-container .text-3xl {
-    font-size: 1.5rem !important;
+    font-size: 0.75rem !important;
+    line-height: 1.1 !important;
   }
   
   .resume-container .text-2xl {
-    font-size: 1.25rem !important;
+    font-size: 0.6875rem !important;
+    line-height: 1.1 !important;
   }
   
   .resume-container .text-xl {
-    font-size: 1.125rem !important;
+    font-size: 0.625rem !important;
+    line-height: 1.1 !important;
   }
   
   .resume-container .text-lg {
-    font-size: 1rem !important;
+    font-size: 0.5625rem !important;
+    line-height: 1.1 !important;
   }
   
   .resume-container .text-base {
-    font-size: 0.875rem !important;
+    font-size: 0.5rem !important;
+    line-height: 1.1 !important;
   }
   
   .resume-container .text-sm {
-    font-size: 0.75rem !important;
+    font-size: 0.4375rem !important;
+    line-height: 1.1 !important;
   }
   
   .resume-container .text-xs {
-    font-size: 0.625rem !important;
+    font-size: 0.375rem !important;
+    line-height: 1.1 !important;
   }
   
-  /* Mobile-optimized padding and margins */
+  /* Mobile-optimized padding and margins - much smaller */
+  .resume-container .py-8 {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+  
+  .resume-container .px-8 {
+    padding-left: 3px !important;
+    padding-right: 3px !important;
+  }
+  
   .resume-container .p-6 {
-    padding: 12px !important;
+    padding: 4px !important;
   }
   
   .resume-container .p-4 {
-    padding: 8px !important;
+    padding: 3px !important;
   }
   
   .resume-container .p-3 {
-    padding: 6px !important;
+    padding: 2px !important;
+  }
+  
+  .resume-container .pt-16 {
+    padding-top: 4px !important;
+  }
+  
+  .resume-container .pt-20 {
+    padding-top: 4px !important;
   }
   
   .resume-container .mb-6 {
-    margin-bottom: 12px !important;
+    margin-bottom: 4px !important;
   }
   
   .resume-container .mb-4 {
-    margin-bottom: 8px !important;
+    margin-bottom: 3px !important;
   }
   
   .resume-container .mb-3 {
-    margin-bottom: 6px !important;
+    margin-bottom: 2px !important;
   }
   
-  /* Mobile-optimized images */
+  .resume-container .mb-1 {
+    margin-bottom: 1px !important;
+  }
+  
+  .resume-container .gap-6 {
+    gap: 4px !important;
+  }
+  
+  .resume-container .gap-3 {
+    gap: 2px !important;
+  }
+  
+  .resume-container .gap-2 {
+    gap: 1px !important;
+  }
+  
+  /* Mobile-optimized images - much smaller */
   .resume-container img {
     max-width: 100% !important;
     height: auto !important;
@@ -504,68 +633,138 @@ body {
   /* Mobile-optimized profile images */
   .resume-container img[alt*="Profile"],
   .resume-container img[alt*="photo"] {
-    width: 80px !important;
-    height: 80px !important;
+    width: 30px !important;
+    height: 30px !important;
+  }
+  
+  /* Mobile profile image positioning adjustments */
+  .resume-container .absolute.left-6 {
+    left: 2px !important;
+  }
+  
+  .resume-container .absolute.right-6 {
+    right: 2px !important;
+  }
+  
+  .resume-container .absolute.top-8 {
+    top: 2px !important;
+  }
+  
+  /* Mobile-optimized header elements */
+  .resume-container .relative {
+    position: relative !important;
   }
   
   /* Mobile-optimized contact information */
-  .resume-container .text-gray-500 {
-    font-size: 0.625rem !important;
-    line-height: 1.3 !important;
+  .resume-container .text-gray-500,
+  .resume-container .text-gray-600,
+  .resume-container .text-gray-700 {
+    font-size: 0.375rem !important;
+    line-height: 1.1 !important;
   }
   
   /* Mobile-optimized skills and languages */
   .resume-container .flex.flex-wrap {
-    gap: 4px !important;
+    gap: 1px !important;
   }
   
   .resume-container .px-3 {
-    padding-left: 6px !important;
-    padding-right: 6px !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
   }
   
   .resume-container .py-1 {
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
   }
   
   /* Mobile-optimized work experience */
   .resume-container .work-experience-item {
-    margin-bottom: 8px !important;
+    margin-bottom: 3px !important;
   }
   
   /* Mobile-optimized education */
   .resume-container .education-item {
-    margin-bottom: 8px !important;
+    margin-bottom: 3px !important;
   }
   
   /* Mobile-optimized horizontal rules */
   .resume-container hr {
-    margin: 8px 0 !important;
+    margin: 2px 0 !important;
   }
   
-  /* Mobile-optimized gaps */
-  .resume-container .gap-6 {
-    gap: 12px !important;
+  /* Mobile-optimized border elements */
+  .resume-container .border-l-2 {
+    border-left-width: 1px !important;
   }
   
-  .resume-container .gap-3 {
-    gap: 6px !important;
+  .resume-container .border-r-2 {
+    border-right-width: 1px !important;
   }
   
-  .resume-container .gap-2 {
-    gap: 4px !important;
+  .resume-container .border-b-2 {
+    border-bottom-width: 1px !important;
+  }
+  
+  /* Mobile-optimized positioning */
+  .resume-container .pl-5 {
+    padding-left: 4px !important;
+  }
+  
+  .resume-container .pr-5 {
+    padding-right: 4px !important;
+  }
+  
+  .resume-container .-left-1\.5 {
+    left: -2px !important;
+  }
+  
+  .resume-container .-right-1\.5 {
+    right: -2px !important;
+  }
+  
+  .resume-container .w-3.h-3 {
+    width: 4px !important;
+    height: 4px !important;
+  }
+  
+  /* Ensure template content fills container height */
+  .resume-container .min-h-screen {
+    min-height: 100% !important;
+    height: 100% !important;
+  }
+  
+  /* Hide second page/overflow content on mobile to fit in container */
+  .resume-container .mt-6 {
+    display: none !important;
+  }
+  
+  /* Force single column layout for some template sections if needed */
+  .resume-container .lg\\:flex-row {
+    flex-direction: column !important;
+  }
+  
+  .resume-container .lg\\:justify-between {
+    justify-content: flex-start !important;
+  }
+  
+  .resume-container .lg\\:items-start {
+    align-items: flex-start !important;
+  }
+  
+  .resume-container .lg\\:text-right {
+    text-align: left !important;
   }
 }
 
 /* Desktop styles remain unchanged - only apply mobile optimizations on small screens */
 @media (min-width: 769px) {
   .resume-container {
-    /* Desktop styles remain exactly as they are */
+    /* Desktop styles remain exactly as they are - no changes needed */
+    position: relative;
   }
 }
 
-/* Make separators thinner in ResumeTemplate1En */
 #resumePreviewContent hr {
   border-width: 1px !important;
   border-style: solid !important;
@@ -582,32 +781,154 @@ body {
 
 /* AI Generate Button Styles */
 .ai-generate-btn {
-  background: linear-gradient(to right, #8e2de2, #4a00e0); /* purple to blue */
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 8px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
-  border-radius: 999px; /* fully rounded */
-  display: inline-flex;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: background 0.3s ease;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .ai-generate-btn:hover {
-  background: linear-gradient(to right, #7b1fa2, #1976d2); /* darker on hover */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
 .ai-generate-btn svg {
-  width: 16px;
-  height: 16px;
-  animation: pulse 1.5s infinite;
+  width: 14px;
+  height: 14px;
 }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.7; transform: scale(1.1); }
 }
+
+/* Floating Navigation Arabic Layout Override */
+[data-language="ar"] {
+  flex-direction: row-reverse !important;
+  direction: rtl !important;
+}
+
+[data-language="ar"] [data-button="next-arabic"] {
+  order: 1 !important;
+}
+
+[data-language="ar"] [data-button="previous-arabic"] {
+  order: 2 !important;
+}
+
+/* Force Arabic navigation layout */
+[data-language="ar"].flex {
+  flex-direction: row-reverse !important;
+}
+
+/* Template4 specific mobile optimizations */
+@media (max-width: 768px) {
+  /* Template4 header optimizations */
+  .resume-container[data-template="template4ar"] .text-right,
+  .resume-container[data-template="template4en"] .text-left {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  
+  .resume-container[data-template="template4ar"] .text-right h1,
+  .resume-container[data-template="template4ar"] .text-right h2,
+  .resume-container[data-template="template4en"] .text-left h1,
+  .resume-container[data-template="template4en"] .text-left h2 {
+    font-size: 0.875rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Template4 content adjustments */
+  .resume-container[data-template="template4ar"] .flex.gap-3,
+  .resume-container[data-template="template4en"] .flex.gap-3 {
+    gap: 2px !important;
+  }
+  
+  .resume-container[data-template="template4ar"] .justify-start,
+  .resume-container[data-template="template4en"] .justify-start {
+    gap: 3px !important;
+  }
+  
+  /* Template4 image adjustments */
+  .resume-container[data-template="template4ar"] img,
+  .resume-container[data-template="template4en"] img {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  /* Template4 second page optimizations */
+  .resume-container[data-template="template4ar"] .mt-6,
+  .resume-container[data-template="template4en"] .mt-6 {
+    margin-top: 8px !important;
+  }
+
+  /* Template2En mobile layout fixes */
+  .resume-container[data-template="template2en"] {
+    flex-direction: row !important; /* Override global column layout */
+  }
+  
+  .resume-container[data-template="template2en"] > div {
+    flex-direction: row !important; /* Ensure horizontal layout */
+  }
+  
+  .resume-container[data-template="template2en"] #resumePreviewContent {
+    flex-direction: row !important; /* Maintain sidebar + content layout */
+    display: flex !important;
+  }
+  
+  /* Template2En sidebar and main content specific sizing */
+  .resume-container[data-template="template2en"] .sidebar {
+    width: 33.333333% !important; /* Maintain 1/3 width */
+    flex-shrink: 0 !important;
+    min-height: 100% !important;
+  }
+  
+  .resume-container[data-template="template2en"] .main-content {
+    width: 66.666667% !important; /* Maintain 2/3 width */
+    flex-shrink: 0 !important;
+    min-height: 100% !important;
+  }
+
+  /* Template2Ar mobile layout fixes */
+  .resume-container[data-template="template2ar"] {
+    flex-direction: row !important; /* Override global column layout */
+  }
+  
+  .resume-container[data-template="template2ar"] > div {
+    flex-direction: row-reverse !important; /* Maintain RTL layout */
+  }
+  
+  .resume-container[data-template="template2ar"] #resumePreviewContent {
+    flex-direction: row-reverse !important; /* Maintain RTL sidebar + content layout */
+    display: flex !important;
+  }
+  
+  /* Template2Ar sidebar and main content specific sizing */
+  .resume-container[data-template="template2ar"] .sidebar {
+    width: 33.333333% !important; /* Maintain 1/3 width */
+    flex-shrink: 0 !important;
+    min-height: 100% !important;
+  }
+  
+  .resume-container[data-template="template2ar"] .main-content {
+    width: 66.666667% !important; /* Maintain 2/3 width */
+    flex-shrink: 0 !important;
+    min-height: 100% !important;
+  }
+  }
+
+/* Ensure flex-row-reverse works properly */
+.flex-row-reverse {
+  flex-direction: row-reverse !important;
+}
+
+/* Force Arabic navigation layout */

@@ -103,6 +103,7 @@ export const resumeSchema = z.object({
   fontFamily: optionalString,
   bulletStyle: optionalString,
   templatePreference: optionalString,
+  templateCode: optionalString,
   language: optionalString,
 });
 

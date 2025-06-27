@@ -34,7 +34,7 @@ export default function PrintButton({
       className={className}
       variant="outline"
       size="sm"
-      title={language === 'ar' ? 'تصدير PDF' : 'Export PDF'}
+      title={language === 'ar' ? 'تحميل السيرة الذاتية' : 'Export PDF'}
     >
       {isExporting ? (
         <Loader2 className="w-4 h-4 animate-spin" />
@@ -42,7 +42,7 @@ export default function PrintButton({
         <Download className="w-4 h-4" />
       )}
       <span className="ml-2">
-        {language === 'ar' ? 'تصدير PDF' : 'Export PDF'}
+        {language === 'ar' ? 'تحميل السيرة الذاتية' : 'Export PDF'}
       </span>
     </Button>
   );

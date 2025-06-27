@@ -36,6 +36,8 @@ export default function SkillsForm({
   const watchedValues = useWatch({ control: form.control });
   const { isValid } = form.formState;
 
+
+
   useEffect(() => {
     // Only update parent state if form is valid and values have actually changed
     if (isValid && watchedValues && Object.keys(watchedValues).length > 0) {
@@ -67,8 +69,8 @@ export default function SkillsForm({
 
   return (
     <div className={cn(
-      "mx-auto space-y-6",
-      isMobile ? "max-w-full space-y-4" : "max-w-xl space-y-6"
+      "mx-auto space-y-6 flex flex-col items-center",
+      isMobile ? "max-w-full space-y-4 justify-center min-h-[60vh] px-6" : "max-w-xl space-y-6"
     )} dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div className={cn(
         "space-y-1.5 text-center",
@@ -78,41 +80,34 @@ export default function SkillsForm({
           "text-2xl font-semibold",
           isMobile && "text-xl"
         )}>
-          {language === 'ar' ? 'المهارات' : 'Skills'}
+          المهارات
         </h2>
         <p className={cn(
           "text-sm text-muted-foreground",
           isMobile && "text-xs px-2"
         )}>
-          {language === 'ar' 
-            ? 'اكتب مهاراتك التقنية والشخصية مفصولة بفواصل'
-            : 'Write your technical and personal skills separated by commas'
-          }
+          أضف مهاراتك مفصولة بفواصل (مثال: JavaScript, React, Node.js)
         </p>
       </div>
       <Form {...form}>
         <form className={cn(
           "space-y-3",
-          isMobile && "space-y-4"
+          isMobile && "space-y-4 w-full max-w-sm"
         )} dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <FormField
             control={form.control}
             name="skills"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn(
-                  isMobile && "text-sm"
-                )}>
-                  {language === 'ar' ? 'المهارات' : 'Skills'}
-                </FormLabel>
+                {!isMobile && (
+                  <FormLabel className="font-bold">
+                    المهارات
+                  </FormLabel>
+                )}
                 <FormControl>
-                  <Input
-                    {...field}
-                    placeholder={
-                      language === 'ar' 
-                        ? "مثال: JavaScript, React, Node.js, إدارة المشاريع, العمل الجماعي"
-                        : "Example: JavaScript, React, Node.js, Project Management, Teamwork"
-                    }
+                  <Input 
+                    {...field} 
+                    placeholder={isMobile ? "المهارات - مثال: JavaScript, React, تصميم المواقع" : "مثال: JavaScript, React, تصميم المواقع"}
                     className={cn(
                       isMobile && "text-sm h-10"
                     )}

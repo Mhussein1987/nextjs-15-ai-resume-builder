@@ -85,16 +85,13 @@ export default function LanguagesForm({ resumeData, setResumeData, language = 'e
           "text-2xl font-semibold",
           isMobile && "text-xl"
         )}>
-          {language === 'ar' ? 'اللغات' : 'Languages'}
+          اللغات
         </h2>
         <p className={cn(
           "text-sm text-muted-foreground",
           isMobile && "text-xs px-2"
         )}>
-          {language === 'ar' 
-            ? 'أضف جميع اللغات التي تتحدثها مع مستوى إتقانك لكل لغة'
-            : 'Add all languages you speak with your proficiency level for each language'
-          }
+          أضف جميع اللغات التي تتحدثها مع مستوى إتقانك لكل لغة
         </p>
       </div>
       <form className={cn(
@@ -112,12 +109,20 @@ export default function LanguagesForm({ resumeData, setResumeData, language = 'e
                 isMobile && "flex-col gap-3"
               )}>
                 <div className="flex-1">
-                  <Label className={cn(
-                    isMobile && "text-sm"
-                  )}>{language === 'ar' ? 'اللغة' : 'Language'}</Label>
+                  {!(isMobile && language === 'en') && (
+                    <Label className={cn(
+                      isMobile && "text-sm"
+                    )}>
+                      اللغة
+                    </Label>
+                  )}
                   <Input
                     {...form.register(`userLanguages.${index}.name`)}
-                    placeholder={language === 'ar' ? 'اكتب اسم اللغة' : 'Enter language name'}
+                    placeholder={
+                      isMobile && language === 'en' 
+                        ? "اللغة"
+                        : "اكتب اسم اللغة"
+                    }
                     className={cn(
                       "mt-1.5",
                       isMobile && "text-sm h-10"
@@ -125,15 +130,19 @@ export default function LanguagesForm({ resumeData, setResumeData, language = 'e
                   />
                 </div>
                 <div className="flex-1">
-                  <Label className={cn(
-                    isMobile && "text-sm"
-                  )}>{language === 'ar' ? 'مستوى الإتقان' : 'Proficiency Level'}</Label>
+                  {!(isMobile && language === 'en') && (
+                    <Label className={cn(
+                      isMobile && "text-sm"
+                    )}>
+                      مستوى الإتقان
+                    </Label>
+                  )}
                   <Input
                     {...form.register(`userLanguages.${index}.proficiency`)}
                     placeholder={
-                      language === 'ar' 
-                        ? 'مثال: ممتاز، جيد جداً، متوسط'
-                        : 'Example: Fluent, Advanced, Intermediate'
+                      isMobile && language === 'en' 
+                        ? "مستوى الإتقان - مثال: ممتاز، جيد جداً، متوسط"
+                        : "مثال: ممتاز، جيد جداً، متوسط"
                     }
                     className={cn(
                       "mt-1.5",
@@ -171,9 +180,9 @@ export default function LanguagesForm({ resumeData, setResumeData, language = 'e
               <Plus className={cn(
                 "h-4 w-4 ml-2",
                 isMobile && "h-4 w-4 ml-1"
-              )} />
-              {language === 'ar' ? 'إضافة لغة' : 'Add Language'}
-            </Button>
+              )} /              >
+                إضافة لغة
+              </Button>
           </CardContent>
         </Card>
       </form>

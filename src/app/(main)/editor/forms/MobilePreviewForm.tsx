@@ -2,48 +2,107 @@
 
 import { Button } from "@/components/ui/button";
 import { EditorFormProps } from "@/lib/types";
-import { Palette, Sidebar } from "lucide-react";
-import ResumeTemplate1En from "@/components/ResumeTemplate1En";
+import { X } from "lucide-react";
+import ResumeTemplate1En from "@/components/resumeTemplate1En";
 import ResumeTemplate1Ar from "@/components/ResumeTemplate1Ar";
 import ResumeTemplate2En from "@/components/ResumeTemplate2En";
 import ResumeTemplate2Ar from "@/components/ResumeTemplate2Ar";
-import ResumeTemplate3En from "@/components/ResumeTemplate3En";
-import ResumeTemplate3Ar from "@/components/ResumeTemplate3Ar";
 import ResumeTemplate4En from "@/components/ResumeTemplate4En";
 import ResumeTemplate4Ar from "@/components/ResumeTemplate4Ar";
 import DownloadButton from "@/components/DownloadButton";
+import ColorPicker from "../ColorPicker";
+import SidebarColorPicker from "../SidebarColorPicker";
+import { 
+  generateTemplateCode, 
+  migrateLegacyTemplate, 
+  getTemplateByCode,
+  getTemplateNumber
+} from "@/lib/templateReferenceSystem";
 import { useRef } from "react";
+import { useRouter } from "next/navigation";
 
 export default function MobilePreviewForm({
   resumeData,
+  setResumeData,
   language = 'en',
 }: EditorFormProps) {
   const resumeContentRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const getTemplateComponent = () => {
-    const templatePreference = resumeData.templatePreference;
+    // Use templateCode if available, otherwise migrate from legacy system
+    let templateCode = resumeData.templateCode;
     
-    if (language === 'ar') {
-      switch (templatePreference) {
-        case 'alternative':
+    if (!templateCode && resumeData.templatePreference) {
+      // Migrate from legacy system
+      templateCode = migrateLegacyTemplate(resumeData.templatePreference, resumeData.language || language);
+    }
+    
+    if (!templateCode) {
+      // Generate default template code
+      const currentLanguage = (resumeData.language as 'ar' | 'en') || language;
+      templateCode = generateTemplateCode('default', currentLanguage);
+    }
+    
+    const template = getTemplateByCode(templateCode);
+    const isResumeArabic = resumeData.language === 'ar' || resumeData.language === 'ar-SA';
+    
+    if (isResumeArabic) {
+      switch (template?.number) {
+        case 2:
           return <ResumeTemplate2Ar resumeData={resumeData} />;
-        case 'template3':
-          return <ResumeTemplate3Ar resumeData={resumeData} />;
-        case 'template4':
+        case 4:
           return <ResumeTemplate4Ar resumeData={resumeData} />;
         default:
           return <ResumeTemplate1Ar resumeData={resumeData} />;
       }
     } else {
-      switch (templatePreference) {
-        case 'alternative':
+      switch (template?.number) {
+        case 2:
           return <ResumeTemplate2En resumeData={resumeData} />;
-        case 'template3':
-          return <ResumeTemplate3En resumeData={resumeData} />;
-        case 'template4':
+        case 4:
           return <ResumeTemplate4En resumeData={resumeData} />;
         default:
           return <ResumeTemplate1En resumeData={resumeData} />;
+      }
+    }
+  };
+
+  const getTemplateDataAttribute = () => {
+    // Use templateCode if available, otherwise migrate from legacy system
+    let templateCode = resumeData.templateCode;
+    
+    if (!templateCode && resumeData.templatePreference) {
+      // Migrate from legacy system
+      templateCode = migrateLegacyTemplate(resumeData.templatePreference, resumeData.language || language);
+    }
+    
+    if (!templateCode) {
+      // Generate default template code
+      const currentLanguage = (resumeData.language as 'ar' | 'en') || language;
+      templateCode = generateTemplateCode('default', currentLanguage);
+    }
+    
+    const template = getTemplateByCode(templateCode);
+    const isResumeArabic = resumeData.language === 'ar' || resumeData.language === 'ar-SA';
+    
+    if (isResumeArabic) {
+      switch (template?.number) {
+        case 2:
+          return 'template2ar';
+        case 4:
+          return 'template4ar';
+        default:
+          return 'template1ar';
+      }
+    } else {
+      switch (template?.number) {
+        case 2:
+          return 'template2en';
+        case 4:
+          return 'template4en';
+        default:
+          return 'template1en';
       }
     }
   };
@@ -52,75 +111,92 @@ export default function MobilePreviewForm({
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
+        {/* Empty div for spacing */}
+        <div className="w-16"></div>
+        
+        {/* Centered Title */}
+        <div className="text-center flex-1">
           <h2 className="text-2xl font-bold">
-            {language === 'ar' ? 'معاينة السيرة الذاتية' : 'Resume Preview'}
+            معاينة السيرة الذاتية
           </h2>
           <p className="text-muted-foreground">
-            {language === 'ar' 
-              ? 'معاينة كاملة للسيرة الذاتية' 
-              : 'Full resume preview'
-            }
+            معاينة كاملة للسيرة الذاتية
           </p>
         </div>
+        
+        {/* Close Button */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => router.push('/resumes')}
+          className="flex items-center gap-1 w-16 justify-center text-xs py-2"
+        >
+          <X className="w-3 h-3" />
+          <span className="hidden sm:inline">
+            إغلاق
+          </span>
+        </Button>
       </div>
 
       {/* Control Buttons - Horizontal Layout */}
       <div className="flex items-center justify-center gap-3 p-4 bg-gray-50 rounded-lg">
-        <Button
-          variant="outline"
-          size="sm"
-          className="flex items-center gap-2"
-          onClick={() => {
-            // Open color picker
-            const colorPicker = document.querySelector('[data-color-picker]') as HTMLButtonElement;
-            if (colorPicker) colorPicker.click();
-          }}
-        >
-          <Palette className="w-4 h-4" />
-          <span className="hidden sm:inline">
-            {language === 'ar' ? 'اللون' : 'Color'}
-          </span>
-        </Button>
+        <ColorPicker
+          color={resumeData.colorHex || "#000000"}
+          onChange={(color) => setResumeData((prev) => ({ ...prev, colorHex: color.hex }))}
+          language={language}
+        />
         
-        <Button
-          variant="outline"
-          size="sm"
-          className="flex items-center gap-2"
-          onClick={() => {
-            // Open sidebar color picker
-            const sidebarColorPicker = document.querySelector('[data-sidebar-color-picker]') as HTMLButtonElement;
-            if (sidebarColorPicker) sidebarColorPicker.click();
-          }}
-        >
-          <Sidebar className="w-4 h-4" />
-          <span className="hidden sm:inline">
-            {language === 'ar' ? 'لون الشريط' : 'Sidebar'}
-          </span>
-        </Button>
+        {/* Only show SidebarColorPicker for templates that have sidebars (template 2 and 4, not template 1) */}
+        {(() => {
+          let templateCode = resumeData.templateCode;
+          if (!templateCode && resumeData.templatePreference) {
+            templateCode = migrateLegacyTemplate(resumeData.templatePreference, resumeData.language || language);
+          }
+          if (!templateCode) {
+            const currentLanguage = (resumeData.language as 'ar' | 'en') || language;
+            templateCode = generateTemplateCode('default', currentLanguage);
+          }
+          const selectedTemplate = getTemplateNumber(templateCode);
+          
+          return selectedTemplate !== 1 ? (
+            <SidebarColorPicker
+              color={resumeData.sidebarColorHex || "#0E7490"}
+              onChange={(color) => setResumeData((prev) => ({ ...prev, sidebarColorHex: color.hex }))}
+              language={language}
+            />
+          ) : null;
+        })()}
 
         {/* Download Button */}
         <DownloadButton
           language={language}
           resumeContainerRef={resumeContentRef}
           resumeData={resumeData}
+          onDownloadComplete={() => router.push('/resumes')}
         />
       </div>
 
       {/* Resume Preview Container */}
       <div className="relative">
-        {/* Display Container - Use A4 dimensions for consistent PDF export */}
+        {/* Display Container - Responsive container that fits mobile screens */}
         <div 
-          className="w-full h-[calc(100vh-400px)] md:w-[210mm] md:min-h-[297mm] bg-white shadow-lg rounded-lg overflow-hidden border"
+          className="w-full bg-white shadow-lg rounded-lg border overflow-hidden"
           style={{ 
             backgroundColor: 'white',
-            color: 'black'
+            color: 'black',
+            aspectRatio: '210/297', // Maintain A4 aspect ratio
+            maxHeight: '80vh' // Limit height to viewport
           }}
         >
-          {/* Inner container with A4 dimensions for PDF generation */}
+          {/* Inner container with proper mobile scaling */}
           <div 
-            className="w-[210mm] min-h-[297mm] bg-white transform scale-[0.4] md:scale-100 origin-top-left"
+            className="w-full h-full bg-white resume-container"
+            data-template={getTemplateDataAttribute()}
             ref={resumeContentRef}
+            style={{
+              transform: 'scale(1)', // No transform needed with new CSS
+              transformOrigin: 'top left'
+            }}
           >
             {getTemplateComponent()}
           </div>
