@@ -98,6 +98,8 @@ export const resumeSchema = z.object({
   ...summarySchema.shape,
   colorHex: optionalString,
   sidebarColorHex: optionalString,
+  workExperienceHeaderColorHex: optionalString,
+  sectionLabelColorHex: optionalString,
   backgroundColorHex: optionalString,
   borderStyle: optionalString,
   fontFamily: optionalString,

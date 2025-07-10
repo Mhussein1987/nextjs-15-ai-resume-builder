@@ -80,9 +80,9 @@ export default function ContactPage() {
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <h4 className="font-semibold">هل يمكنني تحميل سيرتي الذاتية كملف PDF؟</h4>
+                  <h4 className="font-semibold">هل يمكنني تصدير سيرتي الذاتية كملف PDF؟</h4>
                   <p className="text-sm text-muted-foreground">
-                    نعم! يمكن تحميل جميع السير الذاتية كملفات PDF عالية الجودة للمشاركة والطباعة بسهولة.
+                    نعم! يمكن تصدير جميع السير الذاتية كملفات PDF عالية الجودة للمشاركة والطباعة بسهولة.
                   </p>
                 </div>
                 <div className="space-y-2">

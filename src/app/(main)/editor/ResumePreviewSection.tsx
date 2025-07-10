@@ -5,6 +5,8 @@ import ResumeTemplate1En from "@/components/ResumeTemplate1En";
 import ResumeTemplate1Ar from "@/components/ResumeTemplate1Ar";
 import ResumeTemplate2En from "@/components/ResumeTemplate2En";
 import ResumeTemplate2Ar from "@/components/ResumeTemplate2Ar";
+import ResumeTemplate3En from "@/components/ResumeTemplate3En";
+import ResumeTemplate3Ar from "@/components/ResumeTemplate3Ar";
 import ResumeTemplate4En from "@/components/ResumeTemplate4En";
 import ResumeTemplate4Ar from "@/components/ResumeTemplate4Ar";
 import { 
@@ -73,6 +75,8 @@ export const ResumePreviewSection = forwardRef<HTMLDivElement, ResumePreviewSect
           {selectedTemplate === 1 && (resumeData.language !== 'ar' && resumeData.language !== 'ar-SA') && <ResumeTemplate1En resumeData={resumeData} />}
           {selectedTemplate === 2 && (resumeData.language === 'ar' || resumeData.language === 'ar-SA') && <ResumeTemplate2Ar resumeData={resumeData} />}
           {selectedTemplate === 2 && (resumeData.language !== 'ar' && resumeData.language !== 'ar-SA') && <ResumeTemplate2En resumeData={resumeData} />}
+          {selectedTemplate === 3 && (resumeData.language === 'ar' || resumeData.language === 'ar-SA') && <ResumeTemplate3Ar resumeData={resumeData} />}
+          {selectedTemplate === 3 && (resumeData.language !== 'ar' && resumeData.language !== 'ar-SA') && <ResumeTemplate3En resumeData={resumeData} />}
           {selectedTemplate === 4 && (resumeData.language === 'ar' || resumeData.language === 'ar-SA') && <ResumeTemplate4Ar resumeData={resumeData} />}
           {selectedTemplate === 4 && (resumeData.language !== 'ar' && resumeData.language !== 'ar-SA') && <ResumeTemplate4En resumeData={resumeData} />}
         </div>

@@ -1,16 +1,15 @@
 import { ResumeValues } from "@/lib/validation";
 import React from "react";
-import ColorPicker from "./ColorPicker";
 import BorderStyleButton from "./BorderStyleButton";
 import SidebarColorPicker from "./SidebarColorPicker";
-import DownloadButton from "@/components/DownloadButton";
+import SectionLabelColorPicker from "./SectionLabelColorPicker";
+import PrintButton from "@/components/PrintButton";
 import { getTemplateNumber } from "@/lib/templateReferenceSystem";
 
 interface ResumeControlsProps {
   resumeData: ResumeValues;
   setResumeData: (updater: React.SetStateAction<ResumeValues>) => void;
   language: 'ar' | 'en';
-  resumeContentRef: React.RefObject<HTMLDivElement>;
   className?: string;
 }
 
@@ -18,7 +17,6 @@ export default function ResumeControls({
   resumeData, 
   setResumeData, 
   language, 
-  resumeContentRef,
   className 
 }: ResumeControlsProps) {
   // Get template number to determine if sidebar color picker should be shown
@@ -36,12 +34,6 @@ export default function ResumeControls({
 
   return (
     <div className={`flex items-center gap-3 ${className || ''}`}>
-      <ColorPicker
-        color={resumeData.colorHex || "#000000"}
-        onChange={(color) => setResumeData((prev) => ({ ...prev, colorHex: color.hex }))}
-        language={language}
-      />
-      
       {/* Only show SidebarColorPicker for templates that have sidebars (template 2 and 4, not template 1) */}
       {selectedTemplate !== 1 && (
         <SidebarColorPicker
@@ -51,15 +43,20 @@ export default function ResumeControls({
         />
       )}
       
+      <SectionLabelColorPicker
+        color={resumeData.sectionLabelColorHex || "#1f2937"}
+        onChange={(color) => setResumeData((prev) => ({ ...prev, sectionLabelColorHex: color.hex }))}
+        language={language}
+      />
+      
       <BorderStyleButton
         borderStyle={resumeData.borderStyle}
         onChange={(style) => setResumeData(prev => ({ ...prev, borderStyle: style }))}
       />
       
-      <DownloadButton 
-        resumeContainerRef={resumeContentRef} 
-        resumeData={resumeData} 
-        language={language} 
+      <PrintButton 
+        language={language}
+        resumeData={resumeData}
       />
     </div>
   );

@@ -20,6 +20,8 @@ import ResumeTemplate1Ar from "@/components/ResumeTemplate1Ar";
 import ResumeTemplate1En from "@/components/ResumeTemplate1En";
 import ResumeTemplate2Ar from "@/components/ResumeTemplate2Ar";
 import ResumeTemplate2En from "@/components/ResumeTemplate2En";
+import ResumeTemplate3En from "@/components/ResumeTemplate3En";
+import ResumeTemplate3Ar from "@/components/ResumeTemplate3Ar";
 import ResumeTemplate4Ar from "@/components/ResumeTemplate4Ar";
 import ResumeTemplate4En from "@/components/ResumeTemplate4En";
 import { Button } from "@/components/ui/button";
@@ -116,6 +118,20 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
                   ) : (
                     <ResumeTemplate4En
                       key={`${resume.id}-${resume.updatedAt.getTime()}-4en`}
+                      resumeData={mapToResumeValues(resume)}
+                      className="shadow-sm transition-shadow group-hover:shadow-lg"
+                    />
+                  )
+                ) : templateInfo.number === 3 ? (
+                  templateInfo.language === 'ar' ? (
+                    <ResumeTemplate3Ar
+                      key={`${resume.id}-${resume.updatedAt.getTime()}-3ar`}
+                      resumeData={mapToResumeValues(resume)}
+                      className="shadow-sm transition-shadow group-hover:shadow-lg"
+                    />
+                  ) : (
+                    <ResumeTemplate3En
+                      key={`${resume.id}-${resume.updatedAt.getTime()}-3en`}
                       resumeData={mapToResumeValues(resume)}
                       className="shadow-sm transition-shadow group-hover:shadow-lg"
                     />

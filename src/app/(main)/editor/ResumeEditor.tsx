@@ -233,7 +233,6 @@ export default function ResumeEditor({ resumeToEdit, initialLanguage }: ResumeEd
                 resumeData={resumeData}
                 setResumeData={setResumeDataStable}
                 language={currentLanguage}
-                resumeContentRef={resumeContentRef}
                 className="bg-white dark:bg-gray-800 border rounded-lg px-4 py-2 shadow-sm"
               />
             </div>

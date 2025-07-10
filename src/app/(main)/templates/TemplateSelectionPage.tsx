@@ -7,9 +7,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import ResumeTemplate1En from '@/components/ResumeTemplate1En';
 import ResumeTemplate2En from '@/components/ResumeTemplate2En';
+import ResumeTemplate3En from '@/components/ResumeTemplate3En';
 import ResumeTemplate4En from '@/components/ResumeTemplate4En';
 import ResumeTemplate1Ar from '@/components/ResumeTemplate1Ar';
 import ResumeTemplate2Ar from '@/components/ResumeTemplate2Ar';
+import ResumeTemplate3Ar from '@/components/ResumeTemplate3Ar';
 import ResumeTemplate4Ar from '@/components/ResumeTemplate4Ar';
 import { ResumeValues } from '@/lib/validation';
 import { generateTemplateCode } from '@/lib/templateReferenceSystem';
@@ -84,6 +86,13 @@ export default function TemplateSelectionPage({ language }: TemplateSelectionPag
       features: ["شريط جانبي ملون", "تصميم عصري", "عرض بصري جذاب"]
     },
     {
+      id: 3,
+      name: "القالب المهني",
+      description: "تصميم عمودين مع صورة شخصية",
+      component: ResumeTemplate3Ar,
+      features: ["صورة شخصية", "تصميم عمودين", "تصميم مهني"]
+    },
+    {
       id: 4,
       name: "القالب الشامل",
       description: "تصميم شامل يدعم صفحات متعددة",
@@ -104,6 +113,13 @@ export default function TemplateSelectionPage({ language }: TemplateSelectionPag
       description: "Contemporary design with colored sidebar",
       component: ResumeTemplate2En,
       features: ["Colored sidebar", "Modern design", "Visually appealing"]
+    },
+    {
+      id: 3,
+      name: "Professional Template",
+      description: "Two-column layout with profile image",
+      component: ResumeTemplate3En,
+      features: ["Profile image", "Two-column layout", "Professional design"]
     },
     {
       id: 4,
@@ -146,7 +162,8 @@ export default function TemplateSelectionPage({ language }: TemplateSelectionPag
           
           // Generate template code for URL parameter
           const templateLegacyPreference = template.id === 1 ? 'default' : 
-                                         template.id === 2 ? 'alternative' : 'template4';
+                                         template.id === 2 ? 'alternative' : 
+                                         template.id === 3 ? 'template3' : 'template4';
           const templateCode = generateTemplateCode(templateLegacyPreference, language);
           
           return (

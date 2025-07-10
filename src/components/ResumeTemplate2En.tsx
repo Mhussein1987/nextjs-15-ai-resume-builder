@@ -80,7 +80,7 @@ const ResumeTemplate2En = React.memo(function ResumeTemplate2En({
   const sidebarStyle = useMemo(() => ({
     minHeight: '297mm',
     background: resumeData.sidebarColorHex || DEFAULT_SIDEBAR_COLOR,
-    color: 'black',
+    color: 'white', // Explicitly set white text color
     fontSize: '14px',
     fontFamily: DEFAULT_FONT,
     // Text rendering optimizations
@@ -115,6 +115,129 @@ const ResumeTemplate2En = React.memo(function ResumeTemplate2En({
 
   return (
     <div className="relative">
+      {/* Print CSS for Template2En */}
+      <style jsx>{`
+        @media print {
+          @page {
+            margin: 0;
+            padding: 0;
+            size: A4;
+          }
+          
+          /* Style the resume container for print */
+          [data-template="template2en"] {
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 210mm !important;
+            height: 297mm !important;
+            background: white !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+            transform: none !important;
+            overflow: visible !important;
+            display: block !important;
+          }
+          
+          /* Ensure proper A4 page styling for print */
+          .resume-container {
+            width: 100% !important;
+            min-height: auto !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+            box-shadow: none !important;
+            page-break-after: always !important;
+            break-after: page !important;
+            position: relative !important;
+            border-radius: 0 !important;
+          }
+          
+          /* Ensure sidebar colors and styling print correctly */
+          .sidebar {
+            background-color: var(--sidebar-color, #0E7490) !important;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            width: 33.333% !important;
+            min-height: 297mm !important;
+            height: 297mm !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow: hidden !important;
+          }
+          
+          /* Ensure main content area prints correctly */
+          .main-content {
+            width: 66.667% !important;
+            min-height: 297mm !important;
+            height: 297mm !important;
+            padding: 24px !important;
+            background: white !important;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          /* Ensure all sidebar text is white in print */
+          .sidebar h2,
+          .sidebar p,
+          .sidebar span,
+          .sidebar div {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          /* Ensure all SVG elements in sidebar are white */
+          .sidebar svg,
+          .sidebar svg * {
+            color: white !important;
+            fill: white !important;
+            stroke: white !important;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          /* Ensure section headers are white */
+          .sidebar h2 {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          /* Ensure contact information is white */
+          .sidebar .text-white {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          /* Ensure main content text colors are preserved */
+          .main-content h1,
+          .main-content h2,
+          .main-content h3,
+          .main-content p {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          /* Ensure all elements preserve their colors */
+          * {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+        }
+      `}</style>
+      
       {/* Resume Content */}
       <div
         className={cn(
@@ -124,6 +247,9 @@ const ResumeTemplate2En = React.memo(function ResumeTemplate2En({
         data-template="template2en"
         ref={containerRef}
         dir={dir} // Set direction based on resumeData.language
+        style={{
+          '--sidebar-color': resumeData.sidebarColorHex || DEFAULT_SIDEBAR_COLOR,
+        } as React.CSSProperties}
       >
         <div
           className={cn("flex", !width && !isClient && "invisible")}
@@ -443,7 +569,7 @@ const MainContent = React.memo(function MainContent({
 }: { 
   resumeData: ResumeValues;
 }) {
-  const { firstName, lastName, jobTitle, summary, workExperiences, colorHex, bulletStyle } = resumeData;
+  const { firstName, lastName, jobTitle, summary, workExperiences, colorHex, bulletStyle, sectionLabelColorHex } = resumeData;
   
   const workExperiencesNotEmpty = useMemo(() =>
     workExperiences?.filter((exp) => Object.values(exp).filter(Boolean).length > 0) || [],
@@ -507,6 +633,7 @@ const MainContent = React.memo(function MainContent({
       <WorkExperienceSection 
         workExperiences={workExperiencesNotEmpty}
         colorHex={colorHex}
+        sectionLabelColorHex={sectionLabelColorHex}
         bulletChar={bulletChar}
         hasSummary={hasSummary}
       />
@@ -520,11 +647,9 @@ const SummarySection = React.memo(function SummarySection({
 }: { 
   summary: string;
 }) {
-  const sectionHeaderStyle = getSectionHeaderStyle();
-
   return (
     <div className="break-inside-avoid" style={{ marginTop: '15px' }}>
-      <h3 className="text-lg font-bold text-black uppercase tracking-wide mb-3 text-left print:text-base print:mb-2" style={sectionHeaderStyle}>
+      <h3 className="text-lg font-bold text-black uppercase tracking-wide mb-3 text-left print:text-base print:mb-2">
         Professional Summary
       </h3>
       <div className="w-full h-px bg-black mb-6 print:mb-4"></div>
@@ -540,6 +665,7 @@ const SummarySection = React.memo(function SummarySection({
 const WorkExperienceSection = React.memo(function WorkExperienceSection({ 
   workExperiences,
   colorHex,
+  sectionLabelColorHex,
   bulletChar,
   hasSummary
 }: { 
@@ -551,14 +677,18 @@ const WorkExperienceSection = React.memo(function WorkExperienceSection({
     description?: string;
   }>;
   colorHex?: string;
+  sectionLabelColorHex?: string;
   bulletChar: string;
   hasSummary: boolean;
 }) {
-  const sectionHeaderStyle = getSectionHeaderStyle();
+  const headerStyle = useMemo(() => ({ 
+    color: sectionLabelColorHex || colorHex || DEFAULT_COLOR,
+    lineHeight: "1.4"
+  }), [sectionLabelColorHex, colorHex]);
 
   return (
     <div style={{ marginTop: hasSummary ? '15px' : '15px' }}>
-      <h3 className="text-lg font-bold text-black uppercase tracking-wide mb-3 text-left print:text-base print:mb-2" style={sectionHeaderStyle}>
+      <h3 className="text-lg font-bold uppercase tracking-wide mb-3 text-left print:text-base print:mb-2" style={headerStyle}>
         Work Experience
       </h3>
       <div className="w-full h-px bg-black mb-6 print:mb-4"></div>

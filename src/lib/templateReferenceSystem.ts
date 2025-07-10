@@ -45,6 +45,16 @@ export const TEMPLATE_REFERENCES: TemplateReference[] = [
     cssClass: 'template4en',
     legacyPreference: 'template4'
   },
+  {
+    code: 'EN3',
+    language: 'en',
+    number: 3,
+    name: 'Professional',
+    description: 'Two-column layout with profile image',
+    component: 'ResumeTemplate3En',
+    cssClass: 'template3en',
+    legacyPreference: 'template3'
+  },
   
   // Arabic Templates
   {
@@ -76,6 +86,16 @@ export const TEMPLATE_REFERENCES: TemplateReference[] = [
     component: 'ResumeTemplate4Ar',
     cssClass: 'template4ar',
     legacyPreference: 'template4'
+  },
+  {
+    code: 'AR3',
+    language: 'ar',
+    number: 3,
+    name: 'المهني',
+    description: 'تصميم عمودين مع صورة شخصية',
+    component: 'ResumeTemplate3Ar',
+    cssClass: 'template3ar',
+    legacyPreference: 'template3'
   }
 ];
 

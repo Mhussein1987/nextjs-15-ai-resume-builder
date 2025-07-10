@@ -7,11 +7,12 @@ import ResumeTemplate1En from "@/components/ResumeTemplate1En";
 import ResumeTemplate1Ar from "@/components/ResumeTemplate1Ar";
 import ResumeTemplate2En from "@/components/ResumeTemplate2En";
 import ResumeTemplate2Ar from "@/components/ResumeTemplate2Ar";
+import ResumeTemplate3En from "@/components/ResumeTemplate3En";
 import ResumeTemplate4En from "@/components/ResumeTemplate4En";
 import ResumeTemplate4Ar from "@/components/ResumeTemplate4Ar";
-import DownloadButton from "@/components/DownloadButton";
-import ColorPicker from "../ColorPicker";
+
 import SidebarColorPicker from "../SidebarColorPicker";
+import SectionLabelColorPicker from "../SectionLabelColorPicker";
 import { 
   generateTemplateCode, 
   migrateLegacyTemplate, 
@@ -20,6 +21,7 @@ import {
 } from "@/lib/templateReferenceSystem";
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
+import PrintButton from "@/components/PrintButton";
 
 export default function MobilePreviewForm({
   resumeData,
@@ -60,6 +62,8 @@ export default function MobilePreviewForm({
       switch (template?.number) {
         case 2:
           return <ResumeTemplate2En resumeData={resumeData} />;
+        case 3:
+          return <ResumeTemplate3En resumeData={resumeData} />;
         case 4:
           return <ResumeTemplate4En resumeData={resumeData} />;
         default:
@@ -99,6 +103,8 @@ export default function MobilePreviewForm({
       switch (template?.number) {
         case 2:
           return 'template2en';
+        case 3:
+          return 'template3en';
         case 4:
           return 'template4en';
         default:
@@ -140,12 +146,6 @@ export default function MobilePreviewForm({
 
       {/* Control Buttons - Horizontal Layout */}
       <div className="flex items-center justify-center gap-3 p-4 bg-gray-50 rounded-lg">
-        <ColorPicker
-          color={resumeData.colorHex || "#000000"}
-          onChange={(color) => setResumeData((prev) => ({ ...prev, colorHex: color.hex }))}
-          language={language}
-        />
-        
         {/* Only show SidebarColorPicker for templates that have sidebars (template 2 and 4, not template 1) */}
         {(() => {
           let templateCode = resumeData.templateCode;
@@ -167,12 +167,16 @@ export default function MobilePreviewForm({
           ) : null;
         })()}
 
-        {/* Download Button */}
-        <DownloadButton
+        <SectionLabelColorPicker
+          color={resumeData.sectionLabelColorHex || "#1f2937"}
+          onChange={(color) => setResumeData((prev) => ({ ...prev, sectionLabelColorHex: color.hex }))}
           language={language}
-          resumeContainerRef={resumeContentRef}
+        />
+
+        {/* Print Button */}
+        <PrintButton
+          language={language}
           resumeData={resumeData}
-          onDownloadComplete={() => router.push('/resumes')}
         />
       </div>
 

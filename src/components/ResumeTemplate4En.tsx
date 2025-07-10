@@ -17,7 +17,7 @@ const SummarySection = ({ resumeData }: { resumeData: ResumeValues }) => {
 
   return (
     <section>
-      <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
+      <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.sectionLabelColorHex || resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
                     Professional Summary
                   </h3>
       <p className="text-gray-700 leading-relaxed text-sm">{resumeData.summary}</p>
@@ -36,7 +36,7 @@ const WorkExperienceSection = ({ resumeData, workExperiences }: { resumeData: Re
 
   return (
     <section>
-      <h3 className="text-base font-bold mb-4 pb-1 border-b-2" style={{ color: resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
+      <h3 className="text-base font-bold mb-4 pb-1 border-b-2" style={{ color: resumeData.sectionLabelColorHex || resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
                     Work Experience
                   </h3>
       {filteredExperiences.length > 0 ? (
@@ -144,6 +144,109 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
 
   return (
     <div className="relative">
+      {/* Print CSS for Template4En */}
+      <style jsx>{`
+        @media print {
+          @page {
+            margin: 0;
+            padding: 0;
+            size: A4;
+          }
+          
+          /* Style the resume container for print */
+          [data-template="template4en"] {
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 210mm !important;
+            height: 297mm !important;
+            background: white !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+            transform: none !important;
+            overflow: visible !important;
+            display: block !important;
+          }
+          
+          /* Ensure proper A4 page styling for print */
+          .resume-container {
+            width: 100% !important;
+            min-height: auto !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+            box-shadow: none !important;
+            page-break-after: always !important;
+            break-after: page !important;
+            position: relative !important;
+            border-radius: 0 !important;
+          }
+          
+          /* Ensure header bar has proper left padding in print */
+          [data-template="template4en"] .py-8 {
+            padding-left: 32px !important;
+            padding-right: 32px !important;
+            padding-top: 32px !important;
+            padding-bottom: 32px !important;
+          }
+          
+          /* Ensure header text has proper left margin */
+          [data-template="template4en"] .text-left.px-8 {
+            padding-left: 32px !important;
+            padding-right: 32px !important;
+          }
+          
+          /* Ensure section headers have proper left margin */
+          [data-template="template4en"] h3 {
+            margin-left: 16px !important;
+            padding-left: 16px !important;
+          }
+          
+          /* Ensure section content has proper left margin */
+          [data-template="template4en"] .w-1\/3 {
+            padding-left: 16px !important;
+          }
+          
+          [data-template="template4en"] .w-2\/3 {
+            padding-left: 16px !important;
+          }
+          
+          /* Ensure header colors print correctly */
+          [data-template="template4en"] .py-8 {
+            background-color: var(--sidebar-color, #0E7490) !important;
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          /* Ensure header text is white in print */
+          [data-template="template4en"] .py-8 h1,
+          [data-template="template4en"] .py-8 h2 {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          /* Ensure section separator colors print correctly */
+          [data-template="template4en"] h3 {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          /* Ensure all elements preserve their colors */
+          * {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+        }
+      `}</style>
+      
       {/* Resume Content */}
       <div
         className={cn(
@@ -153,6 +256,9 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
         ref={containerRef}
         dir={dir} // Set direction based on resumeData.language
         data-template="template4en" // Add data attribute for print CSS targeting
+        style={{
+          '--sidebar-color': resumeData.sidebarColorHex || "#0E7490",
+        } as React.CSSProperties}
       >
         <div
           className={cn("space-y-3 p-4 print:space-y-2", !width && !isClient && "invisible")}
@@ -194,7 +300,10 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
               {/* Header Bar */}
               <div
                 className="w-full py-8 text-white"
-                style={{ backgroundColor: resumeData.sidebarColorHex || "#0E7490" }}
+                style={{ 
+                  backgroundColor: resumeData.sidebarColorHex || "#0E7490",
+                  color: 'white' // Explicitly set white text color
+                }}
               >
                 <div className="text-left px-8">
                   <div className="flex justify-start items-baseline gap-3 mb-3">
@@ -214,7 +323,7 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
               <div className="w-1/3 space-y-6 pt-16">
                   {/* Contact Information */}
                 <div>
-                  <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
+                  <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.sectionLabelColorHex || resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
                         Contact
                       </h3>
                   <div className="space-y-2 text-sm">
@@ -241,7 +350,7 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
                   
                   {/* Education */}
                 <div>
-                  <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
+                  <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.sectionLabelColorHex || resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
                         Education
                       </h3>
                   {resumeData.educations && resumeData.educations.filter(edu => Object.values(edu).some(Boolean)).length > 0 ? (
@@ -271,7 +380,7 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
 
                 {/* Skills */}
                 <div>
-                  <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
+                  <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.sectionLabelColorHex || resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
                     Skills
                   </h3>
                   {resumeData.skills && resumeData.skills.length > 0 ? (
@@ -289,7 +398,7 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
                 </div>
                 {resumeData.userLanguages && resumeData.userLanguages.length > 0 && (
                   <div>
-                    <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
+                    <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.sectionLabelColorHex || resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
                       Languages
                     </h3>
                     <div className="text-sm">
@@ -313,7 +422,10 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
               {/* Header Bar - Full Page Width */}
               <div
                 className="w-full py-8 text-white"
-                style={{ backgroundColor: resumeData.sidebarColorHex || "#0E7490" }}
+                style={{ 
+                  backgroundColor: resumeData.sidebarColorHex || "#0E7490",
+                  color: 'white' // Explicitly set white text color
+                }}
               >
                 <div className="text-left px-8">
                   <div className="flex justify-start items-baseline gap-3 mb-3">
@@ -332,7 +444,7 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
                 <div className="w-1/3 space-y-6 pt-20">
                   {/* Contact Information */}
                   <div>
-                    <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
+                    <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.sectionLabelColorHex || resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
                       Contact
                     </h3>
                     <div className="space-y-2 text-sm">
@@ -359,7 +471,7 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
                   
                   {/* Education */}
                   <div>
-                    <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
+                    <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.sectionLabelColorHex || resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
                       Education
                     </h3>
                     {resumeData.educations && resumeData.educations.filter(edu => Object.values(edu).some(Boolean)).length > 0 ? (
@@ -389,7 +501,7 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
 
                   {/* Skills */}
                   <div>
-                    <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
+                    <h3 className="text-base font-bold mb-3 pb-1 border-b-2" style={{ color: resumeData.sectionLabelColorHex || resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
                       Skills
                     </h3>
                     {resumeData.skills && resumeData.skills.length > 0 ? (
@@ -410,7 +522,7 @@ const ResumeTemplate4En = React.memo(function ResumeTemplate4En({
                 {/* Right Column - Work Experience Continuation */}
                 <div className="w-2/3 space-y-6 pt-20">
                   <section>
-                    <h3 className="text-base font-bold mb-4 pb-1 border-b-2" style={{ color: resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
+                    <h3 className="text-base font-bold mb-4 pb-1 border-b-2" style={{ color: resumeData.sectionLabelColorHex || resumeData.colorHex || "#000000", borderColor: resumeData.colorHex || "#000000" }}>
                       Work Experience (Continued)
                     </h3>
                     {secondPageWorkExperiences.length > 0 ? (

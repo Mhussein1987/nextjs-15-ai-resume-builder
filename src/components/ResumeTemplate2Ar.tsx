@@ -62,7 +62,9 @@ const ResumeTemplate2Ar = React.memo(function ResumeTemplate2Ar({
           // Ensure visibility for PDF export
           visibility: 'visible',
           opacity: 1,
-        }}
+          // Set CSS custom property for sidebar color
+          '--sidebar-color': resumeData.sidebarColorHex || '#0E7490',
+        } as React.CSSProperties}
       >
         <div
           className={cn("flex flex-row-reverse", !width && !isClient && "invisible")}
@@ -94,8 +96,8 @@ const ResumeTemplate2Ar = React.memo(function ResumeTemplate2Ar({
             style={{
               minHeight: '297mm',
               background: resumeData.sidebarColorHex || '#0E7490',
-              color: 'black',
-              fontSize: '14px',
+              color: 'white', // Explicitly set white text color
+              fontSize: '16px',
               fontFamily: selectedFont,
               // Arabic text rendering optimizations
               fontKerning: 'auto',
@@ -121,7 +123,7 @@ const ResumeTemplate2Ar = React.memo(function ResumeTemplate2Ar({
             className="main-content w-2/3 h-full p-6 print:p-4 print:w-[140mm]"
             style={{
               minHeight: '297mm',
-              fontSize: '14px',
+              fontSize: '16px',
               fontFamily: selectedFont,
               // Arabic text rendering optimizations
               fontKerning: 'auto',
@@ -139,6 +141,7 @@ const ResumeTemplate2Ar = React.memo(function ResumeTemplate2Ar({
             <MainContent 
               resumeData={resumeData} 
               colorHex={resumeData.colorHex}
+              sectionLabelColorHex={resumeData.sectionLabelColorHex}
               fontFamily={selectedFont}
               bulletStyle={resumeData.bulletStyle}
             />
@@ -238,7 +241,7 @@ const ResumeTemplate2Ar = React.memo(function ResumeTemplate2Ar({
             margin-left: 0 !important;
             margin-right: 8px !important;
             margin-top: 2px !important;
-            font-size: 10px !important;
+            font-size: 12px !important;
           }
           
           [dir="rtl"] .flex.items-start.gap-2 .flex-1,
@@ -247,6 +250,14 @@ const ResumeTemplate2Ar = React.memo(function ResumeTemplate2Ar({
             text-align: right !important;
             direction: rtl !important;
             line-height: 1.8 !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
+            white-space: normal !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            flex: 1 !important;
+            min-width: 0 !important;
           }
           
           /* Ensure proper container sizing */
@@ -262,12 +273,238 @@ const ResumeTemplate2Ar = React.memo(function ResumeTemplate2Ar({
             padding: 24px !important;
             line-height: 1.6 !important;
             letter-spacing: 0.01em !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
+            white-space: normal !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+          
+          /* Template2Ar specific text flow optimization */
+          [data-template="template2ar"] .main-content * {
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
+            white-space: normal !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+          
+          /* Template2Ar work experience text flow */
+          [data-template="template2ar"] .work-experience-item,
+          [data-template="template2ar"] .work-experience-item * {
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
+            white-space: normal !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
           }
           
           /* Enhanced sidebar */
           .sidebar {
             line-height: 1.6 !important;
             letter-spacing: 0.01em !important;
+            background-color: var(--sidebar-color, #0E7490) !important;
+            background: var(--sidebar-color, #0E7490) !important;
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            width: 33.333% !important;
+            min-height: 297mm !important;
+            height: 297mm !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow: hidden !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+          
+          /* Ensure sidebar background color matches the selected color */
+          [data-template="template2ar"] .sidebar {
+            background-color: var(--sidebar-color, #0E7490) !important;
+            background: var(--sidebar-color, #0E7490) !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+          
+          /* Force sidebar color to match the selected color with maximum specificity */
+          [data-template="template2ar"] .sidebar,
+          [data-template="template2ar"] .sidebar[style*="background"],
+          [data-template="template2ar"] .sidebar[style] {
+            background-color: var(--sidebar-color, #0E7490) !important;
+            background: var(--sidebar-color, #0E7490) !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+          
+          /* Force sidebar color preservation */
+          .sidebar,
+          .sidebar * {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+          
+          /* Ensure sidebar background color is preserved */
+          [data-template="template2ar"] .sidebar {
+            background-color: var(--sidebar-color, #0E7490) !important;
+            background: var(--sidebar-color, #0E7490) !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+          
+          /* Ensure all sidebar elements are white */
+          [data-template="template2ar"] .sidebar h2,
+          [data-template="template2ar"] .sidebar p,
+          [data-template="template2ar"] .sidebar span,
+          [data-template="template2ar"] .sidebar div,
+          [data-template="template2ar"] .sidebar * {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+          
+          /* Force all text in sidebar to be white with maximum specificity */
+          [data-template="template2ar"] .sidebar,
+          [data-template="template2ar"] .sidebar *,
+          [data-template="template2ar"] .sidebar h1,
+          [data-template="template2ar"] .sidebar h2,
+          [data-template="template2ar"] .sidebar h3,
+          [data-template="template2ar"] .sidebar h4,
+          [data-template="template2ar"] .sidebar h5,
+          [data-template="template2ar"] .sidebar h6,
+          [data-template="template2ar"] .sidebar p,
+          [data-template="template2ar"] .sidebar span,
+          [data-template="template2ar"] .sidebar div,
+          [data-template="template2ar"] .sidebar li,
+          [data-template="template2ar"] .sidebar a,
+          [data-template="template2ar"] .sidebar strong,
+          [data-template="template2ar"] .sidebar b,
+          [data-template="template2ar"] .sidebar em,
+          [data-template="template2ar"] .sidebar i {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+          
+          /* Override inline styles with maximum specificity */
+          [data-template="template2ar"] .sidebar[style*="color"],
+          [data-template="template2ar"] .sidebar *[style*="color"] {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+          
+          /* Force white text on all elements with any inline styles */
+          [data-template="template2ar"] .sidebar[style],
+          [data-template="template2ar"] .sidebar *[style] {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+          
+          /* Additional specificity for nested elements */
+          [data-template="template2ar"] .sidebar div div,
+          [data-template="template2ar"] .sidebar div span,
+          [data-template="template2ar"] .sidebar div p,
+          [data-template="template2ar"] .sidebar span span,
+          [data-template="template2ar"] .sidebar p span,
+          [data-template="template2ar"] .sidebar * * {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+          
+          /* Force white text on all text nodes and elements */
+          [data-template="template2ar"] .sidebar,
+          [data-template="template2ar"] .sidebar *,
+          [data-template="template2ar"] .sidebar * *,
+          [data-template="template2ar"] .sidebar * * * {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+          
+          /* Nuclear option - force white on everything in sidebar */
+          [data-template="template2ar"] .sidebar,
+          [data-template="template2ar"] .sidebar *,
+          [data-template="template2ar"] .sidebar * *,
+          [data-template="template2ar"] .sidebar * * *,
+          [data-template="template2ar"] .sidebar * * * *,
+          [data-template="template2ar"] .sidebar * * * * * {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+          
+          /* Override any possible color inheritance */
+          [data-template="template2ar"] .sidebar,
+          [data-template="template2ar"] .sidebar * {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+          
+          /* Force white text with maximum specificity */
+          [data-template="template2ar"] .sidebar,
+          [data-template="template2ar"] .sidebar *,
+          [data-template="template2ar"] .sidebar * *,
+          [data-template="template2ar"] .sidebar * * *,
+          [data-template="template2ar"] .sidebar * * * *,
+          [data-template="template2ar"] .sidebar * * * * *,
+          [data-template="template2ar"] .sidebar * * * * * * {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+          
+          /* Additional override for any remaining black text */
+          [data-template="template2ar"] .sidebar *,
+          [data-template="template2ar"] .sidebar * *,
+          [data-template="template2ar"] .sidebar * * *,
+          [data-template="template2ar"] .sidebar * * * *,
+          [data-template="template2ar"] .sidebar * * * * *,
+          [data-template="template2ar"] .sidebar * * * * * *,
+          [data-template="template2ar"] .sidebar * * * * * * * {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+          
+          /* Ensure all SVG elements in sidebar are white */
+          [data-template="template2ar"] .sidebar svg,
+          [data-template="template2ar"] .sidebar svg * {
+            color: white !important;
+            fill: white !important;
+            stroke: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
           }
           
           /* Arabic resume PDF specific styles */
@@ -288,6 +525,15 @@ const ResumeTemplate2Ar = React.memo(function ResumeTemplate2Ar({
             opacity: 1 !important;
             color: black !important;
             background-color: transparent !important;
+          }
+          
+          /* Override black text for sidebar elements */
+          [data-pdf-export="true"] .sidebar,
+          [data-pdf-export="true"] .sidebar * {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
           }
         }
       `}</style>
@@ -669,12 +915,14 @@ const SummarySection = React.memo(function SummarySection({
 const MainContent = React.memo(function MainContent({ 
   resumeData, 
   colorHex, 
+  sectionLabelColorHex,
   fontFamily, 
   bulletStyle, 
   workExperiences 
 }: { 
   resumeData: ResumeValues, 
   colorHex?: string, 
+  sectionLabelColorHex?: string,
   fontFamily?: string, 
   bulletStyle?: string,
   workExperiences?: WorkExperience[]
@@ -744,6 +992,7 @@ const MainContent = React.memo(function MainContent({
         <WorkExperienceSection 
           workExperiences={workExperiencesNotEmpty}
           colorHex={colorHex}
+          sectionLabelColorHex={sectionLabelColorHex}
           bulletChar={bulletChar}
           fontFamily={fontFamily}
         />
@@ -755,15 +1004,17 @@ const MainContent = React.memo(function MainContent({
 const WorkExperienceSection = React.memo(function WorkExperienceSection({ 
   workExperiences, 
   colorHex, 
+  sectionLabelColorHex,
   bulletChar, 
   fontFamily 
 }: { 
   workExperiences: WorkExperience[], 
   colorHex?: string, 
+  sectionLabelColorHex?: string,
   bulletChar: string, 
   fontFamily?: string 
 }) {
-  const headerStyle = React.useMemo(() => ({ color: colorHex || "#000000" }), [colorHex]);
+  const headerStyle = React.useMemo(() => ({ color: sectionLabelColorHex || colorHex || "#000000" }), [sectionLabelColorHex, colorHex]);
   
   return (
     <div style={{ marginTop: '20px' }}>
@@ -874,7 +1125,7 @@ const WorkExperienceItem = React.memo(function WorkExperienceItem({
                 style={{ 
                   marginTop: '2px',
                   marginLeft: '8px',
-                  fontSize: '10px',
+                  fontSize: '12px',
                 }}
               >
                 {bulletChar}

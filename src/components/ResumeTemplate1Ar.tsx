@@ -172,10 +172,10 @@ const PersonalInfoHeader = React.memo(function PersonalInfoHeader({ resumeData }
 });
 
 const SummarySection = React.memo(function SummarySection({ resumeData }: ResumeSectionProps) {
-  const { summary, colorHex } = resumeData;
+  const { summary, colorHex, sectionLabelColorHex } = resumeData;
 
   const borderStyle = React.useMemo(() => ({ borderColor: colorHex }), [colorHex]);
-  const headerStyle = React.useMemo(() => ({ color: colorHex }), [colorHex]);
+  const headerStyle = React.useMemo(() => ({ color: sectionLabelColorHex || colorHex }), [sectionLabelColorHex, colorHex]);
 
   if (!summary) return null;
 
@@ -193,7 +193,7 @@ const SummarySection = React.memo(function SummarySection({ resumeData }: Resume
 });
 
 const WorkExperienceSection = React.memo(function WorkExperienceSection({ resumeData }: ResumeSectionProps) {
-  const { workExperiences, colorHex, bulletStyle } = resumeData;
+  const { workExperiences, colorHex, bulletStyle, sectionLabelColorHex } = resumeData;
 
   const workExperiencesNotEmpty = React.useMemo(() => 
     workExperiences?.filter(
@@ -203,7 +203,7 @@ const WorkExperienceSection = React.memo(function WorkExperienceSection({ resume
   );
 
   const borderStyle = React.useMemo(() => ({ borderColor: colorHex }), [colorHex]);
-  const headerStyle = React.useMemo(() => ({ color: colorHex }), [colorHex]);
+  const headerStyle = React.useMemo(() => ({ color: sectionLabelColorHex || colorHex }), [sectionLabelColorHex, colorHex]);
 
   return (
     <>
@@ -281,7 +281,7 @@ const WorkExperienceItem = React.memo(function WorkExperienceItem({
 });
 
 const EducationSection = React.memo(function EducationSection({ resumeData }: ResumeSectionProps) {
-  const { educations, colorHex } = resumeData;
+  const { educations, colorHex, sectionLabelColorHex } = resumeData;
 
   const educationsNotEmpty = React.useMemo(() => 
     educations?.filter(
@@ -291,7 +291,7 @@ const EducationSection = React.memo(function EducationSection({ resumeData }: Re
   );
 
   const borderStyle = React.useMemo(() => ({ borderColor: colorHex }), [colorHex]);
-  const headerStyle = React.useMemo(() => ({ color: colorHex }), [colorHex]);
+  const headerStyle = React.useMemo(() => ({ color: sectionLabelColorHex || colorHex }), [sectionLabelColorHex, colorHex]);
 
   return (
     <>
@@ -343,10 +343,10 @@ const EducationItem = React.memo(function EducationItem({
 });
 
 const SkillsSection = React.memo(function SkillsSection({ resumeData }: ResumeSectionProps) {
-  const { skills, colorHex } = resumeData;
+  const { skills, colorHex, sectionLabelColorHex } = resumeData;
 
   const borderStyle = React.useMemo(() => ({ borderColor: colorHex }), [colorHex]);
-  const headerStyle = React.useMemo(() => ({ color: colorHex }), [colorHex]);
+  const headerStyle = React.useMemo(() => ({ color: sectionLabelColorHex || colorHex }), [sectionLabelColorHex, colorHex]);
 
   return (
     <>
